@@ -16,6 +16,12 @@ Currently the following markdown flavors are supported:
 [PHP]: http://php.net/ "PHP is a popular general-purpose scripting language that is especially suited to web development."
 [Markdown]: http://en.wikipedia.org/wiki/Markdown "Markdown on Wikipedia"
 
+Requirements <a name="requirements"></a>
+-----------
+
+- [PHP 8.0+](http://www.php.net/downloads.php) is required.
+- UTF-8 is the only supported text encoding.
+
 Limitations <a name="limitations"></a>
 -----------
 
@@ -25,13 +31,7 @@ To be as fast and efficient as possible, the parser is limited in a few ways:
 3. It does not support "lazy" blockquotes.
 4. It does not support link and image definitions that span multiple lines.
 
-This means that it does not conform 100% to the CommonMark and GFM specifications. These limitations are known and are not considered bugs to be fixed.
-
-Requirements <a name="requirements"></a>
------------
-
-- [PHP 8.0+](http://www.php.net/downloads.php) is required.
-- UTF-8 is the only supported text encoding.
+This means that it does not conform 100% to the CommonMark and GFM specifications.
 
 Usage <a name="usage"></a>
 -----
@@ -67,17 +67,16 @@ $parser = new \cebe\markdown\GithubMarkdown();
 echo $parser->parseParagraph($markdown);
 ```
 
-You may optionally set one of the following options on the parser object:
+You may optionally set one of the following options on the parser object before parsing:
 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
 - `$parser->convertTabsToSpaces` to to convert all tabs into 4 spaces before parsing.
 - `$parser->contextID` to set an optional context identifier string for this instance.
-- `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the markdown.
-  The default behavior is to always start from 1 and increment by one regardless of the number in markdown.
+- `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the markdown. The default behavior is to always start from 1 and increment by one regardless of the number in markdown.
 
 For GithubMarkdown:
 
-- `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only newlines with two preceding spaces or ending in `\\` are converted to `<br/>` tags.
+- `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only newlines with two preceding spaces or ending in `\` are converted to `<br/>` tags.
 
 Security Considerations <a name="security"></a>
 -----------------------
