@@ -1,5 +1,5 @@
-A super fast, highly extensible markdown parser for PHP
-=======================================================
+A super fast, highly extensible Markdown parser, written in PHP.
+================================================================
 
 What is this? <a name="what"></a>
 -------------
@@ -23,12 +23,12 @@ Limitations <a name="limitations"></a>
 -----------
 
 To be as fast and efficient as possible, the parser is limited in a few ways:
-1. Does not allow leading spaces for most block markers.
-2. Does not allow you to combine tabs and spaces when indenting text.
-3. Does not support "lazy" blockquotes.
-4. Does not support link and image definitions that span multiple lines.
+1. It does not allow leading spaces for most block markers.
+2. It does not allow you to combine tabs and spaces when indenting text.
+3. It does not support "lazy" blockquotes.
+4. It does not support link and image definitions that span multiple lines.
 
-This means that it does nto conform 100% to the CommonMark and GFM specifications. These limitations are known and are not considered bugs to be fixed.
+This means that it does not conform 100% to the CommonMark and GFM specifications. These limitations are known and are not considered bugs to be fixed.
 
 Usage <a name="usage"></a>
 -----
