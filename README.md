@@ -27,13 +27,16 @@ To be as fast and efficient as possible, the parser is limited in a few ways:
 
 This means that it does not conform 100% to the CommonMark and GFM specifications. These limitations are known and are not considered bugs to be fixed.
 
+Requirements <a name="requirements"></a>
+-----------
+
+- [PHP 8.0+](http://www.php.net/downloads.php) is required.
+- UTF-8 is the only supported text encoding.
+
 Usage <a name="usage"></a>
 -----
 
 ### In your PHP project
-
-- [PHP 8.0+](http://www.php.net/downloads.php) is required.
-- UTF-8 is the only supported text encoding.
 
 To parse your markdown you need only two lines of code. The first one is to choose the markdown flavor as one of the following:
 
@@ -138,7 +141,7 @@ This markdown library is composed of traits so it is very easy to create your ow
 
 Designing your Markdown flavor consists of four steps:
 
-1. Select a base class
+1. Select a base class to extend
 2. Select language feature traits
 3. Define escapeable characters
 4. Optionally add custom rendering behavior
