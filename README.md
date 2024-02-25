@@ -5,9 +5,9 @@ This is a set of [PHP][] classes, each representing a [Markdown][] flavor, for c
 
 The implementation focus is to be **fast** and **extensible**. Parsing Markdown to HTML is as simple as calling a single method (see [Usage](#usage)), providing a solid implementation that gives most expected results even in non-trivial edge cases.
 
-Extending the Markdown language with new elements is as simple as adding a new method to the class that converts the markdown text to the expected output in HTML. This is possible without dealing with complex and error prone regular expressions. It is also possible to hook into the markdown structure and add elements or read meta information using the internal representation of the Markdown text as an abstract syntax tree (see [Extending the language](#extend)).
+Extending the Markdown language with new elements is as simple as adding a new method to the class that converts the Markdown text to the expected output in HTML. This is possible without dealing with complex and error prone regular expressions. It is also possible to hook into the Markdown structure and add elements or read meta information using the internal representation of the Markdown text as an abstract syntax tree (see [Extending the language](#extend)).
 
-Currently the following markdown flavors are supported:
+Currently the following Markdown flavors are supported:
 
 - [CommonMark](https://spec.commonmark.org/)
 - [GitHub-Flavored Markdown](https://github.github.com/gfm/)
@@ -36,13 +36,13 @@ This means that it does not conform 100% to the CommonMark and GFM specification
 Usage <a name="usage"></a>
 -----
 
-The first step is to choose the markdown flavor and instantiate the parser:
+The first step is to choose the Markdown flavor and instantiate the parser:
 
 - CommonMark: `$parser = new \cebe\markdown\Markdown();`
 - GitHub-Flavored Markdown: `$parser = new \cebe\markdown\GithubMarkdown();`
 - Chyrp-Flavoured Markdown: `$parser = new \cebe\markdown\ChyrpMarkdown();`
 
-The next step is to call the method `parse()` for parsing the text using the full markdown language,
+The next step is to call the method `parse()` for parsing the text using the full Markdown language,
 or call the method `parseParagraph()` to parse only inline elements.
 
 Here are some examples:
@@ -70,7 +70,7 @@ You may optionally set one of the following options on the parser object before 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
 - `$parser->convertTabsToSpaces` to to convert all tabs into 4 spaces before parsing.
 - `$parser->contextID` to set an optional context identifier string for this instance.
-- `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the markdown. The default behavior is to always start from 1 and increment by one regardless of the number in markdown.
+- `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the Markdown. The default behavior is to always start from 1 and increment by one regardless of the number in Markdown.
 
 For GithubMarkdown:
 
@@ -79,11 +79,11 @@ For GithubMarkdown:
 Security Considerations <a name="security"></a>
 -----------------------
 
-By design markdown [allows HTML to be included within the markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows to be very flexible for creating output that is not limited by the markdown syntax, but it comes with a security risk if you are parsing user input as markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
+By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
 
-In that case you should process the result of the markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users to be added.
+In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users to be added.
 
-The list of [allowed elements](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedElements) for markdown could be configured as:
+The list of [allowed elements](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedElements) for Markdown could be configured as:
 
 ```php
 [
@@ -112,15 +112,15 @@ Extending the language <a name="extend"></a>
 
 Markdown consists of two types of language elements, I'll call them block and inline elements simlar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spreads over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
 
-This markdown parser allows you to extend the markdown language by changing existing elements behavior and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them as you will see in the following sections.
+This Markdown parser allows you to extend the Markdown language by changing existing elements behavior and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them as you will see in the following sections.
 
 ### Adding block elements
 
-The markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods who's name begins with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if not.
+The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods who's name begins with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if not.
 
 Parsing of a block element is done in two steps:
 
-1. **Consuming** all the lines belonging to it. In most cases this is iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
+1. **Consuming** all the lines belonging to it. In most cases this is iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
 
 2. **Rendering** the element. After all blocks have been consumed, they are being rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree. You may also add code highlighting here.
 
@@ -129,32 +129,31 @@ Parsing of a block element is done in two steps:
 Adding inline elements is different from block elements as they are parsed using markers in the text.
 An inline element is identified by a marker that marks the beginning of an inline element (e.g. `[` will mark a possible beginning of a link or `` ` `` will mark inline code).
 
-Parsing methods for inline elements are also protected and identified by the prefix `parse`. Additionally a mathcing method `Markers` is needed to register the parse function for one or multiple markers. E.g. `parseEscape` and `parseEscapeMarkers`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker.
-The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input markdown. All text up to this offset will be removed from the markdown before the next marker will be searched.
+Parsing methods for inline elements are also protected and identified by the prefix `parse`. Additionally a matching method name suffixed with `Markers` is needed to register the parse function for one or multiple markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker. The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input Markdown. All text up to this offset will be removed from the Markdown before the next marker will be searched.
 
 ### Composing your own Markdown flavor
 
-This markdown library is composed of traits so it is very easy to create your own markdown flavor by adding and/or removing the single feature traits.
+This Markdown library is composed of traits so it is very easy to create your own Markdown flavor by adding and/or removing the single feature traits.
 
 Designing your Markdown flavor consists of four steps:
 
-1. Select a base class to extend
-2. Select language feature traits
-3. Define escapeable characters
-4. Optionally add custom rendering behavior
+1. Select a base class to extend;
+2. Select language feature traits;
+3. Define escapeable characters;
+4. Optionally add custom rendering behavior.
 
 #### Select a base class
 
 If you want to extend from a flavor and only add features you can use one of the existing classes
 (`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class.
 
-If you want to define a subset of the markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
+If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
 
 #### Select language feature traits
 
 In general, just adding traits with `use` is enough, however there is a conflict for parsing of the `<` character. This could either be a link/email enclosed in `<` and `>` or an inline HTML tag. In order to resolve this conflict when adding the `LinkTrait`, you need to hide the `parseInlineHtml` method of the `HtmlTrait`.
 
-If you use any trait that uses the `$html5` property to adjust its output you also need to define this property in your flavor.
+If you use any trait that references the `$html5` property to adjust its output you also need to define this property in your flavor.
 
 If you use the link trait or footnote trait it may be useful to implement `prepare()` to reset references before parsing to ensure you get a reusable object.
 
