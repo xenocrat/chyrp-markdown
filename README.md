@@ -34,13 +34,13 @@ Usage <a name="usage"></a>
 -----
 
 The first step is to choose the Markdown flavor and instantiate the parser:
-
 - CommonMark: `$parser = new \cebe\markdown\Markdown();`
 - GitHub-Flavored Markdown: `$parser = new \cebe\markdown\GithubMarkdown();`
 - Chyrp-Flavoured Markdown: `$parser = new \cebe\markdown\ChyrpMarkdown();`
 
-The next step is to call the method `parse()` for parsing the text using the full Markdown language,
-or call the method `parseParagraph()` to parse only inline elements.
+The next step is to call the parser method:
+- Use `parse()` for parsing the text using the full Markdown language;
+- Or use `parseParagraph()` to parse only inline elements.
 
 Here are some examples:
 
@@ -125,6 +125,8 @@ If you want to define a subset of the Markdown language, i.e. remove some of the
 #### Select language feature traits
 
 In general, just adding traits with `use` is enough, however there is a conflict for parsing of the `<` character. This could either be a link/email enclosed in `<` and `>` or an inline HTML tag. In order to resolve this conflict when adding the `LinkTrait`, you need to hide the `parseInlineHtml` method of the `HtmlTrait`.
+
+During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy with a `Priority` method matching the identify method name, returning a different string to compare. E.g. `identifyUl()` and `identifyUlPriority()`.
 
 If you use any trait that references the `$html5` property to adjust its output you also need to define this property in your flavor.
 
