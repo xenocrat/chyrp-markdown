@@ -5,7 +5,7 @@ This is a set of PHP classes, each representing a Markdown flavor, for convertin
 
 The implementation focus is to be **fast** and **extensible**. Parsing Markdown to HTML is as simple as calling a single method (see [Usage](#usage)), providing a solid implementation that gives most expected results even in non-trivial edge cases.
 
-Extending the Markdown language with new elements is as simple as adding a new method to the class that converts the Markdown text to the expected output in HTML. This is possible without dealing with complex and error prone regular expressions. It is also possible to hook into the Markdown structure and add elements or read meta information using the internal representation of the Markdown text as an abstract syntax tree (see [Extending the language](#extend)).
+The language can be extended with new elements by adding a new method to the class that converts the Markdown text to the expected output in HTML.
 
 Currently the following Markdown flavors are supported:
 
@@ -28,15 +28,18 @@ To be as fast and efficient as possible, the parser is limited in a few ways:
 3. It does not support "lazy" blockquotes.
 4. It does not support link and image definitions that span multiple lines.
 
-This means that it does not conform 100% to the CommonMark and GFM specifications.
+This means the parser does not conform 100% to the CommonMark and GFM specifications.
 
 Usage <a name="usage"></a>
 -----
 
 The first step is to choose the Markdown flavor and instantiate the parser:
-- CommonMark: `$parser = new \cebe\markdown\Markdown();`
-- GitHub-Flavored Markdown: `$parser = new \cebe\markdown\GithubMarkdown();`
-- Chyrp-Flavoured Markdown: `$parser = new \cebe\markdown\ChyrpMarkdown();`
+- CommonMark:  
+  `$parser = new \cebe\markdown\Markdown();`
+- GitHub-Flavored Markdown:  
+  `$parser = new \cebe\markdown\GithubMarkdown();`
+- Chyrp-Flavoured Markdown:  
+  `$parser = new \cebe\markdown\ChyrpMarkdown();`
 
 The next step is to call the parser method:
 - Use `parse()` for parsing the text using the full Markdown language;
@@ -106,7 +109,7 @@ Parsing methods for inline elements are also protected and identified by the pre
 
 ### Composing your own Markdown flavor
 
-This Markdown library is composed of traits so it is very easy to create your own Markdown flavor by adding and/or removing the single feature traits.
+This Markdown parser is composed of traits so it is very easy to create your own Markdown flavor by adding and/or removing the single feature traits.
 
 Designing your Markdown flavor consists of four steps:
 
@@ -148,16 +151,18 @@ Carsten Brandt would like to thank [@erusev][] for creating [Parsedown][] which 
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
 
-### Authors
+Authors <a name="authors"></a>
+-------
 
 This software was created by the following people:
 
 * cebe/markdown: Carsten Brandt
 * xenocrat/chyrp-markdown: Daniel Pimley
 
-### License
+License <a name="license"></a>
+-------
 
-This library is open source and licensed under the [MIT License][]. Check the [license][] for details.
+This software is open source and licensed under the [MIT License][]. Check the [license][] for details.
 
 [MIT License]: http://opensource.org/licenses/MIT
 [license]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
