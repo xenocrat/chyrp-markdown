@@ -40,7 +40,7 @@ The first step is to choose the Markdown flavor and instantiate the parser:
 
 The next step is to call the parser method:
 - Use `parse()` for parsing the text using the full Markdown language;
-- Or use `parseParagraph()` to parse only inline elements.
+- Use `parseParagraph()` to parse only inline elements in the text.
 
 Here are some examples:
 
@@ -89,11 +89,11 @@ This Markdown parser allows you to extend the Markdown language by changing exis
 
 ### Adding block elements
 
-The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods who's name begins with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if not.
+The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods having a name beginning with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if not.
 
 Parsing of a block element is done in two steps:
 
-1. **Consuming** all the lines belonging to it. In most cases this is iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
+1. **Consuming** all the lines belonging to it, by iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
 
 2. **Rendering** the element. After all blocks have been consumed, they are being rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree. You may also add code highlighting here.
 
