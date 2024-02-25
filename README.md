@@ -1,7 +1,7 @@
 What is this? <a name="what"></a>
 -------------
 
-This is a set of [PHP][] classes, each representing a [Markdown][] flavor, for converting Markdown to HTML.
+This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML.
 
 The implementation focus is to be **fast** and **extensible**. Parsing Markdown to HTML is as simple as calling a single method (see [Usage](#usage)), providing a solid implementation that gives most expected results even in non-trivial edge cases.
 
@@ -12,9 +12,6 @@ Currently the following Markdown flavors are supported:
 - [CommonMark](https://spec.commonmark.org/)
 - [GitHub-Flavored Markdown](https://github.github.com/gfm/)
 - [Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
-
-[PHP]: http://php.net/ "PHP is a popular general-purpose scripting language that is especially suited to web development."
-[Markdown]: http://en.wikipedia.org/wiki/Markdown "Markdown on Wikipedia"
 
 Requirements <a name="requirements"></a>
 -----------
@@ -83,30 +80,6 @@ By design Markdown [allows HTML to be included within the Markdown text](https:/
 
 In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users to be added.
 
-The list of [allowed elements](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedElements) for Markdown could be configured as:
-
-```php
-[
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'hr',
-    'pre', 'code',
-    'blockquote',
-    'table', 'tr', 'td', 'th', 'thead', 'tbody',
-    'strong', 'em', 'b', 'i', 'u', 's', 'span',
-    'a', 'p', 'br', 'nobr',
-    'ul', 'ol', 'li',
-    'img',
-],
-```
-
-The list of [allowed attributes](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedAttributes) would be:
-
-```php
-['th.align', 'td.align', 'ol.start', 'code.class']
-```
-
-The above configuration is a general recommendation and may need to be adjusted dependent on your needs.
-
 Extending the language <a name="extend"></a>
 ----------------------
 
@@ -159,7 +132,7 @@ If you use the link trait or footnote trait it may be useful to implement `prepa
 
 #### Define escapeable characters
 
-Depending on the language features you have chosen there is a different set of characters that can be escaped using `\`. The parser defines only backslash.
+Depending on the language features you have chosen there is a different set of characters that can be escaped using `\`. The parser defines only backslash initially.
 
 #### Add custom rendering behavior
 
@@ -185,4 +158,4 @@ This software was created by the following people:
 This library is open source and licensed under the [MIT License][]. Check the [license][] for details.
 
 [MIT License]: http://opensource.org/licenses/MIT
-[license]: https://github.com/cebe/markdown/blob/master/LICENSE
+[license]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
