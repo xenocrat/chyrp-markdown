@@ -36,8 +36,6 @@ This means that it does not conform 100% to the CommonMark and GFM specification
 Usage <a name="usage"></a>
 -----
 
-### In your PHP project
-
 To parse your markdown you need only two lines of code. The first one is to choose the markdown flavor as one of the following:
 
 - CommonMark: `$parser = new \cebe\markdown\Markdown();`
@@ -185,7 +183,7 @@ This software was created by the following people:
 
 ### License
 
-This library is open source and licensed under the [MIT License][]. This means that you can do whatever you want with it as long as you mention the authors and include the [license file][license]. Check the [license][] for details.
+This library is open source and licensed under the [MIT License][]. Check the [license][] for details.
 
 [MIT License]: http://opensource.org/licenses/MIT
 [license]: https://github.com/cebe/markdown/blob/master/LICENSE
