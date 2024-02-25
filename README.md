@@ -1,4 +1,4 @@
-What is this? <a name="what"></a>
+What is this?
 -------------
 
 This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML.
@@ -13,13 +13,13 @@ Currently the following Markdown flavors are supported:
 - [GitHub-Flavored Markdown](https://github.github.com/gfm/)
 - [Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
 
-Requirements <a name="requirements"></a>
+Requirements
 -----------
 
 - [PHP 8.0+](http://www.php.net/downloads.php) is required.
 - UTF-8 is the only supported text encoding.
 
-Limitations <a name="limitations"></a>
+Limitations
 -----------
 
 To be as fast and efficient as possible, the parser is limited in a few ways:
@@ -30,7 +30,7 @@ To be as fast and efficient as possible, the parser is limited in a few ways:
 
 This means the parser does not conform 100% to the CommonMark and GFM specifications.
 
-Usage <a name="usage"></a>
+Usage
 -----
 
 The first step is to choose the Markdown flavor and instantiate the parser:
@@ -74,16 +74,16 @@ You may optionally set one of the following options on the parser object before 
 
 For GithubMarkdown:
 
-- `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only newlines with two preceding spaces or ending in `\` are converted to `<br/>` tags.
+- `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only lines ending with two or more spaces, or `\` will force a line break.
 
-Security Considerations <a name="security"></a>
+Security Considerations
 -----------------------
 
 By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
 
 In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users to be added.
 
-Extending the language <a name="extend"></a>
+Extending the language
 ----------------------
 
 Markdown consists of two types of language elements, I'll call them block and inline elements simlar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spreads over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
@@ -151,7 +151,7 @@ Carsten Brandt would like to thank [@erusev][] for creating [Parsedown][] which 
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
 
-Authors <a name="authors"></a>
+Authors
 -------
 
 This software was created by the following people:
@@ -159,7 +159,7 @@ This software was created by the following people:
 * cebe/markdown: Carsten Brandt
 * xenocrat/chyrp-markdown: Daniel Pimley
 
-License <a name="license"></a>
+License
 -------
 
 This software is open source and licensed under the [MIT License][]. Check the [license][] for details.
