@@ -36,7 +36,7 @@ This means that it does not conform 100% to the CommonMark and GFM specification
 Usage <a name="usage"></a>
 -----
 
-To parse your markdown you need only two lines of code. The first one is to choose the markdown flavor as one of the following:
+The first step is to choose the markdown flavor and instantiate the parser:
 
 - CommonMark: `$parser = new \cebe\markdown\Markdown();`
 - GitHub-Flavored Markdown: `$parser = new \cebe\markdown\GithubMarkdown();`
@@ -169,7 +169,7 @@ Optionally you may also want to adjust rendering behavior by overriding some met
 Acknowledgements <a name="ack"></a>
 ----------------
 
-I'd like to thank [@erusev][] for creating [Parsedown][] which heavily influenced this work and provided the idea of the line based parsing approach.
+Carsten Brandt would like to thank [@erusev][] for creating [Parsedown][] which heavily influenced this work and provided the idea of the line based parsing approach.
 
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
