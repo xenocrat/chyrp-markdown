@@ -1,10 +1,7 @@
-A super fast, highly extensible Markdown parser, written in PHP.
-================================================================
-
 What is this? <a name="what"></a>
 -------------
 
-A set of [PHP][] classes, each representing a [Markdown][] flavor, for converting Markdown to HTML.
+This is a set of [PHP][] classes, each representing a [Markdown][] flavor, for converting Markdown to HTML.
 
 The implementation focus is to be **fast** and **extensible**. Parsing Markdown to HTML is as simple as calling a single method (see [Usage](#usage)), providing a solid implementation that gives most expected results even in non-trivial edge cases.
 
@@ -176,6 +173,13 @@ I'd like to thank [@erusev][] for creating [Parsedown][] which heavily influence
 
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
+
+### Authors
+
+This software was created by the following people:
+
+* cebe/markdown: Carsten Brandt
+* xenocrat/chyrp-markdown: Daniel Pimley
 
 ### License
 
