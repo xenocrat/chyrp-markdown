@@ -15,34 +15,42 @@ trait CodeTrait
 	/**
 	 * identify a line as the beginning of a code block.
 	 */
-	protected function identifyCode($line)
+	protected function identifyCode($line): bool
 	{
 		// indentation >= 4 or one tab is code
-		return ($l = $line[0]) === ' ' && $line[1] === ' ' && $line[2] === ' ' && $line[3] === ' ' || $l === "\t";
+		return $line[0] === "\t" || strncmp($line, '    ', 4) === 0;
 	}
 
 	/**
 	 * Consume lines for a code block element
 	 */
-	protected function consumeCode($lines, $current)
+	protected function consumeCode($lines, $current): array
 	{
 		// consume until newline
-
 		$content = [];
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-
-			// a line is considered to belong to this code block as long as it is intended by 4 spaces or a tab
+			// a line belongs to this code block if it is indented by 4 spaces or a tab
 			if (isset($line[0]) && ($line[0] === "\t" || strncmp($line, '    ', 4) === 0)) {
 				$line = $line[0] === "\t" ? substr($line, 1) : substr($line, 4);
 				$content[] = $line;
-			// but also if it is empty and the next line is intended by 4 spaces or a tab
-			} elseif (($line === '' || rtrim($line) === '') && isset($lines[$i + 1][0]) &&
-				      ($lines[$i + 1][0] === "\t" || strncmp($lines[$i + 1], '    ', 4) === 0)) {
-				if ($line !== '') {
-					$line = $line[0] === "\t" ? substr($line, 1) : substr($line, 4);
+			// ...or if blank and the next is also blank or indented by 4 spaces or a tab
+			} elseif (($line === '' || rtrim($line) === '') && isset($lines[$i + 1])) {
+				$next = $lines[$i + 1];
+				if ($next === '' ||
+					rtrim($next) === '' ||
+					$next[0] === "\t" ||
+					strncmp($next, '    ', 4) === 0) {
+					if (isset($line[0])
+						&& ($line[0] === "\t" || strncmp($line, '    ', 4) === 0)) {
+						$line = $line[0] === "\t" ? substr($line, 1) : substr($line, 4);
+					} else {
+						$line = '';
+					}
+					$content[] = $line;
+				} else {
+					break;
 				}
-				$content[] = $line;
 			} else {
 				break;
 			}
@@ -58,9 +66,11 @@ trait CodeTrait
 	/**
 	 * Renders a code block
 	 */
-	protected function renderCode($block)
+	protected function renderCode($block): string
 	{
 		$class = isset($block['language']) ? ' class="language-' . $block['language'] . '"' : '';
-		return "<pre><code$class>" . htmlspecialchars($block['content'] . "\n", ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8') . "</code></pre>\n";
+		return "<pre><code$class>"
+			. htmlspecialchars($block['content'] . "\n", ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8')
+			. "</code></pre>\n";
 	}
 }

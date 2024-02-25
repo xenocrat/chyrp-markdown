@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright 2023 Daniel Pimley
  * @license https://github.com/cebe/markdown/blob/master/LICENSE
  * @link https://github.com/cebe/markdown#readme
  */
@@ -8,31 +8,31 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the block quote elements
+ * Adds the aside elements
  */
-trait QuoteTrait
+trait AsideTrait
 {
 	/**
-	 * identify a line as the beginning of a block quote.
+	 * identify a line as the beginning of an aside.
 	 */
-	protected function identifyQuote($line): bool
+	protected function identifyAside($line): bool
 	{
-		return $line[0] === '>' && (!isset($line[1]) || ($l1 = $line[1]) === ' ' || $l1 === "\t");
+		return $line[0] === '<' && (!isset($line[1]) || ($l1 = $line[1]) === ' ' || $l1 === "\t");
 	}
 
 	/**
-	 * Consume lines for a blockquote element
+	 * Consume lines for an aside element
 	 */
-	protected function consumeQuote($lines, $current): array
+	protected function consumeAside($lines, $current): array
 	{
 		// consume until newline
 		$content = [];
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			if (ltrim($line) !== '') {
-				if ($line[0] == '>' && !isset($line[1])) {
+				if ($line[0] == '<' && !isset($line[1])) {
 					$line = '';
-				} elseif (strncmp($line, '> ', 2) === 0) {
+				} elseif (strncmp($line, '< ', 2) === 0) {
 					$line = substr($line, 2);
 				} else {
 					--$i;
@@ -45,18 +45,18 @@ trait QuoteTrait
 		}
 
 		$block = [
-			'quote',
+			'aside',
 			'content' => $this->parseBlocks($content),
 		];
 		return [$block, $i];
 	}
 
 	/**
-	 * Renders a blockquote
+	 * Renders an aside
 	 */
-	protected function renderQuote($block): string
+	protected function renderAside($block): string
 	{
-		return '<blockquote>' . $this->renderAbsy($block['content']) . "</blockquote>\n";
+		return '<aside>' . $this->renderAbsy($block['content']) . "</aside>\n";
 	}
 
 	abstract protected function parseBlocks($lines);

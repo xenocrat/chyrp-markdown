@@ -12,11 +12,16 @@ namespace cebe\markdown\inline;
  */
 trait CodeTrait
 {
+	protected function parseInlineCodeMarkers(): array
+	{
+		return array('`');
+	}
+
 	/**
 	 * Parses an inline code span `` ` ``.
 	 * @marker `
 	 */
-	protected function parseInlineCode($text)
+	protected function parseInlineCode($text): array
 	{
 		if (preg_match('/^(``+)\s(.+?)\s\1/s', $text, $matches)) { // code with enclosed backtick
 			return [
@@ -38,8 +43,10 @@ trait CodeTrait
 		return [['text', $text[0]], 1];
 	}
 
-	protected function renderInlineCode($block)
+	protected function renderInlineCode($block): string
 	{
-		return '<code>' . htmlspecialchars($block[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</code>';
+		return '<code>'
+			. htmlspecialchars($block[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8')
+			. '</code>';
 	}
 }

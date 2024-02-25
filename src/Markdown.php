@@ -8,7 +8,7 @@
 namespace cebe\markdown;
 
 /**
- * Markdown parser for the [initial markdown spec](http://daringfireball.net/projects/markdown/syntax).
+ * Markdown parser for [CommonMark](https://spec.commonmark.org/).
  *
  * @author Carsten Brandt <mail@cebe.cc>
  */
@@ -16,21 +16,30 @@ class Markdown extends Parser
 {
 	// include block element parsing using traits
 	use block\CodeTrait;
+	use block\FencedCodeTrait;
 	use block\HeadlineTrait;
+
+	/**
+	 * LinkTrait conflicts with HtmlTrait. If both traits are used together,
+	 * you must define the HtmlTrait::parseInlineHtml method as private so
+	 * it is not used directly:
+	 *
+	 * ```php
+	 * use block\HtmlTrait {
+	 *     parseInlineHtml as private parseInlineHtml;
+	 * }
+	 * ```
+	 *
+	 * If the HtmlTrait::parseInlineHtml method exists it will be called from
+	 * within LinkTrait::parseLt if needed.
+	 */
 	use block\HtmlTrait {
 		parseInlineHtml as private;
 	}
-	use block\ListTrait {
-		// Check Ul List before headline
-		identifyUl as protected identifyBUl;
-		consumeUl as protected consumeBUl;
-	}
+
+	use block\ListTrait;
 	use block\QuoteTrait;
-	use block\RuleTrait {
-		// Check Hr before checking lists
-		identifyHr as protected identifyAHr;
-		consumeHr as protected consumeAHr;
-	}
+	use block\RuleTrait;
 
 	// include inline element parsing using traits
 	use inline\CodeTrait;
@@ -64,11 +73,10 @@ class Markdown extends Parser
 		'<', '>',
 	];
 
-
 	/**
 	 * @inheritDoc
 	 */
-	protected function prepare()
+	protected function prepare(): void
 	{
 		// reset references
 		$this->references = [];
@@ -77,9 +85,9 @@ class Markdown extends Parser
 	/**
 	 * Consume lines for a paragraph
 	 *
-	 * Allow headlines and code to break paragraphs
+	 * Allow other block types to break paragraphs.
 	 */
-	protected function consumeParagraph($lines, $current)
+	protected function consumeParagraph($lines, $current): array
 	{
 		// consume until newline
 		$content = [];
@@ -92,18 +100,18 @@ class Markdown extends Parser
 				break;
 			}
 
-			if ($line === '' || ltrim($line) === '' || $this->identifyHeadline($line, $lines, $i)) {
+			if ($line === ''
+				|| ltrim($line) === ''
+				|| !ctype_alpha($line[0]) && (
+					$this->identifyQuote($line, $lines, $i) ||
+					$this->identifyFencedCode($line, $lines, $i) ||
+					$this->identifyUl($line, $lines, $i) ||
+					$this->identifyOl($line, $lines, $i) ||
+					$this->identifyHr($line, $lines, $i) ||
+					$this->identifyHtml($line, $lines, $i)
+				)
+				|| $this->identifyHeadline($line, $lines, $i)) {
 				break;
-			} elseif ($line[0] === "\t" || $line[0] === " " && strncmp($line, '    ', 4) === 0) {
-				// possible beginning of a code block
-				// but check for continued inline HTML
-				// e.g. <img src="file.jpg"
-				//           alt="some alt aligned with src attribute" title="some text" />
-				if (preg_match('~<\w+([^>]+)$~s', implode("\n", $content))) {
-					$content[] = $line;
-				} else {
-					break;
-				}
 			} else {
 				$content[] = $line;
 			}
@@ -117,11 +125,11 @@ class Markdown extends Parser
 
 
 	/**
-	 * @inheritdocs
+	 * @inheritDoc
 	 *
 	 * Parses a newline indicated by two spaces on the end of a markdown line.
 	 */
-	protected function renderText($text)
+	protected function renderText($text): string
 	{
 		return str_replace("  \n", $this->html5 ? "<br>\n" : "<br />\n", $text[1]);
 	}

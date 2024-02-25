@@ -15,28 +15,28 @@ trait HeadlineTrait
 	/**
 	 * identify a line as a headline
 	 */
-	protected function identifyHeadline($line, $lines, $current)
+	protected function identifyHeadline($line, $lines, $current): bool
 	{
 		return (
 			// heading with #
-			$line[0] === '#' && !preg_match('/^#\d+/', $line)
-			||
+			$line[0] === '#' && preg_match('/^#{1,6}[ \t]/', $line) ||
 			// underlined headline
-			!empty($lines[$current + 1]) &&
-			(($l = $lines[$current + 1][0]) === '=' || $l === '-') &&
-			preg_match('/^(\-+|=+)\s*$/', $lines[$current + 1])
+			!empty($lines[$current + 1])
+			&& (($l = $lines[$current + 1][0]) === '=' || $l === '-')
+			&& preg_match('/^(\-+|=+)\s*$/', $lines[$current + 1])
 		);
 	}
 
 	/**
 	 * Consume lines for a headline
 	 */
-	protected function consumeHeadline($lines, $current)
+	protected function consumeHeadline($lines, $current): array
 	{
 		if ($lines[$current][0] === '#') {
 			// ATX headline
 			$level = 1;
-			while (isset($lines[$current][$level]) && $lines[$current][$level] === '#' && $level < 6) {
+			while (isset($lines[$current][$level])
+				&& $lines[$current][$level] === '#' && $level < 6) {
 				$level++;
 			}
 			$block = [
@@ -59,7 +59,7 @@ trait HeadlineTrait
 	/**
 	 * Renders a headline
 	 */
-	protected function renderHeadline($block)
+	protected function renderHeadline($block): string
 	{
 		$tag = 'h' . $block['level'];
 		return "<$tag>" . $this->renderAbsy($block['content']) . "</$tag>\n";

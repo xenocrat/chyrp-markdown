@@ -15,7 +15,7 @@ trait TableTrait
 	/**
 	 * identify a line as the beginning of a table block.
 	 */
-	protected function identifyTable($line, $lines, $current)
+	protected function identifyTable($line, $lines, $current): bool
 	{
 		return strpos($line, '|') !== false && isset($lines[$current + 1])
 			&& preg_match('~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|?)*\\s*$~', $lines[$current + 1])
@@ -26,7 +26,7 @@ trait TableTrait
 	/**
 	 * Consume lines for a table
 	 */
-	protected function consumeTable($lines, $current)
+	protected function consumeTable($lines, $current): array
 	{
 		// consume until newline
 
@@ -68,7 +68,8 @@ trait TableTrait
 			if ($line[0] === '|') {
 				$line = substr($line, 1);
 			}
-			if (substr($line, -1, 1) === '|' && (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|')) {
+			if (substr($line, -1, 1) === '|'
+				&& (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|')) {
 				$line = substr($line, 0, -1);
 			}
 
@@ -97,7 +98,7 @@ trait TableTrait
 	/**
 	 * render a table block
 	 */
-	protected function renderTable($block)
+	protected function renderTable($block): string
 	{
 		$head = '';
 		$body = '';
@@ -135,15 +136,20 @@ trait TableTrait
 	 * @return string the complete table HTML.
 	 * @since 1.2.0
 	 */
-	protected function composeTable($head, $body)
+	protected function composeTable($head, $body): string
 	{
 		return "<table>\n<thead>\n$head</thead>\n<tbody>\n$body</tbody>\n</table>\n";
+	}
+
+	protected function parseTdMarkers(): array
+	{
+		return array('|');
 	}
 
 	/**
 	 * @marker |
 	 */
-	protected function parseTd($markdown)
+	protected function parseTd($markdown): array
 	{
 		if (isset($this->context[1]) && $this->context[1] === 'table') {
 			return [['tableBoundary'], isset($markdown[1]) && $markdown[1] === ' ' ? 2 : 1];

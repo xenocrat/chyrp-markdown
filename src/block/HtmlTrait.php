@@ -13,73 +13,104 @@ namespace cebe\markdown\block;
 trait HtmlTrait
 {
 	/**
-	 * @var array HTML elements considered as inline elements.
-	 * @see http://www.w3.org/wiki/HTML/Elements#Text-level_semantics
+	 * @var array HTML elements defined in CommonMark spec
+	 * @see https://spec.commonmark.org/0.31.2/#html-blocks
 	 */
-	protected $inlineHtmlElements = [
-		'a', 'abbr', 'acronym',
-		'b', 'basefont', 'bdo', 'big', 'br', 'button', 'blink',
-		'cite', 'code',
-		'del', 'dfn',
-		'em',
-		'font',
-		'i', 'img', 'ins', 'input', 'iframe',
-		'kbd',
-		'label', 'listing',
-		'map', 'mark',
-		'nobr',
-		'object',
-		'q',
-		'rp', 'rt', 'ruby',
-		's', 'samp', 'script', 'select', 'small', 'spacer', 'span', 'strong', 'sub', 'sup',
-		'tt', 'var',
-		'u',
-		'wbr',
-		'time',
-	];
-	/**
-	 * @var array HTML elements known to be self-closing.
-	 */
-	protected $selfClosingHtmlElements = [
-		'br', 'hr', 'img', 'input', 'nobr',
+	protected $type6HtmlElements = [
+		'address', 'article', 'aside',
+		'base', 'basefont', 'blockquote', 'body',
+		'caption', 'center', 'col', 'colgroup',
+		'dd', 'details', 'dialog', 'dir', 'div', 'dl', 'dt',
+		'fieldset', 'figcaption', 'figure', 'footer', 'form', 'frame', 'frameset',
+		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html',
+		'iframe',
+		'legend', 'li', 'link',
+		'main', 'menu', 'menuitem',
+		'nav', 'noframes', 
+		'ol', 'optgroup', 'option',
+		'p', 'param',
+		'section', 'source', 'summary',
+		'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'title', 'tr', 'track',
+		'ul',
 	];
 
 	/**
 	 * identify a line as the beginning of a HTML block.
 	 */
-	protected function identifyHtml($line, $lines, $current)
+	protected function identifyHtml($line, $lines, $current): bool
 	{
 		if ($line[0] !== '<' || isset($line[1]) && $line[1] == ' ') {
-			return false; // no html tag
+			return false; // no tag
 		}
-
+		if (strncmp($line, '<script', 7) === 0) {
+			return true; // type 1: script
+		}
+		if (strncmp($line, '<pre', 4) === 0) {
+			return true; // type 1: pre
+		}
+		if (strncmp($line, '<style', 6) === 0) {
+			return true; // type 1: style
+		}
 		if (strncmp($line, '<!--', 4) === 0) {
-			return true; // a html comment
+			return true; // type 2: comment
 		}
-
-		$gtPos = strpos($lines[$current], '>');
-		$spacePos = strpos($lines[$current], ' ');
-		if ($gtPos === false && $spacePos === false) {
-			return false; // no html tag
-		} elseif ($spacePos === false) {
-			$tag = rtrim(substr($line, 1, $gtPos - 1), '/');
-		} else {
-			$tag = rtrim(substr($line, 1, min($gtPos, $spacePos) - 1), '/');
+		if (strncmp($line, '<?', 2) === 0) {
+			return true; // type 3: processor
 		}
-
-		if (!ctype_alnum($tag) || in_array(strtolower($tag), $this->inlineHtmlElements)) {
-			return false; // no html tag or inline html tag
+		if (strncmp($line, '<!', 2) === 0 && ctype_alpha(substr($line, 2, 1))) {
+			return true; // type 4: declaration
 		}
-		return true;
+		if (strncmp($line, '<![CDATA[', 9) === 0) {
+			return true; // type 5: cdata
+		}
+		$patterns = implode("|", $this->type6HtmlElements);
+		if (preg_match("/^<\/?($patterns)(\s|>|\/>|$)/i", $line)) {
+			return true; // type 6
+		}
+		if (preg_match("/^<\/?[a-z][^>]*>(\s)*$/i", $line)
+			&& (!isset($lines[$current - 1]) ||
+				$lines[$current - 1] === '' ||
+				ltrim($lines[$current - 1]) === '')) {
+			return true; // type 7
+		}
+		return false;
 	}
 
 	/**
 	 * Consume lines for an HTML block
 	 */
-	protected function consumeHtml($lines, $current)
+	protected function consumeHtml($lines, $current): array
 	{
 		$content = [];
-		if (strncmp($lines[$current], '<!--', 4) === 0) { // html comment
+		if (strncmp($lines[$current], '<script', 7) === 0) {
+			// type 1: script
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (strpos($line, '</script>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncmp($lines[$current], '<pre', 4) === 0) {
+			// type 1: pre
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (strpos($line, '</pre>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncmp($lines[$current], '<style', 6) === 0) {
+			// type 1: style
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (strpos($line, '</style>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncmp($lines[$current], '<!--', 4) === 0) {
+			// type 2: comment
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -87,17 +118,41 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} else {
-			$tag = rtrim(substr($lines[$current], 1, min(strpos($lines[$current], '>'), strpos($lines[$current] . ' ', ' ')) - 1), '/');
-			$level = 0;
-			if (in_array($tag, $this->selfClosingHtmlElements)) {
-				$level--;
-			}
+		} elseif (strncmp($lines[$current], '<?', 2) === 0) {
+			// type 3: processor
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
-				$level += substr_count($line, "<$tag") - substr_count($line, "</$tag>") - substr_count($line, "/>");
-				if ($level <= 0) {
+				if (strpos($line, '?>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncmp($lines[$current], '<!', 2) === 0) {
+			// type 4: declaration
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (strpos($line, '>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncmp($lines[$current], '<![CDATA[', 9) === 0) {
+			// type 5: cdata
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (strpos($line, ']]>') !== false) {
+					break;
+				}
+			}
+		} else {
+			// type 6 or 7 tag - consume until newline
+			$content = [];
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				if (ltrim($line) !== '') {
+					$content[] = $line;
+				} else {
 					break;
 				}
 			}
@@ -112,16 +167,21 @@ trait HtmlTrait
 	/**
 	 * Renders an HTML block
 	 */
-	protected function renderHtml($block)
+	protected function renderHtml($block): string
 	{
 		return $block['content'] . "\n";
+	}
+
+	protected function parseEntityMarkers(): array
+	{
+		return array('&');
 	}
 
 	/**
 	 * Parses an & or a html entity definition.
 	 * @marker &
 	 */
-	protected function parseEntity($text)
+	protected function parseEntity($text): array
 	{
 		// html entities e.g. &copy; &#169; &#x00A9;
 		if (preg_match('/^&#?[\w\d]+;/', $text, $matches)) {
@@ -134,16 +194,21 @@ trait HtmlTrait
 	/**
 	 * renders a html entity.
 	 */
-	protected function renderInlineHtml($block)
+	protected function renderInlineHtml($block): string
 	{
 		return $block[1];
+	}
+
+	protected function parseInlineHtmlMarkers(): array
+	{
+		return array('<');
 	}
 
 	/**
 	 * Parses inline HTML.
 	 * @marker <
 	 */
-	protected function parseInlineHtml($text)
+	protected function parseInlineHtml($text): array
 	{
 		if (strpos($text, '>') !== false) {
 			if (preg_match('~^</?(\w+\d?)( .*?)?>~s', $text, $matches)) {
@@ -157,11 +222,16 @@ trait HtmlTrait
 		return [['text', '&lt;'], 1];
 	}
 
+	protected function parseGtMarkers(): array
+	{
+		return array('>');
+	}
+
 	/**
 	 * Escapes `>` characters.
 	 * @marker >
 	 */
-	protected function parseGt($text)
+	protected function parseGt($text): array
 	{
 		return [['text', '&gt;'], 1];
 	}

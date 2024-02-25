@@ -12,12 +12,17 @@ namespace cebe\markdown\inline;
  */
 trait EmphStrongTrait
 {
+	protected function parseEmphStrongMarkers(): array
+	{
+		return array('_', '*');
+	}
+
 	/**
 	 * Parses emphasized and strong elements.
 	 * @marker _
 	 * @marker *
 	 */
-	protected function parseEmphStrong($text)
+	protected function parseEmphStrong($text): array
 	{
 		$marker = $text[0];
 
@@ -34,8 +39,10 @@ trait EmphStrongTrait
 				return [['text', $text[0] . $text[1]], 2];
 			}
 
-			if ($marker === '*' && preg_match('/^[*]{2}((?>\\\\[*]|[^*]|[*][^*]*[*])+?)[*]{2}/s', $text, $matches) ||
-				$marker === '_' && preg_match('/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us', $text, $matches)) {
+			if ($marker === '*'
+				&& preg_match('/^[*]{2}((?>\\\\[*]|[^*]|[*][^*]*[*])+?)[*]{2}/s', $text, $matches) ||
+				$marker === '_'
+				&& preg_match('/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us', $text, $matches)) {
 
 				return [
 					[
@@ -54,8 +61,10 @@ trait EmphStrongTrait
 				return [['text', $text[0]], 1];
 			}
 
-			if ($marker === '*' && preg_match('/^[*]((?>\\\\[*]|[^*]|[*][*][^*]+?[*][*])+?)[*](?![*][^*])/s', $text, $matches) ||
-				$marker === '_' && preg_match('/^_((?>\\\\_|[^_]|__[^_]*__)+?)_(?!_[^_])\b/us', $text, $matches)) {
+			if ($marker === '*'
+				&& preg_match('/^[*]((?>\\\\[*]|[^*]|[*][*][^*]+?[*][*])+?)[*](?![*][^*])/s', $text, $matches) ||
+				$marker === '_'
+				&& preg_match('/^_((?>\\\\_|[^_]|__[^_]*__)+?)_(?!_[^_])\b/us', $text, $matches)) {
 				// if only a single whitespace or nothing is contained in an emphasis, do not consider it valid
 				if ($matches[1] === '' || $matches[1] === ' ') {
 					return [['text', $text[0]], 1];
@@ -72,16 +81,16 @@ trait EmphStrongTrait
 		return [['text', $text[0]], 1];
 	}
 
-	protected function renderStrong($block)
+	protected function renderStrong($block): string
 	{
 		return '<strong>' . $this->renderAbsy($block[1]) . '</strong>';
 	}
 
-	protected function renderEmph($block)
+	protected function renderEmph($block): string
 	{
 		return '<em>' . $this->renderAbsy($block[1]) . '</em>';
 	}
 
-    abstract protected function parseInline($text);
-    abstract protected function renderAbsy($blocks);
+	abstract protected function parseInline($text);
+	abstract protected function renderAbsy($blocks);
 }

@@ -7,25 +7,10 @@
 
 namespace cebe\markdown\inline;
 
-// work around https://github.com/facebook/hhvm/issues/1120
-defined('ENT_HTML401') || define('ENT_HTML401', 0);
-
 /**
- * Addes links and images as well as url markers.
+ * Adds links and images as well as url markers. 
  *
- * This trait conflicts with the HtmlTrait. If both are used together,
- * you have to define a resolution, by defining the HtmlTrait::parseInlineHtml
- * as private so it is not used directly:
- *
- * ```php
- * use block\HtmlTrait {
- *     parseInlineHtml as private parseInlineHtml;
- * }
- * ```
- *
- * If the method exists it is called internally by this trait.
- *
- * Also make sure to reset references on prepare():
+ * Make sure to reset references on prepare():
  *
  * ```php
  * protected function prepare()
@@ -47,7 +32,7 @@ trait LinkTrait
 	 * @param $text
 	 * @return string
 	 */
-	protected function replaceEscape($text)
+	protected function replaceEscape($text): string
 	{
 		$strtr = [];
 		foreach($this->escapeCharacters as $char) {
@@ -56,13 +41,19 @@ trait LinkTrait
 		return strtr($text, $strtr);
 	}
 
+	protected function parseLinkMarkers(): array
+	{
+		return array('[');
+	}
+
 	/**
 	 * Parses a link indicated by `[`.
 	 * @marker [
 	 */
-	protected function parseLink($markdown)
+	protected function parseLink($markdown): array
 	{
-		if (!in_array('parseLink', array_slice($this->context, 1)) && ($parts = $this->parseLinkOrImage($markdown)) !== false) {
+		if (!in_array('parseLink', array_slice($this->context, 1))
+			&& ($parts = $this->parseLinkOrImage($markdown)) !== false) {
 			list($text, $url, $title, $offset, $key) = $parts;
 			return [
 				[
@@ -87,11 +78,16 @@ trait LinkTrait
 		}
 	}
 
+	protected function parseImageMarkers(): array
+	{
+		return array('![');
+	}
+
 	/**
 	 * Parses an image indicated by `![`.
 	 * @marker ![
 	 */
-	protected function parseImage($markdown)
+	protected function parseImage($markdown): array
 	{
 		if (($parts = $this->parseLinkOrImage(substr($markdown, 1))) !== false) {
 			list($text, $url, $title, $offset, $key) = $parts;
@@ -119,9 +115,10 @@ trait LinkTrait
 		}
 	}
 
-	protected function parseLinkOrImage($markdown)
+	protected function parseLinkOrImage($markdown): array|false
 	{
-		if (strpos($markdown, ']') !== false && preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)) { // TODO improve bracket regex
+		if (strpos($markdown, ']') !== false
+			&& preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)) {
 			$text = $textMatches[1];
 			$offset = strlen($textMatches[0]);
 			$markdown = substr($markdown, $offset);
@@ -161,11 +158,16 @@ REGEXP;
 		return false;
 	}
 
+	protected function parseLtMarkers(): array
+	{
+		return array('<');
+	}
+
 	/**
 	 * Parses inline HTML.
 	 * @marker <
 	 */
-	protected function parseLt($text)
+	protected function parseLt($text): array
 	{
 		if (strpos($text, '>') !== false) {
 			if (!in_array('parseLink', $this->context)) { // do not allow links in links
@@ -191,13 +193,13 @@ REGEXP;
 		return [['text', '&lt;'], 1];
 	}
 
-	protected function renderEmail($block)
+	protected function renderEmail($block): string
 	{
 		$email = htmlspecialchars($block[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
 		return "<a href=\"mailto:$email\">$email</a>";
 	}
 
-	protected function renderUrl($block)
+	protected function renderUrl($block): string
 	{
 		$url = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
 		$decodedUrl = urldecode($block[1]);
@@ -206,7 +208,7 @@ REGEXP;
 		return "<a href=\"$url\">$text</a>";
 	}
 
-	protected function lookupReference($key)
+	protected function lookupReference($key): array|false
 	{
 		$normalizedKey = preg_replace('/\s+/', ' ', $key);
 		if (isset($this->references[$key]) || isset($this->references[$key = $normalizedKey])) {
@@ -215,7 +217,7 @@ REGEXP;
 		return false;
 	}
 
-	protected function renderLink($block)
+	protected function renderLink($block): string
 	{
 		if (isset($block['refkey'])) {
 			if (($ref = $this->lookupReference($block['refkey'])) !== false) {
@@ -227,12 +229,16 @@ REGEXP;
 				return $block['orig'];
 			}
 		}
-		return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-			. (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+		return '<a href="'
+			. htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
+			. (empty($block['title']) ?
+				'' :
+				' title="' 
+				. htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
 			. '>' . $this->renderAbsy($block['text']) . '</a>';
 	}
 
-	protected function renderImage($block)
+	protected function renderImage($block): string
 	{
 		if (isset($block['refkey'])) {
 			if (($ref = $this->lookupReference($block['refkey'])) !== false) {
@@ -245,24 +251,30 @@ REGEXP;
 			}
 		}
 		return '<img src="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-			. ' alt="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"'
-			. (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+			. ' alt="'
+			. htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"'
+			. (empty($block['title']) ?
+				'' :
+				' title="'
+				. htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
 			. ($this->html5 ? '>' : ' />');
 	}
 
 	// references
 
-	protected function identifyReference($line)
+	protected function identifyReference($line): bool
 	{
-		return isset($line[0]) && ($line[0] === ' ' || $line[0] === '[') && preg_match('/^ {0,3}\[[^\[](.*?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
+		return isset($line[0]) && ($line[0] === ' ' || $line[0] === '[')
+			&& preg_match('/^ {0,3}\[[^\[](.*?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
 	}
 
 	/**
 	 * Consume link references
 	 */
-	protected function consumeReference($lines, $current)
+	protected function consumeReference($lines, $current): array
 	{
-		while (isset($lines[$current]) && preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/', $lines[$current], $matches)) {
+		while (isset($lines[$current])
+			&& preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/', $lines[$current], $matches)) {
 			$label = strtolower($matches[1]);
 
 			$this->references[$label] = [
@@ -272,7 +284,8 @@ REGEXP;
 				$this->references[$label]['title'] = $matches[3];
 			} else {
 				// title may be on the next line
-				if (isset($lines[$current + 1]) && preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
+				if (isset($lines[$current + 1])
+					&& preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
 					$this->references[$label]['title'] = $matches[1];
 					$current++;
 				}
