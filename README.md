@@ -132,8 +132,6 @@ In general, just adding traits with `use` is enough, however there is a conflict
 
 During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy with a `Priority` method matching the identify method name, returning a different string to compare. E.g. `identifyUl()` and `identifyUlPriority()`.
 
-If you use any trait that references the `$html5` property to adjust its output you also need to define this property in your flavor.
-
 If you use the link trait or footnote trait it may be useful to implement `prepare()` to reset references before parsing to ensure you get a reusable object.
 
 #### Define escapeable characters
