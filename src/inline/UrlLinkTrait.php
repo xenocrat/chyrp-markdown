@@ -48,7 +48,8 @@ REGEXP;
 		if (!preg_match('/^(http|ftp)/', $href)) {
 			$href = 'http://' . $href;
 		}
-		$href = htmlspecialchars($href, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
+		$href = htmlspecialchars($href, ENT_COMPAT | $ent, 'UTF-8');
 		$decoded = urldecode($text);
 		$secured = preg_match('//u', $decoded) ? $decoded : $text;
 		$text = htmlspecialchars($secured, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
