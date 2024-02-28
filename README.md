@@ -22,11 +22,10 @@ Requirements
 Limitations
 -----------
 
-To be as fast and efficient as possible, the parser is limited in a few ways:
+To be as fast and efficient as possible, the parser is limited in a few notable ways:
 1. It does not allow leading spaces for most block markers.
 2. It does not allow you to combine tabs and spaces when indenting text.
 3. It does not support "lazy" blockquotes.
-4. It does not support link and image definitions that span multiple lines.
 
 This means the parser does not conform 100% to the CommonMark and GFM specifications.
 
