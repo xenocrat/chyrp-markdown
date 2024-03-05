@@ -78,7 +78,7 @@ trait ListTrait
 	{
 		$item = 0;
 		$mw = 0;
-		$lastLineEmpty = false;
+		$looseList = false;
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			// match a list marker on the beginning of the line
@@ -111,12 +111,10 @@ trait ListTrait
 				$mw = strlen($matches[0]);
 				$line = substr($line, $mw);
 				$block['items'][++$item][] = $line;
-				$block['looseItems'][$item] = $lastLineEmpty;
-				$lastLineEmpty = false;
-			} elseif (ltrim($line) === '') {
-				// line is blank: may be a loose list
-				$lastLineEmpty = true;
-
+				if ($line === '') {
+					$looseList = true;
+				}
+			} elseif ($line === '' || ltrim($line) === '') {
 				// no more lines: end of list
 				if (!isset($lines[$i + 1])) {
 					break;
@@ -133,7 +131,7 @@ trait ListTrait
 				// -> loose list
 				} elseif (preg_match($pattern, $lines[$i + 1])) {
 					$block['items'][$item][] = $line;
-					$block['looseItems'][$item] = true;
+					$looseList = true;
 
 				// everything else ends the list
 				} else {
@@ -147,22 +145,23 @@ trait ListTrait
 				}
 				$line = substr($line, $mw);
 				$block['items'][$item][] = $line;
-				$lastLineEmpty = false;
 			}
 		}
 
 		foreach ($block['items'] as $itemId => $itemLines) {
 			$content = [];
-			if (!$block['looseItems'][$itemId]) {
-				$firstPar = [];
+			if (!$looseList) {
+				// loose list - render paragraph until we discover a block
+				$paragraph = [];
 				while (!empty($itemLines)
 					&& rtrim($itemLines[0]) !== ''
 					&& $this->detectLineType($itemLines, 0) === 'paragraph') {
-					$firstPar[] = array_shift($itemLines);
+					$paragraph[] = array_shift($itemLines);
 				}
-				$content = $this->parseInline(implode("\n", $firstPar));
+				$content = $this->parseInline(implode("\n", $paragraph));
 			}
 			if (!empty($itemLines)) {
+				// render any blocks that remain in the item content
 				$content = array_merge($content, $this->parseBlocks($itemLines));
 			}
 			$block['items'][$itemId] = $content;
