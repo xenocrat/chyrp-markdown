@@ -68,7 +68,7 @@ You may optionally set one of the following options on the parser object before 
 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
 - `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
-- `$parser->contextID` to set an optional context identifier string for this instance.
+- `$parser->contextId` to set an optional context identifier string for this instance.
 - `$parser->maximumNestingLevel` to set the maximum level of nested elements to parse.
 - `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the Markdown. The default behavior is to always start from 1 and increment by one regardless of the number in Markdown.
 
