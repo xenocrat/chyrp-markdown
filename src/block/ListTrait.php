@@ -96,6 +96,7 @@ trait ListTrait
 						$block['attr']['start'] = $matches[2];
 					}
 				} else {
+					$item++;
 					$newMarker = $type === 'ol' ? $matches[3] : $matches[2];
 					// marker has changed: end of list
 					if (strcmp($marker, $newMarker) !== 0) {
@@ -106,7 +107,7 @@ trait ListTrait
 				// store the marker width
 				$mw = strlen($matches[0]);
 				$line = substr($line, $mw);
-				$block['items'][++$item][] = $line;
+				$block['items'][$item][] = $line;
 			} elseif ($line === '' || ltrim($line) === '') {
 				if (!isset($lines[$i + 1])) {
 				// no more lines: end of list
