@@ -81,17 +81,17 @@ trait ListTrait
 		$looseList = false;
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-			// match a list marker on the beginning of the line
 			$pattern = ($type === 'ol') ?
 				'/^( {0,3})(\d+)([\.\)])([ \t]+|$)/' :
 				'/^( {0,3})([\-\+\*])([ \t]+|$)/';
 			// if not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
-			// of the current item containing a sub-list
+			// of the current item containing a marker for a sub-list item
 			if (preg_match($pattern, $line, $matches)
 				&& ($i === $current || strlen($matches[1]) < $mw)) {
 				if ($i === $current) {
-					// first item - store the marker for comparison
+				// first item
+					// store the marker for comparison
 					$marker = $type === 'ol' ? $matches[3] : $matches[2];
 					// store the ol start number
 					if ($type === 'ol' && $this->keepListStartNumber) {
@@ -106,35 +106,26 @@ trait ListTrait
 						break;
 					}
 				}
-
 				// store the marker width
 				$mw = strlen($matches[0]);
 				$line = substr($line, $mw);
 				$block['items'][++$item][] = $line;
-				if ($line === '') {
-					$looseList = true;
-				}
 			} elseif ($line === '' || ltrim($line) === '') {
-				// no more lines: end of list
 				if (!isset($lines[$i + 1])) {
+				// no more lines: end of list
 					break;
-
-				// next line is also blank
 				} elseif ($lines[$i + 1] === '' || ltrim($lines[$i + 1]) === '') {
+				// next line is also blank
 					$block['items'][$item][] = $line;
-
-				// next line is indented enough to continue this item
 				} elseif (ctype_space(substr($lines[$i + 1], 0, $mw))) {
+				// next line is indented enough to continue this item
 					$block['items'][$item][] = $line;
-
-				// next line starts the next item in this list
-				// -> loose list
 				} elseif (preg_match($pattern, $lines[$i + 1])) {
+				// next line is the next item in this list: loose list
 					$block['items'][$item][] = $line;
 					$looseList = true;
-
-				// everything else ends the list
 				} else {
+				// everything else ends the list
 					break;
 				}
 			} else {
@@ -151,10 +142,10 @@ trait ListTrait
 		foreach ($block['items'] as $itemId => $itemLines) {
 			$content = [];
 			if (!$looseList) {
-				// loose list - render paragraph until we discover a block
+			// tight list:
+			// parse inline unless a non-paragraph block marker is detected
 				$paragraph = [];
-				while (!empty($itemLines)
-					&& rtrim($itemLines[0]) !== ''
+				while (isset($itemLines[0]) && isset($itemLines[0][0])
 					&& $this->detectLineType($itemLines, 0) === 'paragraph') {
 					$paragraph[] = array_shift($itemLines);
 				}
