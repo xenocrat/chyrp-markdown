@@ -109,31 +109,35 @@ trait ListTrait
 				$line = substr($line, $mw);
 				$block['items'][$item][] = $line;
 			} elseif ($line === '' || ltrim($line) === '') {
-				if (!isset($lines[$i + 1])) {
 				// no more lines: end of list
+				if (!isset($lines[$i + 1])) {
 					break;
-				} elseif ($lines[$i + 1] === '' || ltrim($lines[$i + 1]) === '') {
+				}
+				$next = $lines[$i + 1];
+				$line = substr($line, $mw);
+				if ($next === '' || ltrim($next) === '') {
 				// next line is also blank
 					$block['items'][$item][] = $line;
-				} elseif (ctype_space(substr($lines[$i + 1], 0, $mw))) {
+				} elseif (ctype_space(substr($next, 0, $mw))) {
 				// next line is indented enough to continue this item
 					$block['items'][$item][] = $line;
-				} elseif (preg_match($pattern, $lines[$i + 1])) {
+				} elseif (preg_match($pattern, $next)) {
 				// next line is the next item in this list: loose list
 					$block['items'][$item][] = $line;
 					$looseList = true;
 				} else {
-				// everything else ends the list
+				// next line is not list content
 					break;
 				}
-			} else {
-				// line is not indented enough to continue this item
-				if (strlen($line) < $mw || !ctype_space(substr($line, 0, $mw))) {
-					--$i;
-					break;
-				}
+			} elseif (strlen($line) > $mw
+				&& ctype_space(substr($line, 0, $mw))) {
+				// line is indented enough to continue this item
 				$line = substr($line, $mw);
 				$block['items'][$item][] = $line;
+			} else {
+				// everything else ends the list
+				--$i;
+				break;
 			}
 		}
 
