@@ -136,6 +136,7 @@ abstract class Parser
 		$safe = function_exists('mb_chr') ?
 			mb_chr(0xFFFD, 'UTF-8') : '&#xFFFD;';
 
+		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safe, $markup);
 		$markup = preg_replace('/&#[Xx]?0+;/', $safe, $markup);
 		return $markup;
