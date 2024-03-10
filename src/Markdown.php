@@ -64,7 +64,7 @@ class Markdown extends Parser
 		'-', // minus sign (hyphen)
 		'.', // dot
 		'!', // exclamation mark
-		'<', '>',
+		'<', '>', // angle brackets
 	];
 
 	/**
@@ -110,6 +110,27 @@ class Markdown extends Parser
 		return [$block, --$i];
 	}
 
+	/**
+	 * @inheritDoc
+	 *
+	 * Parses a newline indicated by a backslash on the end of a markdown line.
+	 *
+	 * @marker \
+	 */
+	protected function parseEscape($text): array
+	{
+		$br = $this->html5 ? "<br>\n" : "<br />\n";
+		if (isset($text[1]) && $text[1] === "\n") {
+		// backslash followed by newline
+			return [['text', $br], 2];
+		} elseif (!isset($text[1])) {
+		// backslash at end of the text
+			return [['text', $br], 1];
+		}
+
+		// Otherwise parse the sequence normally
+		return parent::parseEscape($text);
+	}
 
 	/**
 	 * @inheritDoc
