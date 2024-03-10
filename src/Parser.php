@@ -455,7 +455,9 @@ abstract class Parser
 	protected function parseEscape($text): array
 	{
 		if (isset($text[1]) && in_array($text[1], $this->escapeCharacters)) {
-			return [['text', $text[1]], 2];
+			$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
+			$chr = htmlspecialchars($text[1], ENT_NOQUOTES | $ent, 'UTF-8');
+			return [['text', $chr], 2];
 		}
 		return [['text', $text[0]], 1];
 	}
