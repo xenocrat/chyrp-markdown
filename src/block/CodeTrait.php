@@ -70,7 +70,7 @@ trait CodeTrait
 	{
 		$class = isset($block['language']) ? ' class="language-' . $block['language'] . '"' : '';
 		return "<pre><code$class>"
-			. htmlspecialchars($block['content'] . "\n", ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8')
+			. $this->escapeHtmlEntities($block['content'] . "\n", ENT_NOQUOTES | ENT_SUBSTITUTE)
 			. "</code></pre>\n";
 	}
 }
