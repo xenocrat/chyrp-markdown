@@ -36,7 +36,7 @@ trait FencedCodeTrait
 	{
 		$line = ltrim($lines[$current]);
 		$fence = substr($line, 0, $pos = strrpos($line, $line[0]) + 1);
-		$language = rtrim(substr($line, $pos));
+		$language = trim(substr($line, $pos));
 		$content = [];
 		// consume until end fence
 		for ($i = $current + 1, $count = count($lines); $i < $count; $i++) {
@@ -51,7 +51,7 @@ trait FencedCodeTrait
 			'content' => implode("\n", $content),
 		];
 		if (!empty($language)) {
-			$block['language'] = $language;
+			$block['language'] = $this->replaceEscape($language);
 		}
 		return [$block, $i];
 	}
