@@ -51,7 +51,7 @@ trait FencedCodeTrait
 			'content' => implode("\n", $content),
 		];
 		if (!empty($language)) {
-			$block['language'] = $this->replaceEscape($language);
+			$block['language'] = $this->unEscapeBackslash($language);
 		}
 		return [$block, $i];
 	}
