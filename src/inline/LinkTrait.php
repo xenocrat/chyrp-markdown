@@ -27,20 +27,6 @@ trait LinkTrait
 	 */
 	protected $references = [];
 
-	/**
-	 * Remove backslash from escaped characters
-	 * @param $text
-	 * @return string
-	 */
-	protected function replaceEscape($text): string
-	{
-		$strtr = [];
-		foreach($this->escapeCharacters as $char) {
-			$strtr["\\$char"] = $char;
-		}
-		return strtr($text, $strtr);
-	}
-
 	protected function parseLinkMarkers(): array
 	{
 		return array('[');
@@ -132,13 +118,15 @@ trait LinkTrait
 REGEXP;
 			if (preg_match($pattern, $markdown, $refMatches)) {
 				// inline link
-				$url = isset($refMatches[2]) ? $this->replaceEscape($refMatches[2]) : '';
+				$url = isset($refMatches[2]) ?
+					$this->replaceEscape($refMatches[2]) : '';
 				if (strlen($url) > 2
 					&& substr($url, 0, 1) === '<'
 					&& substr($url, -1) === '>') {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
-				$title = empty($refMatches[5]) ? null : $refMatches[5];
+				$title = empty($refMatches[5]) ?
+					null : $this->replaceEscape($refMatches[5]);
 				$key = null;
 				return [
 					$text,
@@ -288,19 +276,20 @@ REGEXP;
 	protected function consumeReference($lines, $current): array
 	{
 		while (isset($lines[$current])
-			&& preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/', $lines[$current], $matches)) {
+			&& preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/',
+				$lines[$current], $matches)) {
 			$label = strtolower($matches[1]);
 
 			$this->references[$label] = [
 				'url' => $this->replaceEscape($matches[2]),
 			];
 			if (isset($matches[3])) {
-				$this->references[$label]['title'] = $matches[3];
+				$this->references[$label]['title'] = $this->replaceEscape($matches[3]);
 			} else {
 				// title may be on the next line
 				if (isset($lines[$current + 1])
 					&& preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
-					$this->references[$label]['title'] = $matches[1];
+					$this->references[$label]['title'] = $this->replaceEscape($matches[1]);
 					$current++;
 				}
 			}
