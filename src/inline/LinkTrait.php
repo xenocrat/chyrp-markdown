@@ -119,14 +119,14 @@ REGEXP;
 			if (preg_match($pattern, $markdown, $refMatches)) {
 				// inline link
 				$url = isset($refMatches[2]) ?
-					$this->replaceEscape($refMatches[2]) : '';
+					$this->unEscapeBackslash($refMatches[2]) : '';
 				if (strlen($url) > 2
 					&& substr($url, 0, 1) === '<'
 					&& substr($url, -1) === '>') {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
 				$title = empty($refMatches[5]) ?
-					null : $this->replaceEscape($refMatches[5]);
+					null : $this->unEscapeBackslash($refMatches[5]);
 				$key = null;
 				return [
 					$text,
@@ -173,13 +173,13 @@ REGEXP;
 				if (preg_match('/^<([^\s>]*?@[^\s]*?\.\w+?)>/', $text, $matches)) {
 					// email address
 					return [
-						['email', $this->replaceEscape($matches[1])],
+						['email', $this->unEscapeBackslash($matches[1])],
 						strlen($matches[0])
 					];
 				} elseif (preg_match('/^<([a-z][a-z0-9\+\.\-]{1,31}:\/\/[^\s]+?)>/', $text, $matches)) {
 					// URL
 					return [
-						['url', $this->replaceEscape($matches[1])],
+						['url', $this->unEscapeBackslash($matches[1])],
 						strlen($matches[0])
 					];
 				}
@@ -194,17 +194,16 @@ REGEXP;
 
 	protected function renderEmail($block): string
 	{
-		$email = htmlspecialchars($block[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$email = $this->escapeHtmlEntities($block[1], ENT_NOQUOTES | ENT_SUBSTITUTE);
 		return "<a href=\"mailto:$email\">$email</a>";
 	}
 
 	protected function renderUrl($block): string
 	{
-		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
-		$url = htmlspecialchars($block[1], ENT_COMPAT | $ent, 'UTF-8');
+		$url = $this->escapeHtmlEntities($block[1], ENT_COMPAT);
 		$decodedUrl = urldecode($block[1]);
 		$secureUrlText = preg_match('//u', $decodedUrl) ? $decodedUrl : $block[1];
-		$text = htmlspecialchars($secureUrlText, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$text = $this->escapeHtmlEntities($secureUrlText, ENT_NOQUOTES | ENT_SUBSTITUTE);
 		return "<a href=\"$url\">$text</a>";
 	}
 
@@ -229,13 +228,12 @@ REGEXP;
 				return $block['orig'];
 			}
 		}
-		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
 		return '<a href="'
-			. htmlspecialchars($block['url'], ENT_COMPAT | $ent, 'UTF-8') . '"'
+			. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
 			. (empty($block['title']) ?
 				'' :
 				' title="' 
-				. htmlspecialchars($block['title'], ENT_COMPAT | $ent | ENT_SUBSTITUTE, 'UTF-8') . '"')
+				. $this->escapeHtmlEntities($block['title'], ENT_COMPAT | ENT_SUBSTITUTE) . '"')
 			. '>' . $this->renderAbsy($block['text']) . '</a>';
 	}
 
@@ -251,14 +249,13 @@ REGEXP;
 				return $block['orig'];
 			}
 		}
-		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
-		return '<img src="' . htmlspecialchars($block['url'], ENT_COMPAT | $ent, 'UTF-8') . '"'
+		return '<img src="' . $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
 			. ' alt="'
-			. htmlspecialchars($block['text'], ENT_COMPAT | $ent | ENT_SUBSTITUTE, 'UTF-8') . '"'
+			. $this->escapeHtmlEntities($block['text'], ENT_COMPAT | ENT_SUBSTITUTE) . '"'
 			. (empty($block['title']) ?
 				'' :
 				' title="'
-				. htmlspecialchars($block['title'], ENT_COMPAT | $ent | ENT_SUBSTITUTE, 'UTF-8') . '"')
+				. $this->escapeHtmlEntities($block['title'], ENT_COMPAT | ENT_SUBSTITUTE) . '"')
 			. ($this->html5 ? '>' : ' />');
 	}
 
@@ -281,15 +278,15 @@ REGEXP;
 			$label = strtolower($matches[1]);
 
 			$this->references[$label] = [
-				'url' => $this->replaceEscape($matches[2]),
+				'url' => $this->unEscapeBackslash($matches[2]),
 			];
 			if (isset($matches[3])) {
-				$this->references[$label]['title'] = $this->replaceEscape($matches[3]);
+				$this->references[$label]['title'] = $this->unEscapeBackslash($matches[3]);
 			} else {
 				// title may be on the next line
 				if (isset($lines[$current + 1])
 					&& preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
-					$this->references[$label]['title'] = $this->replaceEscape($matches[1]);
+					$this->references[$label]['title'] = $this->unEscapeBackslash($matches[1]);
 					$current++;
 				}
 			}
