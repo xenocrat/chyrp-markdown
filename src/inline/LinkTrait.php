@@ -173,13 +173,19 @@ REGEXP;
 				if (preg_match('/^<([^\s>]*?@[^\s]*?\.\w+?)>/', $text, $matches)) {
 					// email address
 					return [
-						['email', $this->unEscapeBackslash($matches[1])],
+						[
+							'email',
+							$matches[1]
+						],
 						strlen($matches[0])
 					];
 				} elseif (preg_match('/^<([a-z][a-z0-9\+\.\-]{1,31}:\/\/[^\s]+?)>/', $text, $matches)) {
 					// URL
 					return [
-						['url', $this->unEscapeBackslash($matches[1])],
+						[
+							'url',
+							$matches[1]
+						],
 						strlen($matches[0])
 					];
 				}
