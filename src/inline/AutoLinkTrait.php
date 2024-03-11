@@ -47,11 +47,10 @@ REGEXP;
 		if (strncmp($href, 'http', 4) !== 0) {
 			$href = 'http://' . $href;
 		}
-		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
-		$href = htmlspecialchars($href, ENT_COMPAT | $ent, 'UTF-8');
+		$href = $this->escapeHtmlEntities($href, ENT_COMPAT);
 		$decoded = urldecode($text);
 		$secured = preg_match('//u', $decoded) ? $decoded : $text;
-		$text = htmlspecialchars($secured, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$text = $this->escapeHtmlEntities($secured, ENT_NOQUOTES | ENT_SUBSTITUTE);
 		return "<a href=\"$href\">$text</a>";
 	}
 }
