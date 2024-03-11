@@ -463,6 +463,21 @@ abstract class Parser
 	}
 
 	/**
+	 * Remove backslash from escaped characters in plain text.
+	 * @param $text
+	 * @return string
+	 */
+	protected function replaceEscape($text): string
+	{
+		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
+		$strtr = [];
+		foreach($this->escapeCharacters as $chr) {
+			$strtr["\\$chr"] = htmlspecialchars($chr, ENT_QUOTES | $ent, 'UTF-8');
+		}
+		return strtr($text, $strtr);
+	}
+
+	/**
 	 * This function renders plain text sections in the markdown text.
 	 * It can be used to work on normal text sections.
 	 * E.g. to highlight keywords or do special escaping.
