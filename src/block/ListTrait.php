@@ -138,6 +138,13 @@ trait ListTrait
 				--$i;
 				break;
 			}
+
+			// if next line is <hr>, end the list
+			if (!empty($lines[$i + 1])
+				&& method_exists($this, 'identifyHr')
+				&& $this->identifyHr($lines[$i + 1])) {
+				break;
+			}
 		}
 
 		foreach ($block['items'] as $itemId => $itemLines) {
