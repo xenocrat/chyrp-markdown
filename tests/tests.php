@@ -159,7 +159,7 @@
 				width: calc(33.3% - 4ch);
 				font-family: monospace;
 				vertical-align: top;
-				padding: 0.5rem;
+				padding: 1rem;
 			    border: 1px solid #000000;
 			}
 			td:first-child {
@@ -175,6 +175,7 @@
 				background-color: #faebe4;
 			}
 			pre {
+				margin: 0rem;
 				white-space: break-spaces;
 			}
 		</style>
