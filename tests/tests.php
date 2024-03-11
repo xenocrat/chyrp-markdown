@@ -94,12 +94,15 @@
 			echo '</tr>' . "\n";
 			echo '<tr>' . "\n";
 			echo '<th>#</th>' . "\n";
-			echo '<th>Source</th>' . "\n";
-			echo '<th>Expect</th>' . "\n";
-			echo '<th>Result</th>' . "\n";
+			echo '<th scope="col">Source</th>' . "\n";
+			echo '<th scope="col">Expect</th>' . "\n";
+			echo '<th scope="col">Result</th>' . "\n";
 			echo '</tr>' . "\n";
 			echo '</thead>' . "\n";
 			echo '<tbody>' . "\n";
+
+			$test_total = 0;
+			$pass_total = 0;
 
 			foreach ($tests as $number => $values) {
 				if (!array_key_exists('source', $values) ||
@@ -109,10 +112,16 @@
 					continue;
 				}
 
+				$test_total++;
+
 				$source = $values['source'];
 				$expect = $values['expect'];
 				$result = $values['result'];
 				$passed = $values['passed'];
+
+				if ($passed) {
+					$pass_total++;
+				}
 
 				$class = $passed ? 'pass' : 'fail';
 				$number = htmlspecialchars($number, ENT_HTML5, "UTF-8", true);
@@ -120,15 +129,32 @@
 				$expect = htmlspecialchars($expect, ENT_HTML5, "UTF-8", true);
 				$result = htmlspecialchars($result, ENT_HTML5, "UTF-8", true);
 
-				echo '<tr class="' . $class . '">' . "\n";
+				echo '<tr>' . "\n";
 				echo '<td>' . "\n" . $number . '</td>' . "\n";
-				echo '<td><pre>' . "\n" . $source . '</pre></td>' . "\n";
-				echo '<td><pre>' . "\n" . $expect . '</pre></td>' . "\n";
-				echo '<td><pre>' . "\n" . $result . '</pre></td>' . "\n";
+
+				echo '<td>'
+					. '<pre>' . "\n" . $source . '</pre>'
+					. '</td>' . "\n";
+
+				echo '<td class="' . $class . '">'
+					. '<pre>' . "\n" . $expect . '</pre>'
+					. '</td>' . "\n";
+
+				echo '<td class="' . $class . '">'
+					. '<pre>' . "\n" . $result . '</pre>' 
+					. '</td>' . "\n";
+
 				echo '</tr>' . "\n";
 			}
 
 			echo '</tbody>' . "\n";
+			echo '<tfoot>' . "\n";
+			echo '<tr>' . "\n";
+			echo '<th scope="row" colspan="2">Totals</th>' . "\n";
+			echo '<td>' . "\n" . $test_total . '</td>' . "\n";
+			echo '<td>' . "\n" . $pass_total . '</td>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</tfoot>' . "\n";
 			echo '</table>' . "\n";
 		}
 	}
@@ -149,6 +175,9 @@
 			    width: 100%;
 			    border-collapse: collapse;
 			}
+			tr {
+				background-color: #efefef;
+			}
 			th {
 				background-color: #dfdfdf;
 				vertical-align: middle;
@@ -165,13 +194,10 @@
 			td:first-child {
 				width: 4ch;
 			}
-			tr {
-				background-color: #efefef;
-			}
-			tr.pass {
+			td.pass {
 				background-color: #ebfae4;
 			}
-			tr.fail {
+			td.fail {
 				background-color: #faebe4;
 			}
 			pre {
