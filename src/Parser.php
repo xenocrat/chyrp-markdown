@@ -489,11 +489,10 @@ abstract class Parser
 	/**
 	 * Encode HTML special characters as HTML entities.
 	 * @param $text
-	 * @param int $flags a bitmask of flags.
-	 * @param boolean $double encode existing entities?
+	 * @param int $flags htmlspecialchars bitmask.
 	 * @return string
 	 */
-	protected function escapeHtmlEntities($text, $flags = 0, $double = true): string
+	protected function escapeHtmlEntities($text, $flags = 0): string
 	{
 		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
 		$text = htmlspecialchars($text, $flags | $ent, 'UTF-8');
