@@ -139,6 +139,7 @@ class Markdown extends Parser
 	 */
 	protected function renderText($text): string
 	{
-		return str_replace("  \n", $this->html5 ? "<br>\n" : "<br />\n", $text[1]);
+		$br = $this->html5 ? "<br>\n" : "<br />\n";
+		return str_replace("  \n", $br, $text[1]);
 	}
 }
