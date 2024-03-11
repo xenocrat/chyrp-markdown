@@ -66,7 +66,7 @@
 			$instance = new ('\cebe\markdown\\' . $parser)();
 			$instance->html5 = false;
 
-			foreach ($tests as $name => $values) {
+			foreach ($tests as $number => $values) {
 				if (!array_key_exists('source', $values) ||
 					!array_key_exists('expect', $values)) {
 					continue;
@@ -77,8 +77,8 @@
 				$result = $instance->parse($source);
 				$passed = strcmp($expect, $result) === 0;
 
-				$data[$parser][$name]['result'] = $result;
-				$data[$parser][$name]['passed'] = $passed;
+				$data[$parser][$number]['result'] = $result;
+				$data[$parser][$number]['passed'] = $passed;
 			}
 		}
 
@@ -90,16 +90,18 @@
 			echo '<table>' . "\n";
 			echo '<thead>' . "\n";
 			echo '<tr>' . "\n";
-			echo '<th colspan="2">' . $parser . '</th>';
+			echo '<th colspan="4">' . $parser . '</th>';
 			echo '</tr>' . "\n";
 			echo '<tr>' . "\n";
+			echo '<th>#</th>' . "\n";
+			echo '<th>Source</th>' . "\n";
 			echo '<th>Expect</th>' . "\n";
 			echo '<th>Result</th>' . "\n";
 			echo '</tr>' . "\n";
 			echo '</thead>' . "\n";
 			echo '<tbody>' . "\n";
 
-			foreach ($tests as $name => $values) {
+			foreach ($tests as $number => $values) {
 				if (!array_key_exists('source', $values) ||
 					!array_key_exists('expect', $values) ||
 					!array_key_exists('result', $values) ||
@@ -112,10 +114,15 @@
 				$result = $values['result'];
 				$passed = $values['passed'];
 
+				$class = $passed ? 'pass' : 'fail';
+				$number = htmlspecialchars($number, ENT_HTML5, "UTF-8", true);
+				$source = htmlspecialchars($source, ENT_HTML5, "UTF-8", true);
 				$expect = htmlspecialchars($expect, ENT_HTML5, "UTF-8", true);
 				$result = htmlspecialchars($result, ENT_HTML5, "UTF-8", true);
 
-				echo '<tr class="' . ($passed ? 'pass' : 'fail') . '">' . "\n";
+				echo '<tr class="' . $class . '">' . "\n";
+				echo '<td>' . "\n" . $number . '</td>' . "\n";
+				echo '<td><pre>' . "\n" . $source . '</pre></td>' . "\n";
 				echo '<td><pre>' . "\n" . $expect . '</pre></td>' . "\n";
 				echo '<td><pre>' . "\n" . $result . '</pre></td>' . "\n";
 				echo '</tr>' . "\n";
@@ -142,23 +149,33 @@
 			    width: 100%;
 			    border-collapse: collapse;
 			}
-			table th {
-				background-color: #efefef;
-				width: 50%;
+			th {
+				background-color: #dfdfdf;
+				vertical-align: middle;
 			    padding: 0.5rem;
-			    border: 1px solid black;
+			    border: 1px solid #000000;
 			}
-			table td {
+			td {
+				width: calc(33.3% - 4ch);
+				font-family: monospace;
 				vertical-align: top;
-				width: 50%;
 				padding: 0.5rem;
-			    border: 1px solid black;
+			    border: 1px solid #000000;
+			}
+			td:first-child {
+				width: 4ch;
+			}
+			tr {
+				background-color: #efefef;
 			}
 			tr.pass {
 				background-color: #ebfae4;
 			}
 			tr.fail {
 				background-color: #faebe4;
+			}
+			pre {
+				white-space: break-spaces;
 			}
 		</style>
 	</head>
