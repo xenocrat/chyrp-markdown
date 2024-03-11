@@ -469,10 +469,9 @@ abstract class Parser
 	 */
 	protected function replaceEscape($text): string
 	{
-		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
 		$strtr = [];
 		foreach($this->escapeCharacters as $chr) {
-			$strtr["\\$chr"] = htmlspecialchars($chr, ENT_QUOTES | $ent, 'UTF-8');
+			$strtr["\\$chr"] = $chr;
 		}
 		return strtr($text, $strtr);
 	}
