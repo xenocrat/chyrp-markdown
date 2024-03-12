@@ -52,6 +52,7 @@ trait ListTrait
 			'list' => 'ol',
 			'attr' => [],
 			'items' => [],
+			'loose' => false,
 		];
 		return $this->consumeList($lines, $current, $block, 'ol');
 	}
@@ -65,6 +66,7 @@ trait ListTrait
 			'list',
 			'list' => 'ul',
 			'items' => [],
+			'loose' => false,
 		];
 		return $this->consumeList($lines, $current, $block, 'ul');
 	}
@@ -74,7 +76,6 @@ trait ListTrait
 		$item = 0;
 		$marker = '';
 		$mw = 0;
-		$looseList = false;
 		// consume until end condition
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
@@ -126,7 +127,7 @@ trait ListTrait
 				} elseif (preg_match($pattern, $next)) {
 				// next line is the next item in this list: loose list
 					$block['items'][$item][] = $line;
-					$looseList = true;
+					$block['loose'] = true;
 				} else {
 				// next line is not list content
 					break;
@@ -150,7 +151,7 @@ trait ListTrait
 			}
 		}
 
-		if (!$looseList) {
+		if (!$block['loose']) {
 			foreach ($block['items'] as $itemLines) {
 				// empty list item
 				if (ltrim($itemLines[0]) === '' && !isset($itemLines[1])) {
@@ -162,14 +163,14 @@ trait ListTrait
 						$this->detectLineType($itemLines, $x) !== 'paragraph') {
 						// blank line or non-paragraph block marker detected:
 						// make the list loose because block parsing is required
-						$looseList = true;
+						$block['loose'] = true;
 						break 2;
 					}
 				}
 			}
 		}
 		foreach ($block['items'] as $itemId => $itemLines) {
-			$block['items'][$itemId] = $looseList ?
+			$block['items'][$itemId] = $block['loose'] ?
 				$this->parseBlocks($itemLines) :
 				$this->parseInline(implode("\n", $itemLines));
 		}
@@ -182,6 +183,7 @@ trait ListTrait
 	protected function renderList($block): string
 	{
 		$type = $block['list'];
+		$li = $block['loose'] ? "<li>\n" : '<li>';
 
 		if (!empty($block['attr'])) {
 			$output = "<$type " . $this->generateHtmlAttributes($block['attr']) . ">\n";
@@ -190,7 +192,7 @@ trait ListTrait
 		}
 
 		foreach ($block['items'] as $item => $itemLines) {
-			$output .= '<li>' . $this->renderAbsy($itemLines). "</li>\n";
+			$output .= $li . $this->renderAbsy($itemLines). "</li>\n";
 		}
 		return $output . "</$type>\n";
 	}
