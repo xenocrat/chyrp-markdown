@@ -92,7 +92,10 @@ trait ListTrait
 					$marker = $type === 'ol' ? $matches[3] : $matches[2];
 					// set the ol start attribute
 					if ($type === 'ol' && $this->keepListStartNumber) {
-						$block['attr']['start'] = $matches[2];
+						$start = intval($matches[2]);
+						if ($start > 1) {
+							$block['attr']['start'] = $start;
+						}
 					}
 				} else {
 					$item++;
@@ -147,25 +150,29 @@ trait ListTrait
 			}
 		}
 
-		foreach ($block['items'] as $itemId => $itemLines) {
-			$content = [];
-			if (!$looseList) {
-			// tight list:
-			// parse inline unless a non-paragraph block marker is detected
-				$paragraph = [];
-				while (isset($itemLines[0]) && isset($itemLines[0][0])
-					&& $this->detectLineType($itemLines, 0) === 'paragraph') {
-					$paragraph[] = array_shift($itemLines);
+		if (!$looseList) {
+			foreach ($block['items'] as $itemLines) {
+				// empty list item
+				if (ltrim($itemLines[0]) === '' && !isset($itemLines[1])) {
+					continue;
 				}
-				$content = $this->parseInline(implode("\n", $paragraph));
+				// everything else
+				for ($x = 0; $x < count($itemLines); $x++) { 
+					if (ltrim($itemLines[$x]) === '' ||
+						$this->detectLineType($itemLines, $x) !== 'paragraph') {
+						// blank line or non-paragraph block marker detected:
+						// make the list loose because block parsing is required
+						$looseList = true;
+						break 2;
+					}
+				}
 			}
-			if (!empty($itemLines)) {
-				// render any blocks that remain in the item content
-				$content = array_merge($content, $this->parseBlocks($itemLines));
-			}
-			$block['items'][$itemId] = $content;
 		}
-
+		foreach ($block['items'] as $itemId => $itemLines) {
+			$block['items'][$itemId] = $looseList ?
+				$this->parseBlocks($itemLines) :
+				$this->parseInline(implode("\n", $itemLines));
+		}
 		return [$block, $i];
 	}
 
