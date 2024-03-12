@@ -124,11 +124,9 @@ If you want to define a subset of the Markdown language, i.e. remove some of the
 
 #### Select language feature traits
 
-In general, just adding traits with `use` is enough, however there is a conflict for parsing of the `<` character. This could either be a link/email enclosed in `<` and `>` or an inline HTML tag. In order to resolve this conflict when adding the `LinkTrait`, you need to hide the `parseInlineHtml` method of the `HtmlTrait`.
+In general, just adding traits with `use` is enough. During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy with a `Priority` method matching the identify method name, returning a different string to compare. E.g. `identifyUl()` and `identifyUlPriority()`.
 
-During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy with a `Priority` method matching the identify method name, returning a different string to compare. E.g. `identifyUl()` and `identifyUlPriority()`.
-
-If you use the link trait or footnote trait it may be useful to implement `prepare()` to reset references before parsing to ensure you get a reusable object.
+If you use LinkTrait or FootnoteTrait it may be useful to implement `prepare()` to reset references before parsing to ensure you get a reusable object.
 
 #### Define escapeable characters
 
