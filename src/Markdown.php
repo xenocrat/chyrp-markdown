@@ -18,25 +18,7 @@ class Markdown extends Parser
 	use block\CodeTrait;
 	use block\FencedCodeTrait;
 	use block\HeadlineTrait;
-
-	/**
-	 * LinkTrait conflicts with HtmlTrait. If both traits are used together,
-	 * you must define the HtmlTrait::parseInlineHtml method as private so
-	 * it is not used directly:
-	 *
-	 * ```php
-	 * use block\HtmlTrait {
-	 *     parseInlineHtml as private parseInlineHtml;
-	 * }
-	 * ```
-	 *
-	 * If the HtmlTrait::parseInlineHtml method exists it will be called from
-	 * within LinkTrait::parseLt if needed.
-	 */
-	use block\HtmlTrait {
-		parseInlineHtml as private;
-	}
-
+	use block\HtmlTrait;
 	use block\ListTrait;
 	use block\QuoteTrait;
 	use block\RuleTrait;
