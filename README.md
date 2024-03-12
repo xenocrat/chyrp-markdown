@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation is focused speed and simplicity. Parsing Markdown to HTML is done with a single method call. The language can be extended to recognize new elements by adding a new traits to the class that converts the Markdown text to the expected output in HTML.
+This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation is focused on speed and simplicity. Parsing Markdown to HTML is done with a single method call. The language can be extended to recognize new elements by adding a new traits to the class that converts the Markdown text to the expected output in HTML.
 
 Currently the following Markdown flavors are supported:
 
@@ -67,7 +67,7 @@ You may optionally set one of the following options on the parser object before 
 - `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
 - `$parser->contextId` to set an optional context identifier string for this instance.
 - `$parser->maximumNestingLevel` to set the maximum level of nested elements to parse.
-- `$parser->keepListStartNumber = true` to enable keeping the numbers of ordered lists as specified in the Markdown. The default behavior is to always start from 1 and increment by one regardless of the number in Markdown.
+- `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
 
 For GithubMarkdown:
 
