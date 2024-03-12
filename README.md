@@ -1,9 +1,7 @@
 What is this?
 -------------
 
-This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML.
-
-The implementation focus is to be fast and extensible. Parsing Markdown to HTML is as simple as calling a single method. The language can be extended to recognize new elements by adding a new method to the class that converts the Markdown text to the expected output in HTML.
+This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation focus is to be fast and extensible, and simple to use. Parsing Markdown to HTML is done with a single method call. The language can be extended to recognize new elements by adding a new method to the class that converts the Markdown text to the expected output in HTML.
 
 Currently the following Markdown flavors are supported:
 
