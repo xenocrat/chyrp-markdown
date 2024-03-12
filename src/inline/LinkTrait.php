@@ -156,16 +156,11 @@ REGEXP;
 		return false;
 	}
 
-	protected function parseLtMarkers(): array
-	{
-		return array('<');
-	}
-
 	/**
-	 * Parses inline HTML.
+	 * Parses bracketed URL or email.
 	 * @marker <
 	 */
-	protected function parseLt($text): array
+	protected function parseBracketedLink($text): array
 	{
 		if (strpos($text, '>') !== false) {
 			if (!in_array('parseLink', $this->context)) {
