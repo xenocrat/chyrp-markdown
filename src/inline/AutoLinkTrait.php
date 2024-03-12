@@ -12,7 +12,7 @@ namespace cebe\markdown\inline;
  */
 trait AutoLinkTrait
 {
-	protected function parseUrlMarkers(): array
+	protected function parseAutoUrlMarkers(): array
 	{
 		return array('www.', 'http');
 	}
@@ -22,7 +22,7 @@ trait AutoLinkTrait
 	 * @marker www.
 	 * @marker http
 	 */
-	protected function parseUrl($text): array
+	protected function parseAutoUrl($text): array
 	{
 		$regex = <<<REGEXP
 			/(?(R) # in case of recursion match parentheses
@@ -32,6 +32,7 @@ trait AutoLinkTrait
 			)/x
 REGEXP;
 		if (!in_array('parseLink', $this->context) && preg_match($regex, $text, $matches)) {
+		// do not allow links in links
 			return [
 				['autoUrl', $matches[0]],
 				strlen($matches[0])
