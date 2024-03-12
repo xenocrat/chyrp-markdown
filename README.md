@@ -3,9 +3,7 @@ What is this?
 
 This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML.
 
-The implementation focus is to be **fast** and **extensible**. Parsing Markdown to HTML is as simple as calling a single method (see [Usage](#usage)), providing a solid implementation that gives most expected results even in non-trivial edge cases.
-
-The language can be extended with new elements by adding a new method to the class that converts the Markdown text to the expected output in HTML.
+The implementation focus is to be fast and extensible. Parsing Markdown to HTML is as simple as calling a single method. The language can be extended to recognize new elements by adding a new method to the class that converts the Markdown text to the expected output in HTML.
 
 Currently the following Markdown flavors are supported:
 
@@ -24,8 +22,9 @@ Limitations
 
 To be as fast and efficient as possible, the parser is limited in a few notable ways:
 1. It does not allow lines to contain leading spaces before most block markers.
-2. It does not allow you to combine tabs and spaces when indenting text.
-3. It requires blockquotes to begin with `> ` and does not support "lazy" blockquotes.
+2. It does not allow you to intermingle tabs and spaces when indenting text.
+3. It does not recognize setext headings that span more than one line.
+4. It requires blockquotes to begin with `> ` and does not support "lazy" blockquotes.
 
 This means the parser does not conform 100% to the CommonMark and GFM specifications.
 
