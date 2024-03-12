@@ -210,14 +210,14 @@ trait HtmlTrait
 	 */
 	protected function parseLt($text): array
 	{
-		// first try bracketed link if we have LinkTrait.
-		if (method_exists($this, 'parseBracketedLink')) {
-			$block = $this->parseBracketedLink($text);
-			if ($block[0][0] !== 'text') {
-				return $block;
-			}
-		}
 		if (strpos($text, '>') !== false) {
+			// first try bracketed link if we have LinkTrait.
+			if (method_exists($this, 'parseBracketedLink')) {
+				$block = $this->parseBracketedLink($text);
+				if ($block[0][0] !== 'text') {
+					return $block;
+				}
+			}
 			if (preg_match('~^</?(\w+\d?)( .*?)?>~s', $text, $matches)) {
 				// HTML tags
 				return [['lt', $matches[0]], strlen($matches[0])];
