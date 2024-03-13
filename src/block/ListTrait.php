@@ -150,7 +150,7 @@ trait ListTrait
 				break;
 			}
 		}
-
+		// tight list? check it...
 		if (!$block['loose']) {
 			foreach ($block['items'] as $itemLines) {
 				// empty list item
