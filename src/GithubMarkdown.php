@@ -88,7 +88,7 @@ class GithubMarkdown extends Markdown
 	/**
 	 * @inheritDoc
 	 *
-	 * Parses a newline indicated by two spaces on the end of a markdown line.
+	 * Parses a newline indicated by two or more spaces on the end of a markdown line.
 	 */
 	protected function renderText($text): string
 	{
