@@ -51,7 +51,7 @@ trait HeadlineTrait
 			// setext headline
 			$block = [
 				'headline',
-				'content' => $this->parseInline($lines[$current]),
+				'content' => $this->parseInline(trim($lines[$current])),
 				'level' => substr_count($lines[$current + 1], '=') ? 1 : 2,
 			];
 			return [$block, $current + 1];
