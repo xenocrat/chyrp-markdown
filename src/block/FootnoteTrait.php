@@ -151,7 +151,7 @@ trait FootnoteTrait
 	 */
 	protected function parseFootnoteLink($text): array
 	{
-		if (preg_match('/^\[\^(.+?)]/', $text, $matches)) {
+		if (preg_match('/^\[\^(.+?)\]/', $text, $matches)) {
 			$footnoteName = $matches[1];
 
 			// We will later order the footnotes
