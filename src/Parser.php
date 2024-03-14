@@ -289,7 +289,7 @@ abstract class Parser
 		// consume until blank line
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			if (ltrim($lines[$i]) !== '') {
-				$content[] = $lines[$i];
+				$content[] = trim($lines[$i]);
 			} else {
 				break;
 			}

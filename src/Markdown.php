@@ -82,12 +82,12 @@ class Markdown extends Parser
 				|| $this->identifyHeadline($line, $lines, $i)) {
 				break;
 			} else {
-				$content[] = $line;
+				$content[] = ltrim($line);
 			}
 		}
 		$block = [
 			'paragraph',
-			'content' => $this->parseInline(implode("\n", $content)),
+			'content' => $this->parseInline(trim(implode("\n", $content))),
 		];
 		return [$block, --$i];
 	}
@@ -117,11 +117,11 @@ class Markdown extends Parser
 	/**
 	 * @inheritDoc
 	 *
-	 * Parses a newline indicated by two spaces on the end of a markdown line.
+	 * Parses a newline indicated by two or more spaces on the end of a markdown line.
 	 */
 	protected function renderText($text): string
 	{
 		$br = $this->html5 ? "<br>\n" : "<br />\n";
-		return str_replace("  \n", $br, $text[1]);
+		return preg_replace("/ {2,}\n/", $br, $text[1]);
 	}
 }

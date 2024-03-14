@@ -75,12 +75,12 @@ class GithubMarkdown extends Markdown
 			{
 				break;
 			} else {
-				$content[] = $line;
+				$content[] = ltrim($line);
 			}
 		}
 		$block = [
 			'paragraph',
-			'content' => $this->parseInline(implode("\n", $content)),
+			'content' => $this->parseInline(trim(implode("\n", $content))),
 		];
 		return [$block, --$i];
 	}
@@ -94,7 +94,7 @@ class GithubMarkdown extends Markdown
 	{
 		if ($this->enableNewlines) {
 			$br = $this->html5 ? "<br>\n" : "<br />\n";
-			return strtr($text[1], ["  \n" => $br, "\n" => $br]);
+			return preg_replace("/ *\n/", $br, $text[1]);
 		} else {
 			return parent::renderText($text);
 		}

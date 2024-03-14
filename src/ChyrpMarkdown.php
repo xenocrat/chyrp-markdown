@@ -88,12 +88,12 @@ class ChyrpMarkdown extends GithubMarkdown
 			{
 				break;
 			} else {
-				$content[] = $line;
+				$content[] = ltrim($line);
 			}
 		}
 		$block = [
 			'paragraph',
-			'content' => $this->parseInline(implode("\n", $content)),
+			'content' => $this->parseInline(trim(implode("\n", $content))),
 		];
 		return [$block, --$i];
 	}
