@@ -23,6 +23,8 @@ To be as fast and efficient as possible, the parser is limited in a few notable 
 2. It does not allow you to intermingle tabs and spaces when indenting text.
 3. It does not recognize setext headings that span more than one line.
 4. It requires blockquotes to begin with `> ` and does not support "lazy" blockquotes.
+5. It does not allow reference link titles that span more than one line.
+6. It requires reference link labels and destinations to be on the same line.
 
 This means the parser does not conform 100% to the CommonMark and GFM specifications.
 
