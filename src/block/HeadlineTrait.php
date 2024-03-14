@@ -41,17 +41,19 @@ trait HeadlineTrait
 	{
 		if (preg_match('/^ {0,3}(#{1,6})([ \t]|$)/', $lines[$current], $matches)) {
 			// ATX headline
+			$line = trim($lines[$current], "# \t");
 			$block = [
 				'headline',
-				'content' => $this->parseInline(trim($lines[$current], "# \t")),
+				'content' => $this->parseInline($line),
 				'level' => strlen($matches[1]),
 			];
 			return [$block, $current];
 		} else {
 			// setext headline
+			$line = trim($lines[$current]);
 			$block = [
 				'headline',
-				'content' => $this->parseInline(trim($lines[$current])),
+				'content' => $this->parseInline($line),
 				'level' => substr_count($lines[$current + 1], '=') ? 1 : 2,
 			];
 			return [$block, $current + 1];
