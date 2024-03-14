@@ -104,7 +104,7 @@ trait LinkTrait
 	protected function parseLinkOrImage($markdown): array|false
 	{
 		if (strpos($markdown, ']') !== false
-			&& preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)) {
+			&& preg_match('/\[(.*?)(?<!\\\\)\]/', $markdown, $textMatches)) {
 			$text = $textMatches[1];
 			$offset = strlen($textMatches[0]);
 			$markdown = substr($markdown, $offset);
@@ -120,7 +120,7 @@ REGEXP;
 				// inline link
 				$url = isset($refMatches[2]) ?
 					$this->unEscapeBackslash($refMatches[2]) : '';
-				if (strlen($url) > 2
+				if (strlen($url) > 1
 					&& substr($url, 0, 1) === '<'
 					&& substr($url, -1) === '>') {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
@@ -137,11 +137,9 @@ REGEXP;
 				];
 			} elseif (preg_match('/^([ \n]?\[(.*?)\])?/s', $markdown, $refMatches)) {
 				// reference style link
-				if (empty($refMatches[2])) {
-					$key = strtolower($text);
-				} else {
-					$key = strtolower($refMatches[2]);
-				}
+				$key = empty($refMatches[2]) ? $text : $refMatches[2];
+				$key = function_exists("mb_strtolower") ?
+					mb_strtolower($key, 'UTF-8') : strtolower($key);
 				$url = null;
 				$title = null;
 				return [
@@ -184,10 +182,6 @@ REGEXP;
 						strlen($matches[0])
 					];
 				}
-			}
-			// try inline HTML if it was neither a URL nor email if HtmlTrait is included.
-			if (method_exists($this, 'parseInlineHtml')) {
-				return $this->parseInlineHtml($text);
 			}
 		}
 		return [['text', '&lt;'], 1];
@@ -265,7 +259,7 @@ REGEXP;
 	protected function identifyReference($line): bool
 	{
 		return isset($line[0]) && ($line[0] === ' ' || $line[0] === '[')
-			&& preg_match('/^ {0,3}\[[^\[](.*?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
+			&& preg_match('/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
 	}
 
 	/**
@@ -276,20 +270,29 @@ REGEXP;
 		while (isset($lines[$current])
 			&& preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/',
 				$lines[$current], $matches)) {
-			$label = strtolower($matches[1]);
-
-			$this->references[$label] = [
-				'url' => $this->unEscapeBackslash($matches[2]),
+			$key = function_exists("mb_strtolower") ?
+				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
+			$url = $matches[2];
+			if (strlen($url) > 1
+				&& substr($url, 0, 1) === '<'
+				&& substr($url, -1) === '>') {
+				$url = str_replace(' ', '%20', substr($url, 1, -1));
+			}
+			$ref = [
+				'url' => $this->unEscapeBackslash($url),
 			];
 			if (isset($matches[3])) {
-				$this->references[$label]['title'] = $this->unEscapeBackslash($matches[3]);
+				$ref['title'] = $this->unEscapeBackslash($matches[3]);
 			} else {
 				// title may be on the next line
 				if (isset($lines[$current + 1])
-					&& preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
-					$this->references[$label]['title'] = $this->unEscapeBackslash($matches[1]);
+					&& preg_match('/^\s*[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
+					$ref['title'] = $this->unEscapeBackslash($matches[1]);
 					$current++;
 				}
+			}
+			if (!isset($this->references[$key])) {
+				$this->references[$key] = $ref;
 			}
 			$current++;
 		}
