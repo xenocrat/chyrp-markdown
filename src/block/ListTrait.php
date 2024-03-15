@@ -31,7 +31,7 @@ trait ListTrait
 	 */
 	protected function identifyOl($line): bool
 	{
-		return preg_match('/^ {0,3}\d+[\.\)]([ \t]|$)/', $line);
+		return preg_match('/^ {0,3}\d{1,9}[\.\)]([ \t]|$)/', $line);
 	}
 
 	/**
@@ -80,7 +80,7 @@ trait ListTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			$pattern = ($type === 'ol') ?
-				'/^( {0,3})(\d+)([\.\)])([ \t]+|$)/' :
+				'/^( {0,3})(\d{1,9})([\.\)])([ \t]+|$)/' :
 				'/^( {0,3})([\-\+\*])([ \t]+|$)/';
 			// if not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
@@ -94,7 +94,7 @@ trait ListTrait
 					// set the ol start attribute
 					if ($type === 'ol' && $this->keepListStartNumber) {
 						$start = intval($matches[2]);
-						if ($start > 1) {
+						if ($start !== 1) {
 							$block['attr']['start'] = $start;
 						}
 					}
@@ -107,7 +107,6 @@ trait ListTrait
 						break;
 					}
 				}
-				// store the marker width
 				$mw = strlen($matches[0]);
 				$line = substr($line, $mw);
 				$block['items'][$item][] = $line;
