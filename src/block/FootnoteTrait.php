@@ -152,7 +152,8 @@ trait FootnoteTrait
 	protected function parseFootnoteLink($text): array
 	{
 		if (preg_match('/^\[\^(.+?)\]/', $text, $matches)) {
-			$footnoteName = $matches[1];
+			$footnoteName = function_exists("mb_strtolower") ?
+				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
 
 			// We will later order the footnotes
 			// according to the order that the footnote links appear in.
@@ -220,7 +221,8 @@ trait FootnoteTrait
 			$startsFootnote = preg_match('/^\[\^(.+?)]:[ \t]*/', $line, $matches);
 			if ($startsFootnote) {
 				// Current line starts a footnote.
-				$name = $matches[1];
+				$name = function_exists("mb_strtolower") ?
+					mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
 				$str = substr($line, strlen($matches[0]));
 				$footnotes[$name] = [ trim($str) ];
 			} else if (strlen(trim($line)) === 0) {
