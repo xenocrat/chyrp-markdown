@@ -30,11 +30,9 @@ trait EmphStrongTrait
 			return [['text', $text[0]], 1];
 		}
 
-		if ($marker == $text[1]) { // strong
-			// work around a PHP bug that crashes with a segfault on too much regex backtrack
-			// check whether the end marker exists in the text
-			// https://github.com/erusev/parsedown/issues/443
-			// https://bugs.php.net/bug.php?id=45735
+		if ($marker == $text[1]) {
+		// strong
+			// avoid excessive regex backtracking if there is no closing marker
 			if (strpos($text, $marker . $marker, 2) === false) {
 				return [['text', $text[0] . $text[1]], 2];
 			}
@@ -43,20 +41,20 @@ trait EmphStrongTrait
 				&& preg_match('/^[*]{2}((?>\\\\[*]|[^*]|[*][^*]*[*])+?)[*]{2}/s', $text, $matches) ||
 				$marker === '_'
 				&& preg_match('/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us', $text, $matches)) {
-
-				return [
-					[
-						'strong',
-						$this->parseInline($matches[1]),
-					],
-					strlen($matches[0])
-				];
+				$content = $matches[1];
+				if (ctype_graph($content[0]) && ctype_graph(substr($content, -1))) {
+					return [
+						[
+							'strong',
+							$this->parseInline($content),
+						],
+						strlen($matches[0])
+					];
+				}
 			}
-		} else { // emph
-			// work around a PHP bug that crashes with a segfault on too much regex backtrack
-			// check whether the end marker exists in the text
-			// https://github.com/erusev/parsedown/issues/443
-			// https://bugs.php.net/bug.php?id=45735
+		} else {
+		// emph
+			// avoid excessive regex backtracking if there is no closing marker
 			if (strpos($text, $marker, 1) === false) {
 				return [['text', $text[0]], 1];
 			}
@@ -69,13 +67,16 @@ trait EmphStrongTrait
 				if ($matches[1] === '' || $matches[1] === ' ') {
 					return [['text', $text[0]], 1];
 				}
-				return [
-					[
-						'emph',
-						$this->parseInline($matches[1]),
-					],
-					strlen($matches[0])
-				];
+				$content = $matches[1];
+				if (ctype_graph($content[0]) && ctype_graph(substr($content, -1))) {
+					return [
+						[
+							'emph',
+							$this->parseInline($content),
+						],
+						strlen($matches[0])
+					];
+				}
 			}
 		}
 		return [['text', $text[0]], 1];
