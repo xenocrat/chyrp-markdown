@@ -120,9 +120,13 @@ REGEXP;
 				// inline link
 				$url = isset($refMatches[2]) ?
 					$this->unEscapeBackslash($refMatches[2]) : '';
-				if (strlen($url) > 1
-					&& substr($url, 0, 1) === '<'
-					&& substr($url, -1) === '>') {
+				$lt = str_starts_with($url, '<');
+				$gt = str_ends_with($url, '>');
+				if (($lt && !$gt) || (!$lt && $gt)) {
+				// improperly matched brackets
+					return false;
+				}
+				if ($lt && $gt) {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
 				$title = empty($refMatches[5]) ?
@@ -273,9 +277,7 @@ REGEXP;
 			$key = function_exists("mb_strtolower") ?
 				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
 			$url = $matches[2];
-			if (strlen($url) > 1
-				&& substr($url, 0, 1) === '<'
-				&& substr($url, -1) === '>') {
+			if (str_starts_with($url, '<') && str_ends_with($url, '>')) {
 				$url = str_replace(' ', '%20', substr($url, 1, -1));
 			}
 			$ref = [
