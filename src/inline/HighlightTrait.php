@@ -23,7 +23,7 @@ trait HighlightTrait
 	 */
 	protected function parseHighlight($markdown): array
 	{
-		if (preg_match('/^==(.+?)==/', $markdown, $matches)) {
+		if (preg_match('/^==(?!=)([^=]+?)==(?!=)/s', $markdown, $matches)) {
 			return [
 				[
 					'highlight',
