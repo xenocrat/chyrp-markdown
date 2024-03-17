@@ -49,7 +49,7 @@ REGEXP;
 			$href = 'http://' . $href;
 		}
 		$href = $this->escapeHtmlEntities($href, ENT_COMPAT);
-		$decoded = urldecode($text);
+		$decoded = rawurldecode($text);
 		$secured = preg_match('//u', $decoded) ? $decoded : $text;
 		$text = $this->escapeHtmlEntities($secured, ENT_NOQUOTES | ENT_SUBSTITUTE);
 		return "<a href=\"$href\">$text</a>";
