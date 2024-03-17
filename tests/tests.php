@@ -170,9 +170,11 @@
 			body {
 				font-family: sans-serif;
 				tab-size: 4;
+				margin: 0.5rem;
 			}
 			table {
 			    width: 100%;
+			    margin: 0.5rem 0rem;
 			    border-collapse: collapse;
 			}
 			tr {
