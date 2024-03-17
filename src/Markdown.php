@@ -105,11 +105,7 @@ class Markdown extends Parser
 		if (isset($text[1]) && $text[1] === "\n") {
 		// backslash followed by newline
 			return [['text', $br], 2];
-		} elseif (!isset($text[1])) {
-		// backslash at end of the text
-			return [['text', $br], 1];
 		}
-
 		// Otherwise parse the sequence normally
 		return parent::parseEscape($text);
 	}
