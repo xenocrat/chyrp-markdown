@@ -19,8 +19,7 @@ trait TableTrait
 	{
 		return strpos($line, '|') !== false && isset($lines[$current + 1])
 			&& preg_match('~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|?)*\\s*$~', $lines[$current + 1])
-			&& strpos($lines[$current + 1], '|') !== false
-			&& isset($lines[$current + 2]) && trim($lines[$current + 1]) !== '';
+			&& strpos($lines[$current + 1], '|') !== false;
 	}
 
 	/**
@@ -38,7 +37,7 @@ trait TableTrait
 			$line = trim($lines[$i]);
 
 			// extract alignment from second line
-			if ($i == $current+1) {
+			if ($i == $current + 1) {
 				$cols = explode('|', trim($line, ' |'));
 				foreach($cols as $col) {
 					$col = trim($col);
@@ -64,6 +63,10 @@ trait TableTrait
 			if ($line === '' || substr($lines[$i], 0, 4) === '    ') {
 				break;
 			}
+			if ($i > $current + 1
+				&& $this->detectLineType($lines, $i) !== 'paragraph') {
+				break;
+			}
 			if ($line[0] === '|') {
 				$line = substr($line, 1);
 			}
@@ -71,7 +74,6 @@ trait TableTrait
 				&& (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|')) {
 				$line = substr($line, 0, -1);
 			}
-
 			array_unshift($this->context, 'table');
 			$row = $this->parseInline($line);
 			array_shift($this->context);
@@ -90,7 +92,6 @@ trait TableTrait
 				}
 			}
 		}
-
 		return [$block, --$i];
 	}
 
@@ -102,18 +103,24 @@ trait TableTrait
 		$head = '';
 		$body = '';
 		$cols = $block['cols'];
+		$colCount = count($block['cols']);
 		$first = true;
 		foreach($block['rows'] as $row) {
 			$cellTag = $first ? 'th' : 'td';
 			$tds = '';
 			foreach ($row as $c => $cell) {
-				$align = empty($cols[$c]) ? '' : ' align="' . $cols[$c] . '"';
-				$tds .= "<$cellTag$align>" . trim($this->renderAbsy($cell)) . "</$cellTag>";
+				if ($c < $colCount) {
+					$align = empty($cols[$c]) ? '' : ' align="' . $cols[$c] . '"';
+					$tds .= "<$cellTag$align>" . trim($this->renderAbsy($cell)) . "</$cellTag>\n";
+				}
+			}
+			for ($i = count($row); $i < $colCount; $i++) { 
+				$tds .= "<$cellTag></$cellTag$align>\n";
 			}
 			if ($first) {
-				$head .= "<tr>$tds</tr>\n";
+				$head .= "<tr>\n$tds</tr>\n";
 			} else {
-				$body .= "<tr>$tds</tr>\n";
+				$body .= "<tr>\n$tds</tr>\n";
 			}
 			$first = false;
 		}
@@ -137,7 +144,15 @@ trait TableTrait
 	 */
 	protected function composeTable($head, $body): string
 	{
-		return "<table>\n<thead>\n$head</thead>\n<tbody>\n$body</tbody>\n</table>\n";
+		$table = "<table>\n";
+		if ($head !== '') {
+			$table .= "<thead>\n$head</thead>\n";
+		}
+		if ($body !== '') {
+			$table .= "<tbody>\n$body</tbody>\n";
+		}
+		$table .= "</table>\n";
+		return $table;
 	}
 
 	protected function parseTdMarkers(): array
