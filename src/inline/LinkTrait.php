@@ -167,20 +167,20 @@ REGEXP;
 		if (strpos($text, '>') !== false) {
 			if (!in_array('parseLink', $this->context)) {
 			// do not allow links in links
-				if (preg_match('/^<([^\s>]*?@[^\s]*?\.\w+?)>/', $text, $matches)) {
-					// email address
-					return [
-						[
-							'email',
-							$matches[1]
-						],
-						strlen($matches[0])
-					];
-				} elseif (preg_match('/^<([a-z][a-z0-9\+\.\-]{1,31}:\/\/[^\s]+?)>/', $text, $matches)) {
+				if (preg_match('/^<([a-z][a-z0-9\+\.\-]{1,31}:[^\s<>]*)>/i', $text, $matches)) {
 					// URL
 					return [
 						[
 							'url',
+							$matches[1]
+						],
+						strlen($matches[0])
+					];
+				} elseif (preg_match('/^<([^\s>]*?@[^\s]*?\.\w+?)>/', $text, $matches)) {
+					// email address
+					return [
+						[
+							'email',
 							$matches[1]
 						],
 						strlen($matches[0])
@@ -200,7 +200,7 @@ REGEXP;
 	protected function renderUrl($block): string
 	{
 		$url = $this->escapeHtmlEntities($block[1], ENT_COMPAT);
-		$decodedUrl = urldecode($block[1]);
+		$decodedUrl = rawurldecode($block[1]);
 		$secureUrlText = preg_match('//u', $decodedUrl) ? $decodedUrl : $block[1];
 		$text = $this->escapeHtmlEntities($secureUrlText, ENT_NOQUOTES | ENT_SUBSTITUTE);
 		return "<a href=\"$url\">$text</a>";
