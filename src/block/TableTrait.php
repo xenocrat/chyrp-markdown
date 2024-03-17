@@ -18,8 +18,10 @@ trait TableTrait
 	protected function identifyTable($line, $lines, $current): bool
 	{
 		return strpos($line, '|') !== false && isset($lines[$current + 1])
-			&& preg_match('~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|?)*\\s*$~', $lines[$current + 1])
-			&& strpos($lines[$current + 1], '|') !== false;
+			&& preg_match('/^\s*\|?(\s*:?-[\-\s]*:?\s*\|?)*\s*$/', $lines[$current + 1])
+			&& strpos($lines[$current + 1], '|') !== false
+			&& preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line) ===
+				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1]);
 	}
 
 	/**
