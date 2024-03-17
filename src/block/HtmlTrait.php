@@ -63,11 +63,11 @@ trait HtmlTrait
 		if (strncmp($line, '<![CDATA[', 9) === 0) {
 			return true; // type 5: cdata
 		}
-		$patterns = implode("|", $this->type6HtmlElements);
+		$patterns = implode('|', $this->type6HtmlElements);
 		if (preg_match("/^<\/?($patterns)(\s|>|\/>|$)/i", $line)) {
 			return true; // type 6
 		}
-		if (preg_match("/^<\/?[a-z][a-z0-9\-]*( [^>]*)?>(\s)*$/i", $line)
+		if (preg_match('/^<\/?[a-z][a-z0-9\-]*( [^>]*)?>(\s)*$/i', $line)
 			&& (!isset($lines[$current - 1]) ||
 				$lines[$current - 1] === '' ||
 				ltrim($lines[$current - 1]) === '')) {
@@ -218,11 +218,24 @@ trait HtmlTrait
 					return $block;
 				}
 			}
-			if (preg_match('~^</?(\w+\d?)( .*?)?>~s', $text, $matches)) {
-				// HTML tags
+			if (preg_match('/^<!--(-?>|.*?-->)/s', $text, $matches)) {
+			// comment
 				return [['lt', $matches[0]], strlen($matches[0])];
-			} elseif (preg_match('~^<!--.*?-->~s', $text, $matches)) {
-				// HTML comments
+			}
+			if (preg_match('/^<\?.*?\?>/s', $text, $matches)) {
+			// processor
+				return [['lt', $matches[0]], strlen($matches[0])];
+			}
+			if (preg_match('/^<![a-z].*?>/si', $text, $matches)) {
+			// processor
+				return [['lt', $matches[0]], strlen($matches[0])];
+			}
+			if (preg_match('/^<!\[CDATA\[.*?\]\]>/s', $text, $matches)) {
+			// processor
+				return [['lt', $matches[0]], strlen($matches[0])];
+			}
+			if (preg_match('/^<\/?[a-z][a-z0-9\-]*(\/|[ \n].*?)?>/is', $text, $matches)) {
+			// tag
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}
 		}
