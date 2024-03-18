@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation is focused on speed and simplicity. The language can be extended to recognize new elements by adding new traits to the class of a Markdown flavor, or defining an entirely new Markdown flavor as an extension of the base parser class.
+This is a set of PHP classesfor converting Markdown to HTML, with a focus on speed and simplicity. The parser can be extended to recognize new elements by adding new traits to a Markdown flavor, or defining an entirely new flavor as an extension of the base parser class.
 
 Currently the following Markdown flavors are supported:
 
