@@ -18,7 +18,9 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed of parsing, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. It passes 70% of CommonMark and GFM test cases. The most notable limitations of the parser are:
+Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 70% of CommonMark and GFM test cases.
+
+The most notable limitations of the parser are:
 1. It does not allow lines to contain leading spaces before most block markers.
 2. It does not support text indentation with intermingled tabs and spaces.
 3. It does not allow "lazy" continuation lines in blockquotes or lists.
