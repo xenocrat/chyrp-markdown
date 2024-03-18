@@ -101,8 +101,8 @@ class ChyrpMarkdown extends GithubMarkdown
 	/**
 	 * @inheritDoc
 	 */
-	function parse($text): string
+	function postprocess($markup): string
 	{
-		return $this->addParsedFootnotes(parent::parse($text));
+		return parent::postprocess($this->addParsedFootnotes($markup));
 	}
 }
