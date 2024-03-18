@@ -8,7 +8,7 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the 4 space indented code blocks
+ * Adds indented code blocks.
  */
 trait CodeTrait
 {
@@ -22,7 +22,7 @@ trait CodeTrait
 	}
 
 	/**
-	 * Consume lines for a code block element
+	 * Consume lines for a code block element.
 	 */
 	protected function consumeCode($lines, $current): array
 	{
@@ -84,7 +84,7 @@ trait CodeTrait
 	}
 
 	/**
-	 * Renders a code block
+	 * Renders a code block.
 	 */
 	protected function renderCode($block): string
 	{

@@ -8,7 +8,7 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the table blocks
+ * Adds table blocks.
  */
 trait TableTrait
 {
@@ -32,7 +32,7 @@ trait TableTrait
 	}
 
 	/**
-	 * Consume lines for a table
+	 * Consume lines for a table.
 	 */
 	protected function consumeTable($lines, $current): array
 	{
@@ -113,7 +113,7 @@ trait TableTrait
 	}
 
 	/**
-	 * render a table block
+	 * Render a table block.
 	 */
 	protected function renderTable($block): string
 	{
@@ -178,6 +178,7 @@ trait TableTrait
 	}
 
 	/**
+	 * Parses table data cells.
 	 * @marker |
 	 */
 	protected function parseTd($markdown): array

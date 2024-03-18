@@ -29,9 +29,9 @@ class Markdown extends Parser
 	use inline\LinkTrait;
 
 	/**
-	 * @var array these are "escapeable" characters. When using one of these prefixed with a
-	 * backslash, the character will be outputted without the backslash and is not interpreted
-	 * as markdown.
+	 * @var array These are "escapeable" characters.
+	 * When using one of these prefixed with a backslash, the character is
+	 * not interpreted as markdown and will be outputted without backslash.
 	 */
 	protected $escapeCharacters = [
 		'\\', // backslash
@@ -59,7 +59,7 @@ class Markdown extends Parser
 	}
 
 	/**
-	 * Consume lines for a paragraph
+	 * Consume lines for a paragraph.
 	 *
 	 * Allow other block types to break paragraphs.
 	 */

@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds superscript and subscript inline elements
+ * Adds superscript and subscript inline elements.
  */
 trait SupSubTrait
 {
@@ -18,7 +18,7 @@ trait SupSubTrait
 	}
 
 	/**
-	 * Parses the strikethrough feature.
+	 * Parses the superscript feature.
 	 * @marker ++
 	 */
 	protected function parseSup($markdown): array
@@ -54,7 +54,7 @@ trait SupSubTrait
 	}
 
 	/**
-	 * Parses the strikethrough feature.
+	 * Parses the subscript feature.
 	 * @marker ~~
 	 */
 	protected function parseSub($markdown): array

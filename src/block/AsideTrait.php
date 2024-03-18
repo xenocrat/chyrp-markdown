@@ -8,12 +8,12 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the aside elements
+ * Adds aside blocks.
  */
 trait AsideTrait
 {
 	/**
-	 * identify a line as the beginning of an aside.
+	 * Identify a line as the beginning of an aside.
 	 */
 	protected function identifyAside($line): bool
 	{
@@ -24,7 +24,7 @@ trait AsideTrait
 	}
 
 	/**
-	 * Consume lines for an aside element
+	 * Consume lines for an aside.
 	 */
 	protected function consumeAside($lines, $current): array
 	{
@@ -56,7 +56,7 @@ trait AsideTrait
 	}
 
 	/**
-	 * Renders an aside
+	 * Renders an aside.
 	 */
 	protected function renderAside($block): string
 	{

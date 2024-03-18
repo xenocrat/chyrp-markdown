@@ -8,12 +8,12 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the block quote elements
+ * Adds blockquote blocks.
  */
 trait QuoteTrait
 {
 	/**
-	 * identify a line as the beginning of a block quote.
+	 * Identify a line as the beginning of a blockquote.
 	 */
 	protected function identifyQuote($line): bool
 	{
@@ -24,7 +24,7 @@ trait QuoteTrait
 	}
 
 	/**
-	 * Consume lines for a blockquote element
+	 * Consume lines for a blockquote element.
 	 */
 	protected function consumeQuote($lines, $current): array
 	{
@@ -56,7 +56,7 @@ trait QuoteTrait
 	}
 
 	/**
-	 * Renders a blockquote
+	 * Renders a blockquote.
 	 */
 	protected function renderQuote($block): string
 	{

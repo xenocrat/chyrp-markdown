@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds strikeout inline elements
+ * Adds strikeout inline elements.
  */
 trait StrikeoutTrait
 {

@@ -8,7 +8,7 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the headline blocks
+ * Adds headline blocks.
  */
 trait HeadlineTrait
 {
@@ -21,7 +21,7 @@ trait HeadlineTrait
 	}
 
 	/**
-	 * identify a line as a headline
+	 * Identify a line as a headline.
 	 */
 	protected function identifyHeadline($line, $lines, $current): bool
 	{
@@ -35,7 +35,7 @@ trait HeadlineTrait
 	}
 
 	/**
-	 * Consume lines for a headline
+	 * Consume lines for a headline.
 	 */
 	protected function consumeHeadline($lines, $current): array
 	{
@@ -67,7 +67,7 @@ trait HeadlineTrait
 	}
 
 	/**
-	 * Renders a headline
+	 * Renders a headline.
 	 */
 	protected function renderHeadline($block): string
 	{

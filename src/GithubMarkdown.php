@@ -22,8 +22,9 @@ class GithubMarkdown extends Markdown
 	use inline\AutoLinkTrait;
 
 	/**
-	 * @var boolean whether to interpret newlines as `<br />`-tags.
-	 * This feature is useful for comments where newlines are often meant to be real new lines.
+	 * @var boolean Whether to interpret newlines as `<br />` tags.
+	 * This feature is useful for comments where newlines are often
+	 * meant to be hard line breaks.
 	 */
 	public $enableNewlines = false;
 
@@ -51,7 +52,7 @@ class GithubMarkdown extends Markdown
 	];
 
 	/**
-	 * Consume lines for a paragraph
+	 * Consume lines for a paragraph.
 	 *
 	 * Allow other block types to break paragraphs.
 	 */

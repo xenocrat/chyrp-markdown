@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds cite inline elements
+ * Adds cite inline elements.
  */
 trait CiteTrait
 {

@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds inline emphasizes and strong elements
+ * Adds inline emphasizes and strong elements.
  */
 trait EmphStrongTrait
 {

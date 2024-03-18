@@ -19,33 +19,33 @@ abstract class Parser
 	const VERSION_MINOR = 0;
 
 	/**
-	 * @var integer the maximum nesting level for language elements.
+	 * @var integer The maximum nesting level for language elements.
 	 */
 	public $maximumNestingLevel = 32;
 
 	/**
-	 * @var boolean whether to convert all tabs into 4 spaces.
+	 * @var boolean Whether to convert all tabs into 4 spaces.
 	 */
 	public $convertTabsToSpaces = false;
 
 	/**
-	 * @var boolean whether to format markup according to HTML5 spec.
+	 * @var boolean Whether to format markup according to HTML5 spec.
 	 * Defaults to `false` which means that markup is formatted as HTML4.
 	 */
 	public $html5 = false;
 
 	/**
-	 * @var string optional context identifier for this instance.
+	 * @var string Optional context identifier for this instance.
 	 */
 	public $contextId = '';
 
 	/**
-	 * @var array the current context the parser is in.
+	 * @var array The current context the parser is in.
 	 */
 	protected $context = [];
 
 	/**
-	 * @var array these are "escapeable" characters.
+	 * @var array These are "escapeable" characters.
 	 * When using one of these prefixed with a backslash, the character is
 	 * not interpreted as markdown and will be outputted without backslash.
 	 */
@@ -60,8 +60,8 @@ abstract class Parser
 	 *
 	 * This includes parsing block elements as well as inline elements.
 	 *
-	 * @param string $text the text to parse
-	 * @return string parsed markup
+	 * @param string $text The text to parse
+	 * @return string Parsed markup
 	 */
 	public function parse($text): string
 	{
@@ -163,6 +163,7 @@ abstract class Parser
 	private $_blockTypes;
 
 	/**
+	 * Detect registered block types.
 	 * @return array a list of block element types available.
 	 *
 	 * You can bust the alphabetical sort/call strategy with a `Priority` method
@@ -206,8 +207,8 @@ abstract class Parser
 	}
 
 	/**
-	 * Given a set of lines and an index of a current line it uses the registed
-	 * block types to detect the type of this line.
+	 * Given a set of lines and an index of a current line it uses
+	 * the registered block types to detect the type of this line.
 	 * @param array $lines
 	 * @param integer $current
 	 * @return string name of the block type in lower case
@@ -257,7 +258,8 @@ abstract class Parser
 	}
 
 	/**
-	 * Parses the block at current line by identifying the block type and parsing the content
+	 * Parses the block at current line by identifying the block type
+	 * and parsing the content.
 	 * @param $lines
 	 * @param $current
 	 * @return array Array of two elements:
@@ -269,7 +271,8 @@ abstract class Parser
 		// identify block type for this line
 		$blockType = $this->detectLineType($lines, $current);
 
-		// call consume method for the detected block type to consume further lines
+		// call consume method for the detected block type
+		// to consume further lines
 		return $this->{'consume' . $blockType}($lines, $current);
 	}
 
@@ -285,7 +288,7 @@ abstract class Parser
 	}
 
 	/**
-	 * Consume lines for a paragraph
+	 * Consume lines for a paragraph.
 	 *
 	 * @param $lines
 	 * @param $current
@@ -310,7 +313,7 @@ abstract class Parser
 	}
 
 	/**
-	 * Render a paragraph block
+	 * Render a paragraph block.
 	 *
 	 * @param $block
 	 * @return string
@@ -322,9 +325,6 @@ abstract class Parser
 
 	// inline parsing
 
-	/**
-	 * @var array the set of inline markers to use in different contexts.
-	 */
 	private $_inlineMarkers = [];
 
 	/**
@@ -368,7 +368,7 @@ abstract class Parser
 	}
 
 	/**
-	 * Prepare markers that are used in the text to parse
+	 * Prepare markers that are used in the text to parse.
 	 *
 	 * Add all markers that are present in markdown.
 	 * Check is done to avoid iterations in parseInline(), good for huge markdown files

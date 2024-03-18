@@ -214,7 +214,7 @@ trait FootnoteTrait
 	}
 
 	/**
-	 * identify a line as the beginning of a footnote block
+	 * Identify a line as the beginning of a footnote block.
 	 *
 	 * @param $line
 	 * @return false|int
@@ -225,9 +225,7 @@ trait FootnoteTrait
 	}
 
 	/**
-	 * Consume lines for a footnote
-	 * @return array Array of two elements, the first element contains the block,
-	 * the second contains the next line index to be parsed.
+	 * Consume lines for a footnote.
 	 */
 	protected function consumeFootnoteList($lines, $current): array
 	{

@@ -330,7 +330,7 @@ REGEXP;
 	}
 
 	/**
-	 * Consume link references
+	 * Consume link references.
 	 */
 	protected function consumeReference($lines, $current): array
 	{

@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds highlight inline elements
+ * Adds highlight inline elements.
  */
 trait HighlightTrait
 {

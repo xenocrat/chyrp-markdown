@@ -8,7 +8,7 @@
 namespace cebe\markdown\inline;
 
 /**
- * Adds inline code elements
+ * Adds inline code elements.
  */
 trait CodeTrait
 {

@@ -8,16 +8,16 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the fenced code blocks
+ * Adds fenced code blocks.
  *
- * automatically included 4 space indented code blocks
+ * Automatically includes indented code block support.
  */
 trait FencedCodeTrait
 {
 	use CodeTrait;
 
 	/**
-	 * identify a line as the beginning of a fenced code block.
+	 * Identify a line as the beginning of a fenced code block.
 	 */
 	protected function identifyFencedCode($line): bool
 	{
@@ -28,7 +28,7 @@ trait FencedCodeTrait
 	}
 
 	/**
-	 * Consume lines for a fenced code block
+	 * Consume lines for a fenced code block.
 	 */
 	protected function consumeFencedCode($lines, $current): array
 	{

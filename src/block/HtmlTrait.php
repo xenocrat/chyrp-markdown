@@ -8,7 +8,7 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds inline and block HTML support
+ * Adds inline and block HTML support.
  */
 trait HtmlTrait
 {
@@ -35,7 +35,7 @@ trait HtmlTrait
 	];
 
 	/**
-	 * identify a line as the beginning of a HTML block.
+	 * Identify a line as the beginning of a HTML block.
 	 */
 	protected function identifyHtml($line, $lines, $current): bool
 	{
@@ -99,7 +99,7 @@ trait HtmlTrait
 	}
 
 	/**
-	 * Consume lines for an HTML block
+	 * Consume lines for an HTML block.
 	 */
 	protected function consumeHtml($lines, $current): array
 	{
@@ -189,7 +189,7 @@ trait HtmlTrait
 	}
 
 	/**
-	 * Renders an HTML block
+	 * Renders an HTML block.
 	 */
 	protected function renderHtml($block): string
 	{
@@ -216,7 +216,7 @@ trait HtmlTrait
 	}
 
 	/**
-	 * renders a html entity.
+	 * Renders a html entity.
 	 */
 	protected function renderLt($block): string
 	{

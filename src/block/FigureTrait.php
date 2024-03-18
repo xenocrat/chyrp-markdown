@@ -8,12 +8,12 @@
 namespace cebe\markdown\block;
 
 /**
- * Adds the figure and figcaption elements
+ * Adds figure/figcaption blocks.
  */
 trait FigureTrait
 {
 	/**
-	 * identify a line as the beginning of a figure.
+	 * Identify a line as the beginning of a figure.
 	 */
 	protected function identifyFigure($line): bool
 	{
@@ -25,7 +25,7 @@ trait FigureTrait
 	}
 
 	/**
-	 * Consume lines for a figure element
+	 * Consume lines for a figure.
 	 */
 	protected function consumeFigure($lines, $current): array
 	{
@@ -84,7 +84,7 @@ trait FigureTrait
 	}
 
 	/**
-	 * Renders a figure
+	 * Renders a figure.
 	 */
 	protected function renderFigure($block): string
 	{
