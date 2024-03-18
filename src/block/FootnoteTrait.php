@@ -84,6 +84,10 @@ trait FootnoteTrait
 			'/\x1Afootnote-(refnum|num)(.*?)\x1A/',
 			function ($match) use ($footnotesSorted) {
 				$footnoteName = $this->footnoteLinks[$match[2]];
+				// Return the placeholder if the footnote doesn't exist.
+				if (!isset($footnotesSorted[$footnoteName])) {
+					return $match[0];
+				}
 				// Replace only the footnote number.
 				if ($match[1] === 'num') {
 					return $footnotesSorted[$footnoteName]['num'];
@@ -114,9 +118,12 @@ trait FootnoteTrait
 	 */
 	protected function getFootnotesHtml(array $footnotesSorted): string
 	{
+		if (empty($footnotesSorted)) {
+			return '';
+		}
 		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '';
 		$hr = $this->html5 ? "<hr>\n" : "<hr />\n";
-		$footnotesHtml = "\n<div class=\"footnotes\" role=\"doc-endnotes\">\n$hr<ol>\n";
+		$footnotesHtml = "<div class=\"footnotes\" role=\"doc-endnotes\">\n$hr<ol>\n";
 		foreach ($footnotesSorted as $footnoteInfo) {
 			$backLinks = [];
 			foreach ($footnoteInfo['refs'] as $refIndex => $refNum) {
@@ -225,7 +232,7 @@ trait FootnoteTrait
 					mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
 				$str = substr($line, strlen($matches[0]));
 				$footnotes[$name] = [ trim($str) ];
-			} else if (strlen(trim($line)) === 0) {
+			} elseif (trim($line) === '') {
 				// Current line is empty and ends this list of footnotes
 				// unless the next line is indented.
 				if (isset($lines[$i+1])) {
