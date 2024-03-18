@@ -38,12 +38,8 @@ trait FigureTrait
 				} elseif (strncmp($line, ': ', 2) === 0) {
 					$line = substr($line, 2);
 				} elseif (strncmp($line, ':: ', 3) === 0) {
-					$line = substr($line, 3);
-					// allow contiguous caption lines only
-					if (empty($caption) || isset($caption[$i - 1])) {
-						$caption[$i] = $line;
-						continue;
-					}
+					$caption[$i] = substr($line, 3);
+					continue;
 				} else {
 					--$i;
 					break;
@@ -54,13 +50,24 @@ trait FigureTrait
 			}
 		}
 
-		// determine caption placement
+		// decide caption placement and remove invalid lines.
 		if (isset($caption[$current])) {
 			$endcap = false;
+			for ($x = $current; $x < $i; $x++) { 
+				if ($x !== $current && !isset($caption[$x - 1])) {
+					unset($caption[$x]);
+				}
+			}
 		} elseif (isset($caption[$i - 1])) {
 			$endcap = true;
+			for ($x = $i - 1; $x >= $current; $x--) { 
+				if ($x !== $i - 1 && !isset($caption[$x + 1])) {
+					unset($caption[$x]);
+				}
+			}
 		} else {
 			$endcap = null;
+			$caption = [];
 		}
 
 		$block = [
@@ -78,15 +85,15 @@ trait FigureTrait
 	protected function renderFigure($block): string
 	{
 		if ($block['endcap'] !== null) {
-			$caption = '<figcaption>' . $this->renderAbsy($block['caption']) . "</figcaption>\n";
+			$caption = "<figcaption>\n" . $this->renderAbsy($block['caption']) . "</figcaption>\n";
 		} else {
 			$caption = '';
 		}
 
 		if ($block['endcap'] === false) {
-			$figure = '<figure>' . $caption . $this->renderAbsy($block['content']) . "</figure>\n";
+			$figure = "<figure>\n" . $caption . $this->renderAbsy($block['content']) . "</figure>\n";
 		} else {
-			$figure = '<figure>' . $this->renderAbsy($block['content']) . $caption . "</figure>\n";
+			$figure = "<figure>\n" . $this->renderAbsy($block['content']) . $caption . "</figure>\n";
 		}
 
 		return $figure;
