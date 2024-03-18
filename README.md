@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation is focused on speed and simplicity. Parsing Markdown to HTML is done with a single method call. The language can be extended to recognize new elements by adding new traits to the class of a Markdown flavor.
+This is a set of PHP classes, each representing a Markdown flavor, for converting Markdown to HTML. The implementation is focused on speed and simplicity. The language can be extended to recognize new elements by adding new traits to the class of a Markdown flavor, or defining an entirely new Markdown flavor as an extension of the base parser class.
 
 Currently the following Markdown flavors are supported:
 
@@ -18,15 +18,12 @@ Requirements
 Limitations
 -----------
 
-To be as fast and efficient as possible, the parser is limited in a few notable ways:
+The parser is not completely conformant with the CommonMark and GFM specifications. It passes 70% of CommonMark and GFM test cases. The most notable limitations of the parser are:
 1. It does not allow lines to contain leading spaces before most block markers.
-2. It does not allow you to intermingle tabs and spaces when indenting text.
-3. It does not recognize setext headings that span more than one line.
-4. It requires blockquotes to begin with `> ` and does not support "lazy" blockquotes.
-5. It does not allow reference link titles that span more than one line.
-6. It requires reference link labels and destinations to be on the same line.
-
-This means the parser does not conform 100% to the CommonMark and GFM specifications.
+2. It does not support text indentation with intermingled tabs and spaces.
+3. It does not allow "lazy" continuation lines in blockquotes or lists.
+4. It does not recognize setext headings that span multiple lines.
+5. It requires blockquote lines to begin with `> ` (with a space character).
 
 Usage
 -----
