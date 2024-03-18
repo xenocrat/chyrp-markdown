@@ -23,7 +23,7 @@ trait SupSubTrait
 	 */
 	protected function parseSup($markdown): array
 	{
-		if (preg_match('/^\+\+(?!\+)([^\+]+?)\+\+(?!\+)/s', $markdown, $matches)) {
+		if (preg_match('/^\+\+(?!\+)(.*?[^\+\\\\])\+\+(?!\+)/s', $markdown, $matches)) {
 			return [
 				[
 					'sup',
@@ -51,7 +51,7 @@ trait SupSubTrait
 	 */
 	protected function parseSub($markdown): array
 	{
-		if (preg_match('/^--(?!-)([^-]+?)--(?!-)/s', $markdown, $matches)) {
+		if (preg_match('/^--(?!-)(.*?[^-\\\\])--(?!-)/s', $markdown, $matches)) {
 			return [
 				[
 					'sub',
