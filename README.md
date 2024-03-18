@@ -77,9 +77,9 @@ For GithubMarkdown:
 Security Considerations
 -----------------------
 
-By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
+By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows it to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
 
-In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users to be added.
+In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed.
 
 Extending the language
 ----------------------
@@ -118,10 +118,7 @@ Designing your Markdown flavor consists of four steps:
 
 #### Select a base class
 
-If you want to extend from a flavor and only add features you can use one of the existing classes
-(`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class.
-
-If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
+If you want to extend a flavor and only add features you can use one of the existing classes (`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class. If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
 
 #### Select language feature traits
 
