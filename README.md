@@ -25,7 +25,7 @@ The most notable limitations of the parser are:
 2. It does not support text indentation with intermingled tabs and spaces.
 3. It does not allow "lazy" continuation lines in blockquotes or lists.
 4. It does not recognize setext headings that span multiple lines.
-5. It requires blockquote lines to begin with `> ` (with a space character).
+5. It requires blockquote lines to begin with `> ` (the space is required).
 
 Usage
 -----
