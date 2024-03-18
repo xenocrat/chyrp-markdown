@@ -37,7 +37,9 @@ trait CiteTrait
 
 	protected function renderCite($block): string
 	{
-		return '<cite>' . $this->renderAbsy($block[1]) . '</cite>';
+		return '<cite>'
+			. $this->renderAbsy($block[1])
+			. '</cite>';
 	}
 
 	abstract protected function parseInline($text);

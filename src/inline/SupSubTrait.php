@@ -23,7 +23,13 @@ trait SupSubTrait
 	 */
 	protected function parseSup($markdown): array
 	{
-		if (preg_match('/^\+\+(?!\+)(.*?[^\+\\\\])\+\+(?!\+)/s', $markdown, $matches)) {
+		if (
+			preg_match(
+				'/^\+\+(?!\+)(.*?[^\+\\\\])\+\+(?!\+)/s',
+				$markdown,
+				$matches
+			)
+		) {
 			return [
 				[
 					'sup',
@@ -37,7 +43,9 @@ trait SupSubTrait
 
 	protected function renderSup($block): string
 	{
-		return '<sup>' . $this->renderAbsy($block[1]) . '</sup>';
+		return '<sup>'
+			. $this->renderAbsy($block[1])
+			. '</sup>';
 	}
 
 	protected function parseSubMarkers(): array
@@ -51,7 +59,13 @@ trait SupSubTrait
 	 */
 	protected function parseSub($markdown): array
 	{
-		if (preg_match('/^--(?!-)(.*?[^-\\\\])--(?!-)/s', $markdown, $matches)) {
+		if (
+			preg_match(
+				'/^--(?!-)(.*?[^-\\\\])--(?!-)/s',
+				$markdown,
+				$matches
+			)
+		) {
 			return [
 				[
 					'sub',
@@ -65,7 +79,9 @@ trait SupSubTrait
 
 	protected function renderSub($block): string
 	{
-		return '<sub>' . $this->renderAbsy($block[1]) . '</sub>';
+		return '<sub>'
+			. $this->renderAbsy($block[1])
+			. '</sub>';
 	}
 
 	abstract protected function parseInline($text);

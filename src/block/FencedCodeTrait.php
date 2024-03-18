@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -21,8 +21,10 @@ trait FencedCodeTrait
 	 */
 	protected function identifyFencedCode($line): bool
 	{
-		return (preg_match('/^~{3,}/', $line) ||
-				preg_match('/^`{3,}[^`]*$/', $line));
+		return (
+			preg_match('/^~{3,}/', $line)
+			|| preg_match('/^`{3,}[^`]*$/', $line)
+		);
 	}
 
 	/**
@@ -34,11 +36,14 @@ trait FencedCodeTrait
 		$fence = substr($line, 0, $pos = strspn($line, $line[0]));
 		$language = trim(substr($line, $pos));
 		$content = [];
+
 		// consume until end fence
 		for ($i = $current + 1, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-			if (($pos = strspn($line, $fence[0])) < strlen($fence) ||
-				ltrim(substr($line, $pos)) !== '') {
+			if (
+				($pos = strspn($line, $fence[0])) < strlen($fence)
+				|| ltrim(substr($line, $pos)) !== ''
+			) {
 				$content[] = $line;
 			} else {
 				break;
@@ -53,6 +58,7 @@ trait FencedCodeTrait
 				$block['language'] = $this->unEscapeBackslash($match[0]);
 			}
 		}
+
 		return [$block, $i];
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -37,12 +37,26 @@ trait EmphStrongTrait
 				return [['text', $text[0] . $text[1]], 2];
 			}
 
-			if ($marker === '*'
-				&& preg_match('/^[*]{2}((?>\\\\[*]|[^*]|[*][^*]*[*])+?)[*]{2}/s', $text, $matches) ||
-				$marker === '_'
-				&& preg_match('/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us', $text, $matches)) {
+			if (
+				$marker === '*'
+				&& preg_match(
+					'/^[*]{2}((?>\\\\[*]|[^*]|[*][^*]*[*])+?)[*]{2}/s',
+					$text,
+					$matches
+				)
+				|| $marker === '_'
+				&& preg_match(
+					'/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us',
+					$text,
+					$matches
+				)
+			) {
 				$content = $matches[1];
-				if (ctype_graph($content[0]) && ctype_graph(substr($content, -1))) {
+				// first and last chars must be graphical
+				if (
+					ctype_graph($content[0])
+					&& ctype_graph(substr($content, -1))
+				) {
 					return [
 						[
 							'strong',
@@ -59,16 +73,31 @@ trait EmphStrongTrait
 				return [['text', $text[0]], 1];
 			}
 
-			if ($marker === '*'
-				&& preg_match('/^[*]((?>\\\\[*]|[^*]|[*][*][^*]+?[*][*])+?)[*](?![*][^*])/s', $text, $matches) ||
-				$marker === '_'
-				&& preg_match('/^_((?>\\\\_|[^_]|__[^_]*__)+?)_(?!_[^_])\b/us', $text, $matches)) {
-				// if only a single whitespace or nothing is contained in an emphasis, do not consider it valid
+			if (
+				$marker === '*'
+				&& preg_match(
+					'/^[*]((?>\\\\[*]|[^*]|[*][*][^*]+?[*][*])+?)[*](?![*][^*])/s',
+					$text,
+					$matches
+				)
+				|| $marker === '_'
+				&& preg_match(
+					'/^_((?>\\\\_|[^_]|__[^_]*__)+?)_(?!_[^_])\b/us',
+					$text,
+					$matches
+				)
+			) {
+				// if only a single whitespace or nothing is contained in an emphasis,
+				// do not consider it valid
 				if ($matches[1] === '' || $matches[1] === ' ') {
 					return [['text', $text[0]], 1];
 				}
 				$content = $matches[1];
-				if (ctype_graph($content[0]) && ctype_graph(substr($content, -1))) {
+				// first and last chars must be graphical
+				if (
+					ctype_graph($content[0])
+					&& ctype_graph(substr($content, -1))
+				) {
 					return [
 						[
 							'emph',
@@ -84,12 +113,16 @@ trait EmphStrongTrait
 
 	protected function renderStrong($block): string
 	{
-		return '<strong>' . $this->renderAbsy($block[1]) . '</strong>';
+		return '<strong>'
+			. $this->renderAbsy($block[1])
+			. '</strong>';
 	}
 
 	protected function renderEmph($block): string
 	{
-		return '<em>' . $this->renderAbsy($block[1]) . '</em>';
+		return '<em>'
+			. $this->renderAbsy($block[1])
+			. '</em>';
 	}
 
 	abstract protected function parseInline($text);

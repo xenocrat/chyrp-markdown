@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -27,7 +27,7 @@ trait ListTrait
 	}
 
 	/**
-	 * identify a line as the beginning of an ordered list.
+	 * Identify a line as the beginning of an ordered list.
 	 */
 	protected function identifyOl($line): bool
 	{
@@ -35,7 +35,7 @@ trait ListTrait
 	}
 
 	/**
-	 * identify a line as the beginning of an unordered list.
+	 * Identify a line as the beginning of an unordered list.
 	 */
 	protected function identifyUl($line): bool
 	{
@@ -43,7 +43,7 @@ trait ListTrait
 	}
 
 	/**
-	 * Consume lines for an ordered list
+	 * Consume lines for an ordered list.
 	 */
 	protected function consumeOl($lines, $current): array
 	{
@@ -58,7 +58,7 @@ trait ListTrait
 	}
 
 	/**
-	 * Consume lines for an unordered list
+	 * Consume lines for an unordered list.
 	 */
 	protected function consumeUl($lines, $current): array
 	{
@@ -76,21 +76,26 @@ trait ListTrait
 		$item = 0;
 		$marker = '';
 		$mw = 0;
+
 		// consume until end condition
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			$pattern = ($type === 'ol') ?
 				'/^( {0,3})(\d{1,9})([\.\)])([ \t]+|$)/' :
-				'/^( {0,3})([\-\+\*])([ \t]+|$)/';
+				'/^( {0,3})([\-\+\*])([ \t]+|$)/' ;
 			// if not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
 			// of the current item containing a marker for a sub-list item
-			if (preg_match($pattern, $line, $matches)
-				&& ($i === $current || strlen($matches[1]) < $mw)) {
+			if (
+				preg_match($pattern, $line, $matches)
+				&& ($i === $current || strlen($matches[1]) < $mw)
+			) {
 				if ($i === $current) {
 				// first item
 					// store the marker for comparison
-					$marker = $type === 'ol' ? $matches[3] : $matches[2];
+					$marker = $type === 'ol' ?
+						$matches[3] : $matches[2] ;
+
 					// set the ol start attribute
 					if ($type === 'ol' && $this->keepListStartNumber) {
 						$start = intval($matches[2]);
@@ -100,7 +105,10 @@ trait ListTrait
 					}
 				} else {
 					$item++;
-					$newMarker = $type === 'ol' ? $matches[3] : $matches[2];
+
+					$newMarker = $type === 'ol' ?
+						$matches[3] : $matches[2] ;
+
 					// marker has changed: end of list
 					if (strcmp($marker, $newMarker) !== 0) {
 						--$i;
@@ -131,8 +139,10 @@ trait ListTrait
 				// next line is not list content
 					break;
 				}
-			} elseif (strlen($line) > $mw
-				&& ctype_space(substr($line, 0, $mw))) {
+			} elseif (
+				strlen($line) > $mw
+				&& ctype_space(substr($line, 0, $mw))
+			) {
 				// line is indented enough to continue this item
 				$line = substr($line, $mw);
 				$block['items'][$item][] = $line;
@@ -143,9 +153,11 @@ trait ListTrait
 			}
 
 			// if next line is <hr>, end the list
-			if (!empty($lines[$i + 1])
+			if (
+				!empty($lines[$i + 1])
 				&& method_exists($this, 'identifyHr')
-				&& $this->identifyHr($lines[$i + 1])) {
+				&& $this->identifyHr($lines[$i + 1])
+			) {
 				break;
 			}
 		}
@@ -158,8 +170,10 @@ trait ListTrait
 				}
 				// everything else
 				for ($x = 0; $x < count($itemLines); $x++) { 
-					if (ltrim($itemLines[$x]) === '' ||
-						$this->detectLineType($itemLines, $x) !== 'paragraph') {
+					if (
+						ltrim($itemLines[$x]) === ''
+						|| $this->detectLineType($itemLines, $x) !== 'paragraph'
+					) {
 						// blank line or non-paragraph block marker detected:
 						// make the list loose because block parsing is required
 						$block['loose'] = true;
@@ -171,7 +185,7 @@ trait ListTrait
 		foreach ($block['items'] as $itemId => $itemLines) {
 			$block['items'][$itemId] = $block['loose'] ?
 				$this->parseBlocks($itemLines) :
-				$this->parseInline(implode("\n", $itemLines));
+				$this->parseInline(implode("\n", $itemLines)) ;
 		}
 		return [$block, $i];
 	}
@@ -185,7 +199,9 @@ trait ListTrait
 		$li = $block['loose'] ? "<li>\n" : '<li>';
 
 		if (!empty($block['attr'])) {
-			$output = "<$type " . $this->generateHtmlAttributes($block['attr']) . ">\n";
+			$output = "<$type "
+				. $this->generateHtmlAttributes($block['attr'])
+				. ">\n";
 		} else {
 			$output = "<$type>\n";
 		}

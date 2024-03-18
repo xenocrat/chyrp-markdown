@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -17,11 +17,18 @@ trait TableTrait
 	 */
 	protected function identifyTable($line, $lines, $current): bool
 	{
-		return strpos($line, '|') !== false && isset($lines[$current + 1])
-			&& preg_match('/^\s*\|?(\s*:?-[\-\s]*:?\s*\|?)*\s*$/', $lines[$current + 1])
+		return (
+			strpos($line, '|') !== false && isset($lines[$current + 1])
+			&& preg_match(
+				'/^\s*\|?(\s*:?-[\-\s]*:?\s*\|?)*\s*$/',
+				$lines[$current + 1]
+			)
 			&& strpos($lines[$current + 1], '|') !== false
-			&& preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line) ===
-				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1]);
+			&& (
+				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line) ===
+				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1])
+			)
+		);
 	}
 
 	/**
@@ -34,10 +41,10 @@ trait TableTrait
 			'cols' => [],
 			'rows' => [],
 		];
+
 		// consume until blank line
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = trim($lines[$i]);
-
 			// extract alignment from second line
 			if ($i == $current + 1) {
 				$cols = explode('|', trim($line, ' |'));
@@ -62,7 +69,7 @@ trait TableTrait
 
 				continue;
 			}
-			if ($line === '' || substr($lines[$i], 0, 4) === '    ') {
+			if ($line === '' || str_starts_with($lines[$i], '    ')) {
 				break;
 			}
 			if ($i > $current + 1
@@ -72,10 +79,16 @@ trait TableTrait
 			if ($line[0] === '|') {
 				$line = substr($line, 1);
 			}
-			if (substr($line, -1, 1) === '|'
-				&& (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|')) {
+			if (
+				str_ends_with($line, '|')
+				&& (
+					!str_ends_with($line, '\\|')
+					|| str_ends_with($line, '\\\\|')
+				)
+			) {
 				$line = substr($line, 0, -1);
 			}
+
 			array_unshift($this->context, 'table');
 			$row = $this->parseInline($line);
 			array_shift($this->context);
@@ -83,6 +96,7 @@ trait TableTrait
 			$r = count($block['rows']);
 			$c = 0;
 			$block['rows'][] = [];
+
 			foreach ($row as $absy) {
 				if (!isset($block['rows'][$r][$c])) {
 					$block['rows'][$r][] = [];
@@ -94,6 +108,7 @@ trait TableTrait
 				}
 			}
 		}
+
 		return [$block, --$i];
 	}
 
@@ -107,13 +122,19 @@ trait TableTrait
 		$cols = $block['cols'];
 		$colCount = count($block['cols']);
 		$first = true;
+
 		foreach($block['rows'] as $row) {
 			$cellTag = $first ? 'th' : 'td';
 			$tds = '';
 			foreach ($row as $c => $cell) {
 				if ($c < $colCount) {
-					$align = empty($cols[$c]) ? '' : ' align="' . $cols[$c] . '"';
-					$tds .= "<$cellTag$align>" . trim($this->renderAbsy($cell)) . "</$cellTag>\n";
+					$align = empty($cols[$c]) ?
+						'' :
+						' align="' . $cols[$c] . '"' ;
+
+					$tds .= "<$cellTag$align>"
+						. trim($this->renderAbsy($cell))
+						. "</$cellTag>\n";
 				}
 			}
 			for ($i = count($row); $i < $colCount; $i++) { 
@@ -126,18 +147,12 @@ trait TableTrait
 			}
 			$first = false;
 		}
+
 		return $this->composeTable($head, $body);
 	}
 
 	/**
 	 * This method composes a table from parsed body and head HTML.
-	 *
-	 * You may override this method to customize the table rendering, for example by
-	 * adding a `class` to the table tag:
-	 *
-	 * ```php
-	 * return "<table class="table table-striped">\n<thead>\n$head</thead>\n<tbody>\n$body</tbody>\n</table>\n"
-	 * ```
 	 *
 	 * @param string $head table head HTML.
 	 * @param string $body table body HTML.
@@ -168,7 +183,10 @@ trait TableTrait
 	protected function parseTd($markdown): array
 	{
 		if (isset($this->context[1]) && $this->context[1] === 'table') {
-			return [['tableBoundary'], isset($markdown[1]) && $markdown[1] === ' ' ? 2 : 1];
+			return [
+				['tableBoundary'],
+				isset($markdown[1]) && $markdown[1] === ' ' ? 2 : 1
+			];
 		}
 		return [['text', $markdown[0]], 1];
 	}

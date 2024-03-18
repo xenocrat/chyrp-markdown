@@ -66,20 +66,24 @@ class Markdown extends Parser
 	protected function consumeParagraph($lines, $current): array
 	{
 		$content = [];
+
 		// consume until blank line or end condition
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-			if ($line === ''
+			if (
+				$line === ''
 				|| ltrim($line) === ''
-				|| !ctype_alpha($line[0]) && (
-					$this->identifyQuote($line, $lines, $i) ||
-					$this->identifyFencedCode($line, $lines, $i) ||
-					$this->identifyUl($line, $lines, $i) ||
-					$this->identifyOl($line, $lines, $i) ||
-					$this->identifyHr($line, $lines, $i) ||
-					$this->identifyHtml($line, $lines, $i)
+				|| !ctype_alpha($line[0])
+				&& (
+					$this->identifyQuote($line, $lines, $i)
+					|| $this->identifyFencedCode($line, $lines, $i)
+					|| $this->identifyUl($line, $lines, $i)
+					|| $this->identifyOl($line, $lines, $i)
+					|| $this->identifyHr($line, $lines, $i)
+					|| $this->identifyHtml($line, $lines, $i)
 				)
-				|| $this->identifyHeadline($line, $lines, $i)) {
+				|| $this->identifyHeadline($line, $lines, $i)
+			) {
 				break;
 			} else {
 				$content[] = ltrim($line);
@@ -89,6 +93,7 @@ class Markdown extends Parser
 			'paragraph',
 			'content' => $this->parseInline(trim(implode("\n", $content))),
 		];
+
 		return [$block, --$i];
 	}
 
@@ -106,7 +111,7 @@ class Markdown extends Parser
 		// backslash followed by newline
 			return [['text', $br], 2];
 		}
-		// Otherwise parse the sequence normally
+		// otherwise parse the sequence normally
 		return parent::parseEscape($text);
 	}
 

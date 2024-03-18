@@ -134,7 +134,7 @@ abstract class Parser
 	protected function postprocess($markup): string
 	{
 		$safe = function_exists('mb_chr') ?
-			mb_chr(0xFFFD, 'UTF-8') : '&#xFFFD;';
+			mb_chr(0xFFFD, 'UTF-8') : '&#xFFFD;' ;
 
 		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safe, $markup);
@@ -174,12 +174,20 @@ abstract class Parser
 		if ($this->_blockTypes === null) {
 			// detect block types via "identify" functions
 			$reflection = new \ReflectionClass($this);
-			$this->_blockTypes = array_filter(array_map(function($method) {
-				$methodName = $method->getName();
-				return (strncmp($methodName, 'identify', 8) === 0
-					&& substr_compare($methodName, 'Priority', -8) !== 0) ?
-					substr($methodName, 8) : false;
-			}, $reflection->getMethods(ReflectionMethod::IS_PROTECTED)));
+
+			$this->_blockTypes = array_filter(
+				array_map(
+					function($method) {
+						$methodName = $method->getName();
+						return (
+							str_starts_with($methodName, 'identify')
+							&& !str_ends_with($methodName, 'Priority')
+						) ?
+						substr($methodName, 8) : false ;
+					},
+					$reflection->getMethods(ReflectionMethod::IS_PROTECTED)
+				)
+			);
 
 			usort($this->_blockTypes, function($a, $b) {
 				$a_method = 'identify' . $a . 'Priority';
@@ -193,6 +201,7 @@ abstract class Parser
 				return strcasecmp($a_priority, $b_priority);
 			});
 		}
+
 		return $this->_blockTypes;
 	}
 
@@ -226,8 +235,8 @@ abstract class Parser
 			// maximum depth is reached, do not parse input
 			return [['text', implode("\n", $lines)]];
 		}
-		$this->_depth++;
 
+		$this->_depth++;
 		$blocks = [];
 
 		// convert lines to blocks
@@ -244,7 +253,6 @@ abstract class Parser
 		}
 
 		$this->_depth--;
-
 		return $blocks;
 	}
 
@@ -340,10 +348,13 @@ abstract class Parser
 		$markers = [];
 		// detect "parse" functions
 		$reflection = new \ReflectionClass($this);
+
 		foreach($reflection->getMethods(ReflectionMethod::IS_PROTECTED) as $method) {
 			$methodName = $method->getName();
-			if (strncmp($methodName, 'parse', 5) === 0
-				&& substr_compare($methodName, 'Markers', -7) !== 0) {
+			if (
+				str_starts_with($methodName, 'parse')
+				&& !str_ends_with($methodName, 'Markers')
+			) {
 				if (method_exists($this, $methodName.'Markers')) {
 					$array = call_user_func(array($this, $methodName.'Markers'));
 					foreach($array as $marker) {
@@ -352,6 +363,7 @@ abstract class Parser
 				}
 			}
 		}
+
 		return $markers;
 	}
 
@@ -365,6 +377,7 @@ abstract class Parser
 	protected function prepareMarkers($text): void
 	{
 		$this->_inlineMarkers = [];
+
 		foreach ($this->inlineMarkers() as $marker => $method) {
 			if (strpos($text, $marker) !== false) {
 				$m = $marker[0];
@@ -395,23 +408,21 @@ abstract class Parser
 			// maximum depth is reached, do not parse input
 			return [['text', $text]];
 		}
+
 		$this->_depth++;
-
 		$markers = implode('', array_keys($this->_inlineMarkers));
-
 		$paragraph = [];
 
 		while (!empty($markers) && ($found = strpbrk($text, $markers)) !== false) {
-
 			$pos = strpos($text, $found);
-
 			// add the text up to next marker to the paragraph
 			if ($pos !== 0) {
 				$paragraph[] = ['text', substr($text, 0, $pos)];
 			}
-			$text = $found;
 
+			$text = $found;
 			$parsed = false;
+
 			foreach ($this->_inlineMarkers[$text[0]] as $marker => $method) {
 				if (strncmp($text, $marker, strlen($marker)) === 0) {
 					// parse the marker
@@ -425,6 +436,7 @@ abstract class Parser
 					break;
 				}
 			}
+
 			if (!$parsed) {
 				$paragraph[] = ['text', substr($text, 0, 1)];
 				$text = substr($text, 1);
@@ -432,9 +444,7 @@ abstract class Parser
 		}
 
 		$paragraph[] = ['text', $text];
-
 		$this->_depth--;
-
 		return $paragraph;
 	}
 
@@ -455,7 +465,7 @@ abstract class Parser
 	protected function parseEscape($text): array
 	{
 		if (isset($text[1]) && in_array($text[1], $this->escapeCharacters)) {
-			$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
+			$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401 ;
 			$chr = htmlspecialchars($text[1], ENT_NOQUOTES | $ent, 'UTF-8');
 			return [['text', $chr], 2];
 		}

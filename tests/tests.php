@@ -8,7 +8,8 @@
 		$filepath = str_replace(
 			array("_", "\\", "\0"),
 			array(DIR, DIR, ""),
-			ltrim($class, "\\")) . '.php';
+			ltrim($class, "\\")
+		) . '.php';
 
 		$namespace = 'cebe' . DIR . 'markdown';
 		$filepath = str_replace($namespace, '', $filepath);

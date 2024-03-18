@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -17,7 +17,10 @@ trait QuoteTrait
 	 */
 	protected function identifyQuote($line): bool
 	{
-		return $line[0] === '>' && (!isset($line[1]) || ($l1 = $line[1]) === ' ');
+		return (
+			$line[0] === '>'
+			&& (!isset($line[1]) || ($l1 = $line[1]) === ' ')
+		);
 	}
 
 	/**
@@ -26,13 +29,14 @@ trait QuoteTrait
 	protected function consumeQuote($lines, $current): array
 	{
 		$content = [];
+
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			if (ltrim($line) !== '') {
 				if ($line[0] == '>' && !isset($line[1])) {
 					$line = '';
-				} elseif (strncmp($line, '> ', 2) === 0) {
+				} elseif (str_starts_with($line, '> ')) {
 					$line = substr($line, 2);
 				} else {
 					--$i;
@@ -43,11 +47,11 @@ trait QuoteTrait
 				break;
 			}
 		}
-
 		$block = [
 			'quote',
 			'content' => $this->parseBlocks($content),
 		];
+
 		return [$block, $i];
 	}
 
@@ -56,7 +60,9 @@ trait QuoteTrait
 	 */
 	protected function renderQuote($block): string
 	{
-		return "<blockquote>\n" . $this->renderAbsy($block['content']) . "</blockquote>\n";
+		return "<blockquote>\n"
+		. $this->renderAbsy($block['content'])
+		. "</blockquote>\n";
 	}
 
 	abstract protected function parseBlocks($lines);

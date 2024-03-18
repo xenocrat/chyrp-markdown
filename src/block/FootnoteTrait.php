@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt and other contributors
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley and other contributors
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -92,11 +92,17 @@ trait FootnoteTrait
 				if ($match[1] === 'num') {
 					return $footnotesSorted[$footnoteName]['num'];
 				}
-				// For backlinks, some have a footnote number and an additional link number.
+				// For backlinks:
+				// some have a footnote number and an additional link number.
 				if (count($footnotesSorted[$footnoteName]['refs']) > 1) {
-					// If this footnote is referenced more than once, use the `-x` suffix.
-					$linkNum = array_search($match[2], $footnotesSorted[$footnoteName]['refs']);
-					return $footnotesSorted[$footnoteName]['num'] . '-' . $linkNum;
+					// If this footnote is referenced more than once,
+					// use the `-x` suffix.
+					$linkNum = array_search(
+						$match[2], $footnotesSorted[$footnoteName]['refs']
+					);
+					return $footnotesSorted[$footnoteName]['num']
+						. '-'
+						. $linkNum;
 				} else {
 					// Otherwise, just the number.
 					return $footnotesSorted[$footnoteName]['num'];
@@ -137,7 +143,9 @@ trait FootnoteTrait
 					. $fnref
 					. '" role="doc-backlink">&#8617;&#xFE0E;</a>';
 			}
-			$linksPara = '<p class="footnote-backrefs">'. join("\n", $backLinks) . '</p>';
+			$linksPara = '<p class="footnote-backrefs">'
+				. join("\n", $backLinks)
+				. '</p>';
 			$footnotesHtml .= "<li id=\"{$prefix}fn-{$footnoteInfo['num']}\">";
 			$footnotesHtml .= "\n{$footnoteInfo['html']}$linksPara\n</li>\n";
 		}
@@ -160,7 +168,8 @@ trait FootnoteTrait
 	{
 		if (preg_match('/^\[\^(.+?)\]/', $text, $matches)) {
 			$footnoteName = function_exists("mb_strtolower") ?
-				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
+				mb_strtolower($matches[1], 'UTF-8') :
+				strtolower($matches[1]) ;
 
 			// We will later order the footnotes
 			// according to the order that the footnote links appear in.
@@ -170,7 +179,10 @@ trait FootnoteTrait
 			// To render a footnote link, we only need to know its link-number,
 			// which will later be turned into its footnote-number (after sorting).
 			return [
-				['footnoteLink', 'num' => $this->footnoteLinkNum],
+				[
+					'footnoteLink',
+					'num' => $this->footnoteLinkNum
+				],
 				strlen($matches[0])
 			];
 		}
@@ -223,20 +235,27 @@ trait FootnoteTrait
 		$footnotes = [];
 		$count = count($lines);
 		$nextLineIndent = null;
+
 		for ($i = $current; $i < $count; $i++) {
 			$line = $lines[$i];
 			$startsFootnote = preg_match('/^\[\^(.+?)]:[ \t]*/', $line, $matches);
 			if ($startsFootnote) {
 				// Current line starts a footnote.
 				$name = function_exists("mb_strtolower") ?
-					mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]);
+					mb_strtolower($matches[1], 'UTF-8') :
+					strtolower($matches[1]) ;
+
 				$str = substr($line, strlen($matches[0]));
 				$footnotes[$name] = [ trim($str) ];
 			} elseif (trim($line) === '') {
 				// Current line is empty and ends this list of footnotes
 				// unless the next line is indented.
 				if (isset($lines[$i+1])) {
-					$nextLineIndented = preg_match('/^(\t| {4})/', $lines[$i + 1], $matches);
+					$nextLineIndented = preg_match(
+						'/^(\t| {4})/',
+						$lines[$i + 1],
+						$matches
+					);
 					if ($nextLineIndented) {
 						// If the next line is indented, keep this empty line.
 						$nextLineIndent = $matches[1];
@@ -248,9 +267,9 @@ trait FootnoteTrait
 				}
 			} elseif (!$startsFootnote && isset($footnotes[$name])) {
 				// Current line continues the current footnote.
-				$footnotes[$name][] = $nextLineIndent
-					? substr($line, strlen($nextLineIndent))
-					: trim($line);
+				$footnotes[$name][] = $nextLineIndent ?
+					substr($line, strlen($nextLineIndent)) :
+					trim($line) ;
 			}
 		}
 

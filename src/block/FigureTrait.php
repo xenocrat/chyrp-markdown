@@ -17,9 +17,11 @@ trait FigureTrait
 	 */
 	protected function identifyFigure($line): bool
 	{
-		return $line[0] === ':'
-			&& (!isset($line[1]) || ($l1 = $line[1]) === ' ' ||
-				($l1 === ":" && (!isset($line[2]) || $line[2] === ' ')));
+		return (
+			$line[0] === ':' and !isset($line[1])
+			|| str_starts_with($line, ': ')
+			|| str_starts_with($line, ':: ')
+		);
 	}
 
 	/**
@@ -29,15 +31,16 @@ trait FigureTrait
 	{
 		$content = [];
 		$caption = [];
+
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			if (ltrim($line) !== '') {
 				if ($line[0] == ':' && !isset($line[1])) {
 					$line = '';
-				} elseif (strncmp($line, ': ', 2) === 0) {
+				} elseif (str_starts_with($line, ': ')) {
 					$line = substr($line, 2);
-				} elseif (strncmp($line, ':: ', 3) === 0) {
+				} elseif (str_starts_with($line, ':: ')) {
 					$caption[$i] = substr($line, 3);
 					continue;
 				} else {
@@ -76,6 +79,7 @@ trait FigureTrait
 			'content' => $this->parseBlocks($content),
 			'caption' => $this->parseBlocks(array_values($caption)),
 		];
+
 		return [$block, $i];
 	}
 
@@ -84,16 +88,21 @@ trait FigureTrait
 	 */
 	protected function renderFigure($block): string
 	{
-		if ($block['endcap'] !== null) {
-			$caption = "<figcaption>\n" . $this->renderAbsy($block['caption']) . "</figcaption>\n";
-		} else {
-			$caption = '';
-		}
+		$caption = $block['endcap'] === null ?
+			'' :
+			"<figcaption>\n"
+				. $this->renderAbsy($block['caption'])
+				. "</figcaption>\n" ;
 
 		if ($block['endcap'] === false) {
-			$figure = "<figure>\n" . $caption . $this->renderAbsy($block['content']) . "</figure>\n";
+			$figure = "<figure>\n"
+				. $caption . $this->renderAbsy($block['content'])
+				. "</figure>\n";
 		} else {
-			$figure = "<figure>\n" . $this->renderAbsy($block['content']) . $caption . "</figure>\n";
+			$figure = "<figure>\n"
+				. $this->renderAbsy($block['content'])
+				. $caption
+				. "</figure>\n";
 		}
 
 		return $figure;

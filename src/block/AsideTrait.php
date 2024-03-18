@@ -17,7 +17,10 @@ trait AsideTrait
 	 */
 	protected function identifyAside($line): bool
 	{
-		return $line[0] === '<' && (!isset($line[1]) || ($l1 = $line[1]) === ' ');
+		return (
+			$line[0] === '<'
+			&& (!isset($line[1]) || ($l1 = $line[1]) === ' ')
+		);
 	}
 
 	/**
@@ -26,13 +29,14 @@ trait AsideTrait
 	protected function consumeAside($lines, $current): array
 	{
 		$content = [];
+
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			if (ltrim($line) !== '') {
 				if ($line[0] == '<' && !isset($line[1])) {
 					$line = '';
-				} elseif (strncmp($line, '< ', 2) === 0) {
+				} elseif (str_starts_with($line, '< ')) {
 					$line = substr($line, 2);
 				} else {
 					--$i;
@@ -43,11 +47,11 @@ trait AsideTrait
 				break;
 			}
 		}
-
 		$block = [
 			'aside',
 			'content' => $this->parseBlocks($content),
 		];
+
 		return [$block, $i];
 	}
 
@@ -56,7 +60,9 @@ trait AsideTrait
 	 */
 	protected function renderAside($block): string
 	{
-		return '<aside>' . $this->renderAbsy($block['content']) . "</aside>\n";
+		return '<aside>'
+			. $this->renderAbsy($block['content'])
+			. "</aside>\n";
 	}
 
 	abstract protected function parseBlocks($lines);

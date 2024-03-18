@@ -40,60 +40,38 @@ trait HtmlTrait
 	protected function identifyHtml($line, $lines, $current): bool
 	{
 		if ($line[0] !== '<' || isset($line[1]) && $line[1] == ' ') {
-		// no tag
-			return false;
+			return false; // no tag
 		}
 		if (strncasecmp($line, '<script', 7) === 0) {
-		// type 1: script
-			return true;
+			return true; // type 1: script
 		}
 		if (strncasecmp($line, '<pre', 4) === 0) {
-		// type 1: pre
-			return true;
+			return true; // type 1: pre
 		}
 		if (strncasecmp($line, '<style', 6) === 0) {
-		// type 1: style
-			return true;
+			return true; // type 1: style
 		}
 		if (strncmp($line, '<!--', 4) === 0) {
-		// type 2: comment
-			return true;
+			return true; // type 2: comment
 		}
 		if (strncmp($line, '<?', 2) === 0) {
-		// type 3: processor
-			return true;
+			return true; // type 3: processor
 		}
-		if (
-			strncmp($line, '<!', 2) === 0
-			&& ctype_alpha(substr($line, 2, 1))
-		) {
-		// type 4: declaration
-			return true;
+		if (strncmp($line, '<!', 2) === 0 && ctype_alpha(substr($line, 2, 1))) {
+			return true; // type 4: declaration
 		}
 		if (strncmp($line, '<![CDATA[', 9) === 0) {
-		// type 5: cdata
-			return true;
+			return true; // type 5: cdata
 		}
-
-		static $patterns;
-		if (!isset($patterns)) {
-			$patterns = implode('|', $this->type6HtmlElements);
-		}
-
+		$patterns = implode('|', $this->type6HtmlElements);
 		if (preg_match("/^<\/?($patterns)(\s|>|\/>|$)/i", $line)) {
-		// type 6
-			return true;
+			return true; // type 6
 		}
-		if (
-			preg_match('/^<\/?[a-z][a-z0-9\-]*( [^>]*)?>(\s)*$/i', $line)
-			&& (
-				!isset($lines[$current - 1])
-				|| $lines[$current - 1] === ''
-				|| ltrim($lines[$current - 1]) === ''
-			)
-		) {
-		// type 7
-			return true;
+		if (preg_match('/^<\/?[a-z][a-z0-9\-]*( [^>]*)?>(\s)*$/i', $line)
+			&& (!isset($lines[$current - 1]) ||
+				$lines[$current - 1] === '' ||
+				ltrim($lines[$current - 1]) === '')) {
+			return true; // type 7
 		}
 		return false;
 	}
@@ -104,9 +82,8 @@ trait HtmlTrait
 	protected function consumeHtml($lines, $current): array
 	{
 		$content = [];
-
 		if (strncasecmp($lines[$current], '<script', 7) === 0) {
-		// type 1: script
+			// type 1: script
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -115,7 +92,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncasecmp($lines[$current], '<pre', 4) === 0) {
-		// type 1: pre
+			// type 1: pre
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -124,7 +101,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncasecmp($lines[$current], '<style', 6) === 0) {
-		// type 1: style
+			// type 1: style
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -133,7 +110,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncmp($lines[$current], '<!--', 4) === 0) {
-		// type 2: comment
+			// type 2: comment
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -142,7 +119,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncmp($lines[$current], '<?', 2) === 0) {
-		// type 3: processor
+			// type 3: processor
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -151,7 +128,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncmp($lines[$current], '<!', 2) === 0) {
-		// type 4: declaration
+			// type 4: declaration
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -160,7 +137,7 @@ trait HtmlTrait
 				}
 			}
 		} elseif (strncmp($lines[$current], '<![CDATA[', 9) === 0) {
-		// type 5: cdata
+			// type 5: cdata
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
 				$content[] = $line;
@@ -169,7 +146,7 @@ trait HtmlTrait
 				}
 			}
 		} else {
-		// type 6 or 7 tag - consume until blank line
+			// type 6 or 7 tag - consume until blank line
 			$content = [];
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -184,7 +161,6 @@ trait HtmlTrait
 			'html',
 			'content' => implode("\n", $content),
 		];
-
 		return [$block, $i];
 	}
 
@@ -251,20 +227,14 @@ trait HtmlTrait
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}
 			if (preg_match('/^<![a-z].*?>/si', $text, $matches)) {
-			// declaration
+			// processor
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}
 			if (preg_match('/^<!\[CDATA\[.*?\]\]>/s', $text, $matches)) {
-			// cdata
+			// processor
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}
-			if (
-				preg_match(
-					'/^<\/?[a-z][a-z0-9\-]*(\/|[ \n].*?)?>/is',
-					$text,
-					$matches
-				)
-			) {
+			if (preg_match('/^<\/?[a-z][a-z0-9\-]*(\/|[ \n].*?)?>/is', $text, $matches)) {
 			// tag
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}

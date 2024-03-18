@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -23,7 +23,12 @@ trait StrikeoutTrait
 	 */
 	protected function parseStrike($markdown): array
 	{
-		if (preg_match('/^(~{1,2})(?!~)(.*?[^~\\\\])\1(?!~)/s', $markdown, $matches)) {
+		if (
+			preg_match('/^(~{1,2})(?!~)(.*?[^~\\\\])\1(?!~)/s',
+				$markdown,
+				$matches
+			)
+		) {
 			return [
 				[
 					'strike',
@@ -37,7 +42,9 @@ trait StrikeoutTrait
 
 	protected function renderStrike($block): string
 	{
-		return '<del>' . $this->renderAbsy($block[1]) . '</del>';
+		return '<del>'
+			. $this->renderAbsy($block[1])
+			. '</del>';
 	}
 
 	abstract protected function parseInline($text);

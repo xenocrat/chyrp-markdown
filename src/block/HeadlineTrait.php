@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 Carsten Brandt
+ * @copyright Copyright (c) 2014 Carsten Brandt, 2024 Daniel Pimley
  * @license https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
@@ -27,9 +27,9 @@ trait HeadlineTrait
 	{
 		return (
 			// ATX headline
-			preg_match('/^ {0,3}(#{1,6})([ \t]|$)/', $line) ||
+			preg_match('/^ {0,3}(#{1,6})([ \t]|$)/', $line)
 			// setext headline
-			!empty($lines[$current + 1])
+			|| !empty($lines[$current + 1])
 			&& preg_match('/^ {0,3}(\-+|=+)\s*$/', $lines[$current + 1])
 		);
 	}
@@ -39,7 +39,13 @@ trait HeadlineTrait
 	 */
 	protected function consumeHeadline($lines, $current): array
 	{
-		if (preg_match('/^ {0,3}(#{1,6})([ \t]|$)/', $lines[$current], $matches)) {
+		if (
+			preg_match(
+				'/^ {0,3}(#{1,6})([ \t]|$)/',
+				$lines[$current],
+				$matches
+			)
+		) {
 			// ATX headline
 			$line = trim($lines[$current], "# \t");
 			$block = [
@@ -66,7 +72,9 @@ trait HeadlineTrait
 	protected function renderHeadline($block): string
 	{
 		$tag = 'h' . $block['level'];
-		return "<$tag>" . $this->renderAbsy($block['content']) . "</$tag>\n";
+		return "<$tag>"
+			. $this->renderAbsy($block['content'])
+			. "</$tag>\n";
 	}
 
 	abstract protected function parseInline($text);
