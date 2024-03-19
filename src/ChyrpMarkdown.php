@@ -85,6 +85,7 @@ class ChyrpMarkdown extends GithubMarkdown
 					|| $this->identifyOl($line, $lines, $i)
 					|| $this->identifyHr($line, $lines, $i)
 					|| $this->identifyHtml($line, $lines, $i)
+					|| $this->identifyFootnoteList($line, $lines, $i)
 				)
 				|| $this->identifyHeadline($line, $lines, $i)
 			) {
