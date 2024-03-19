@@ -133,12 +133,10 @@ abstract class Parser
 	 */
 	protected function postprocess($markup): string
 	{
-		$safe = function_exists('mb_chr') ?
-			mb_chr(0xFFFD, 'UTF-8') : '&#xFFFD;' ;
-
+		$safeChr = "\u{FFFD}";
 		$markup = rtrim($markup, "\n");
-		$markup = str_replace("\0", $safe, $markup);
-		$markup = preg_replace('/&#[Xx]?0+;/', $safe, $markup);
+		$markup = str_replace("\0", $safeChr, $markup);
+		$markup = preg_replace('/&#[Xx]?0+;/', $safeChr, $markup);
 		return $markup;
 	}
 
