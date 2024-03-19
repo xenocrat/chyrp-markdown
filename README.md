@@ -127,7 +127,7 @@ If you use LinkTrait or FootnoteTrait it may be useful to implement `prepare()` 
 
 #### Define escapeable characters
 
-Depending on the language features you have chosen to implement, a different set of characters must be escapable using a backslash (`\`). The parser defines only backslash as escapable (`\\`) initially.
+Depending on the language features you have chosen to implement, a different set of characters must be defined as escapable using a backslash (`\`). The parser defines only backslash as escapable (`\\`) initially.
 
 #### Add custom rendering behavior
 
