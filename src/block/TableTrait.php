@@ -24,6 +24,8 @@ trait TableTrait
 				$lines[$current + 1]
 			)
 			&& strpos($lines[$current + 1], '|') !== false
+			// attempt to detect a mismatch in the
+			// number of header and delimiter columns
 			&& (
 				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line) ===
 				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1])
@@ -66,14 +68,18 @@ trait TableTrait
 						$block['cols'][] = '';
 					}
 				}
-
 				continue;
 			}
-			if ($line === '' || str_starts_with($lines[$i], '    ')) {
-				break;
-			}
-			if ($i > $current + 1
-				&& $this->detectLineType($lines, $i) !== 'paragraph') {
+			if (
+				// blank line breaks the table
+				$line === ''
+				|| (
+				// once iteration is beyond the header and delimiter rows,
+				// detecting a non-paragraph block marker breaks the table.
+					$i > $current + 1
+					&& $this->detectLineType($lines, $i) !== 'paragraph'
+				)
+			) {
 				break;
 			}
 			if ($line[0] === '|') {
