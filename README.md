@@ -90,20 +90,20 @@ This Markdown parser allows you to extend the Markdown language by changing exis
 
 ### Adding block elements
 
-The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods having a name beginning with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if not.
+The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods having a name beginning with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if the line does not match its requirements.
 
 Parsing of a block element is done in two steps:
 
 1. **Consuming** all the lines belonging to it, by iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
 
-2. **Rendering** the element. After all blocks have been consumed, they are being rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree. You may also add code highlighting here.
+2. **Rendering** the element. After all blocks have been consumed, each block is rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree.
 
 ### Adding inline elements
 
-Adding inline elements is different from block elements as they are parsed using markers in the text.
-An inline element is identified by a marker that marks the beginning of an inline element (e.g. `[` will mark a possible beginning of a link or `` ` `` will mark inline code).
+Adding inline elements is done differently from block elements because they are parsed using markers in the text.
+An inline element is identified by a marker that marks the beginning of an inline element (e.g. `[` will mark the possible beginning of a link or `` ` `` will mark inline code).
 
-Parsing methods for inline elements are also protected and identified by the prefix `parse`. Additionally a matching method name suffixed with `Markers` is needed to register the parse function for one or multiple markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker. The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input Markdown. All text up to this offset will be removed from the Markdown before the next marker will be searched.
+Parsing methods for inline elements are protected and identified by the prefix `parse`. Additionally a matching method name suffixed with `Markers` is needed to register the parse function for one or multiple markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker. The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input Markdown. All text up to this offset will be removed from the Markdown before the next marker will be searched.
 
 ### Composing your own Markdown flavor
 
