@@ -22,8 +22,8 @@ trait FencedCodeTrait
 	protected function identifyFencedCode($line): bool
 	{
 		return (
-			preg_match('/^~{3,}/', $line)
-			|| preg_match('/^`{3,}[^`]*$/', $line)
+			preg_match('/^ {0,3}~{3,}/', $line)
+			|| preg_match('/^ {0,3}`{3,}[^`]*$/', $line)
 		);
 	}
 
@@ -32,18 +32,29 @@ trait FencedCodeTrait
 	 */
 	protected function consumeFencedCode($lines, $current): array
 	{
-		$line = ltrim($lines[$current]);
-		$fence = substr($line, 0, $pos = strspn($line, $line[0]));
-		$language = trim(substr($line, $pos));
+		$indent = strspn($lines[$current], ' ');
+		$line = substr($lines[$current], $indent);
+		$mw = strspn($line, $line[0]);
+		$fence = substr($line, 0, $mw);
+		$language = trim(substr($line, $mw));
 		$content = [];
 
 		// consume until end fence
 		for ($i = $current + 1, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
+			$leadingSpaces = strspn($line, ' ');
 			if (
-				($pos = strspn($line, $fence[0])) < strlen($fence)
-				|| ltrim(substr($line, $pos)) !== ''
+				$leadingSpaces > 3
+				|| strspn(ltrim($line), $fence[0]) < $mw
+				|| !str_ends_with(rtrim($line), $fence[0])
 			) {
+				if ($indent > 0 && $leadingSpaces > 0) {
+					if ($leadingSpaces < $indent) {
+						$line = ltrim($line);
+					} else {
+						$line = substr($line, $indent);
+					}
+				}
 				$content[] = $line;
 			} else {
 				break;
