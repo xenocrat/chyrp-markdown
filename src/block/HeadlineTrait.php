@@ -47,7 +47,8 @@ trait HeadlineTrait
 			)
 		) {
 			// ATX headline
-			$line = trim($lines[$current], "# \t");
+			$line = ltrim($lines[$current], "# \t");
+			$line = preg_replace('/ +(#+ *)?$/', '', $line);
 			$block = [
 				'headline',
 				'content' => $this->parseInline($line),
