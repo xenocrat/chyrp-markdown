@@ -57,7 +57,7 @@ trait TableTrait
 						continue;
 					}
 					$l = ($col[0] === ':');
-					$r = (substr($col, -1, 1) === ':');
+					$r = (str_ends_with($col, ':');
 					if ($l && $r) {
 						$block['cols'][] = 'center';
 					} elseif ($l) {
