@@ -13,7 +13,7 @@ namespace cebe\markdown\block;
 trait TableTrait
 {
 	/**
-	 * identify a line as the beginning of a table block.
+	 * Identify a line as the beginning of a table block.
 	 */
 	protected function identifyTable($line, $lines, $current): bool
 	{
@@ -96,7 +96,7 @@ trait TableTrait
 			}
 
 			array_unshift($this->context, 'table');
-			$row = $this->parseInline($line);
+			$row = $this->parseInline(trim($line, ' '));
 			array_shift($this->context);
 
 			$r = count($block['rows']);
