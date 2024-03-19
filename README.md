@@ -118,7 +118,7 @@ Designing your Markdown flavor consists of four steps:
 
 #### Select a base class
 
-If you want to extend a flavor and only add features you can use one of the existing classes (`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class. If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
+If you want to extend a flavor and add features you can use one of the existing classes (`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class. If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
 
 #### Select language feature traits
 
