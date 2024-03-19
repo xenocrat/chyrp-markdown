@@ -100,9 +100,9 @@ Parsing of a block element is done in two steps:
 
 ### Adding inline elements
 
-Adding inline elements is done differently from block elements because they are parsed using string markers in the text. An inline element is identified by a marker that marks the beginning of an inline element (e.g. `[` marks the possible beginning of a link or `` ` `` marks possible inline code).
+Adding inline elements is done differently from block elements because they are parsed using string markers in the text. An inline element is identified by a marker of one or more characters that marks the possible beginning of an inline element (e.g. `[` marks the possible beginning of a link or `` ` `` marks possible inline code).
 
-Parsing methods for inline elements are protected and have names beginning with `parse`. Additionally a matching method name suffixed with `Markers` is needed to register the parse function for one or multiple markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker. The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input Markdown. All text up to this offset will be removed from the Markdown before the next marker will be searched.
+Parsing methods for inline elements are protected and have names beginning with `parse`. Additionally a matching method name suffixed with `Markers` is needed to register a parse function for one or more markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The method will then be called when a marker is found in the text. As an argument it takes the text starting at the position of the marker. The parser method will return an array containing the element of the abstract sytnax tree and an offset of text it has parsed from the input Markdown. All text up to this offset will be removed from the Markdown before the next marker will be searched.
 
 ### Composing your own Markdown flavor
 
