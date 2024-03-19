@@ -27,7 +27,8 @@ trait TableTrait
 			// attempt to detect a mismatch in the
 			// number of header and delimiter columns
 			&& (
-				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line) ===
+				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line)
+				===
 				preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1])
 			)
 		);
