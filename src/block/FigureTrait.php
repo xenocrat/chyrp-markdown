@@ -18,8 +18,15 @@ trait FigureTrait
 	protected function identifyFigure($line): bool
 	{
 		return (
-			$line[0] === ':' and !isset($line[1])
+			(
+				$line[0] === ':'
+				&& !isset($line[1])
+			)
 			|| str_starts_with($line, ': ')
+			|| (
+				str_starts_with($line, '::')
+				&& !isset($line[2])
+			)
 			|| str_starts_with($line, ':: ')
 		);
 	}
@@ -40,6 +47,12 @@ trait FigureTrait
 					$line = '';
 				} elseif (str_starts_with($line, ': ')) {
 					$line = substr($line, 2);
+				} elseif (
+					str_starts_with($line, '::')
+					&& !isset($line[2])
+				) {
+					$caption[$i] = '';
+					continue;
 				} elseif (str_starts_with($line, ':: ')) {
 					$caption[$i] = substr($line, 3);
 					continue;
