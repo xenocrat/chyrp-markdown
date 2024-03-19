@@ -51,10 +51,8 @@ trait FootnoteTrait
 	 */
 	public function addParsedFootnotes($html): string
 	{
-		// If no footnotes found, do nothing more.
-		if (count($this->footnotes) === 0) {
-			return $html;
-		}
+		// Unicode "uncertainty sign" will be used for missing references.
+		$uncertaintyChr = "\u{2BD1}";
 
 		// Sort all found footnotes by the order in which they are linked in the text.
 		$footnotesSorted = [];
@@ -81,12 +79,12 @@ trait FootnoteTrait
 
 		// Replace the footnote substitution markers with their actual numbers.
 		$referencedHtml = preg_replace_callback(
-			'/\x1Afootnote-(refnum|num)(.*?)\x1A/',
-			function ($match) use ($footnotesSorted) {
+			"/\u{FFFC}footnote-(refnum|num)(.*?)\u{FFFC}/",
+			function ($match) use ($footnotesSorted, $uncertaintyChr) {
 				$footnoteName = $this->footnoteLinks[$match[2]];
 				// Return the placeholder if the footnote doesn't exist.
 				if (!isset($footnotesSorted[$footnoteName])) {
-					return $match[0];
+					return $uncertaintyChr . $match[2];
 				}
 				// Replace only the footnote number.
 				if ($match[1] === 'num') {
@@ -127,7 +125,7 @@ trait FootnoteTrait
 		if (empty($footnotesSorted)) {
 			return '';
 		}
-		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '';
+		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '' ;
 		$hr = $this->html5 ? "<hr>\n" : "<hr />\n";
 		$footnotesHtml = "<div class=\"footnotes\" role=\"doc-endnotes\">\n$hr<ol>\n";
 		foreach ($footnotesSorted as $footnoteInfo) {
@@ -141,7 +139,7 @@ trait FootnoteTrait
 					. 'fnref'
 					. '-'
 					. $fnref
-					. '" role="doc-backlink">&#8617;&#xFE0E;</a>';
+					. '" role="doc-backlink">'. "\u{21A9}\u{FE0E}" . '</a>';
 			}
 			$linksPara = '<p class="footnote-backrefs">'
 				. join("\n", $backLinks)
@@ -195,9 +193,19 @@ trait FootnoteTrait
 	 */
 	protected function renderFootnoteLink($block): string
 	{
-		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '';
-		$substituteRefnum = "\x1Afootnote-refnum".$block['num']."\x1A";
-		$substituteNum = "\x1Afootnote-num" . $block['num'] . "\x1A";
+		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '' ;
+		$objChr = "\u{FFFC}";
+
+		$substituteRefnum = $objChr
+			. "footnote-refnum"
+			. $block['num']
+			. $objChr;
+
+		$substituteNum = $objChr
+			. "footnote-num"
+			. $block['num']
+			. $objChr;
+
 		return '<sup id="'
 			. $prefix
 			. 'fnref-'
@@ -229,50 +237,41 @@ trait FootnoteTrait
 	 */
 	protected function consumeFootnoteList($lines, $current): array
 	{
-		$name = '';
 		$footnotes = [];
-		$count = count($lines);
-		$nextLineIndent = null;
+		$parsedFootnotes = [];
 
-		for ($i = $current; $i < $count; $i++) {
+		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			$startsFootnote = preg_match('/^\[\^(.+?)]:[ \t]*/', $line, $matches);
 			if ($startsFootnote) {
-				// Current line starts a footnote.
+				// The start of a footnote.
 				$name = function_exists("mb_strtolower") ?
 					mb_strtolower($matches[1], 'UTF-8') :
 					strtolower($matches[1]) ;
 
 				$str = substr($line, strlen($matches[0]));
-				$footnotes[$name] = [ trim($str) ];
-			} elseif (trim($line) === '') {
-				// Current line is empty and ends this list of footnotes
-				// unless the next line is indented.
-				if (isset($lines[$i+1])) {
-					$nextLineIndented = preg_match(
-						'/^(\t| {4})/',
-						$lines[$i + 1],
-						$matches
-					);
-					if ($nextLineIndented) {
-						// If the next line is indented, keep this empty line.
-						$nextLineIndent = $matches[1];
-						$footnotes[$name][] = $line;
-					} else {
-						// Otherwise, end the current footnote.
-						break;
-					}
-				}
-			} elseif (!$startsFootnote && isset($footnotes[$name])) {
+				$footnotes[$name] = [$str];
+			} elseif (
+				!$startsFootnote
+				&& isset($name)
+				&& isset($footnotes[$name])
+			) {
+				if (
+					ltrim($line) === ''
+					&& end($footnotes[$name]) === ''
+				) {
+				// Two blank lines end this list of footnotes.
+					break;
+				} else {
 				// Current line continues the current footnote.
-				$footnotes[$name][] = $nextLineIndent ?
-					substr($line, strlen($nextLineIndent)) :
-					trim($line) ;
+					$footnotes[$name][] = $line;	
+				}
+			} else {
+				break;
 			}
 		}
 
 		// Parse all collected footnotes.
-		$parsedFootnotes = [];
 		foreach ($footnotes as $footnoteName => $footnoteLines) {
 			$parsedFootnotes[$footnoteName] = $this->parseBlocks($footnoteLines);
 		}
