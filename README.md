@@ -132,7 +132,7 @@ Depending on the language features you have chosen there is a different set of c
 
 #### Add custom rendering behavior
 
-Optionally you may also want to adjust rendering behavior by overriding some methods. You may refer to the `consumeParagraph()` method of the `Markdown` and `GithubMarkdown` classes for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
+Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the `Markdown` and `GithubMarkdown` classes for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
 
 Acknowledgements <a name="ack"></a>
 ----------------
