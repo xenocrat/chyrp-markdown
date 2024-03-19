@@ -55,6 +55,10 @@ trait HtmlTrait
 		// type 1: style
 			return true;
 		}
+		if (strncasecmp($line, '<textarea', 9) === 0) {
+		// type 1: textarea
+			return true;
+		}
 		if (strncmp($line, '<!--', 4) === 0) {
 		// type 2: comment
 			return true;
@@ -129,6 +133,15 @@ trait HtmlTrait
 				$line = $lines[$i];
 				$content[] = $line;
 				if (stripos($line, '</style>') !== false) {
+					break;
+				}
+			}
+		} elseif (strncasecmp($lines[$current], '<textarea', 9) === 0) {
+		// type 1: textarea
+			for ($i = $current, $count = count($lines); $i < $count; $i++) {
+				$line = $lines[$i];
+				$content[] = $line;
+				if (stripos($line, '</textarea>') !== false) {
 					break;
 				}
 			}
@@ -208,7 +221,13 @@ trait HtmlTrait
 	protected function parseEntity($text): array
 	{
 		// html entities e.g. &copy; &#169; &#x00A9;
-		if (preg_match('/^&#?[\w\d]+;/', $text, $matches)) {
+		if (
+			preg_match(
+				'/^&(#[\d]{1,7}|#[x][a-f0-9]{1,6}|[\w\d]{2,});/i',
+				$text,
+				$matches
+			)
+		) {
 			return [['lt', $matches[0]], strlen($matches[0])];
 		} else {
 			return [['text', '&amp;'], 1];
