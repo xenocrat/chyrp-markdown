@@ -82,19 +82,21 @@ trait FootnoteTrait
 			"/\u{FFFC}footnote-(refnum|num)(.*?)\u{FFFC}/",
 			function ($match) use ($footnotesSorted, $uncertaintyChr) {
 				$footnoteName = $this->footnoteLinks[$match[2]];
-				// Return the placeholder if the footnote doesn't exist.
 				if (!isset($footnotesSorted[$footnoteName])) {
-					return $uncertaintyChr . $match[2];
+				// This is a link to a missing footnote.
+					// Return the uncertainty sign.
+					return $uncertaintyChr
+						. ($match[1] === 'refnum' ? '-' . $match[2] : '');
 				}
-				// Replace only the footnote number.
 				if ($match[1] === 'num') {
+				// Replace only the footnote number.
 					return $footnotesSorted[$footnoteName]['num'];
 				}
+				if (count($footnotesSorted[$footnoteName]['refs']) > 1) {
 				// For backlinks:
 				// some have a footnote number and an additional link number.
-				if (count($footnotesSorted[$footnoteName]['refs']) > 1) {
-					// If this footnote is referenced more than once,
-					// use the `-x` suffix.
+				// If this footnote is referenced more than once,
+				// use the `-x` suffix.
 					$linkNum = array_search(
 						$match[2], $footnotesSorted[$footnoteName]['refs']
 					);
@@ -289,7 +291,7 @@ trait FootnoteTrait
 			$this->footnotes[$footnoteName] = $this->renderAbsy($footnote);
 		}
 		// Render nothing, because all footnote lists will be concatenated
-		// at the end of the text.
+		// at the end of the text using the flavor's `postprocess` method.
 		return '';
 	}
 }
