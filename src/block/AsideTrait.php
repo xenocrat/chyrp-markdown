@@ -17,6 +17,13 @@ trait AsideTrait
 	 */
 	protected function identifyAside($line): bool
 	{
+		if (
+			$line[0] === ' '
+			&& strspn($line, ' ') < 4
+		) {
+		// trim up to three spaces
+			$line = ltrim($line, ' ');
+		}
 		return (
 			$line[0] === '<'
 			&& (!isset($line[1]) || ($l1 = $line[1]) === ' ')
@@ -33,6 +40,14 @@ trait AsideTrait
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
+			if (
+				isset($line[0])
+				&& $line[0] === ' '
+				&& strspn($line, ' ') < 4
+			) {
+			// trim up to three spaces
+				$line = ltrim($line, ' ');
+			}
 			if (ltrim($line) !== '') {
 				if ($line[0] == '<' && !isset($line[1])) {
 					$line = '';
