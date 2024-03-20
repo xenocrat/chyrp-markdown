@@ -36,7 +36,6 @@ trait EmphStrongTrait
 			if (strpos($text, $marker . $marker, 2) === false) {
 				return [['text', $text[0] . $text[1]], 2];
 			}
-
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -72,7 +71,6 @@ trait EmphStrongTrait
 			if (strpos($text, $marker, 1) === false) {
 				return [['text', $text[0]], 1];
 			}
-
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -108,6 +106,7 @@ trait EmphStrongTrait
 				}
 			}
 		}
+
 		return [['text', $text[0]], 1];
 	}
 
