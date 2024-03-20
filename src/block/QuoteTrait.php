@@ -17,10 +17,14 @@ trait QuoteTrait
 	 */
 	protected function identifyQuote($line): bool
 	{
-		return (
-			$line[0] === '>'
-			&& (!isset($line[1]) || ($l1 = $line[1]) === ' ')
-		);
+		if (
+			$line[0] === ' '
+			&& strspn($line, ' ') < 4
+		) {
+		// trim up to three spaces
+			$line = ltrim($line, ' ');
+		}
+		return $line[0] === '>';
 	}
 
 	/**
@@ -33,11 +37,21 @@ trait QuoteTrait
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
+			if (
+				isset($line[0])
+				&& $line[0] === ' '
+				&& strspn($line, ' ') < 4
+			) {
+			// trim up to three spaces
+				$line = ltrim($line, ' ');
+			}
 			if (ltrim($line) !== '') {
 				if ($line[0] == '>' && !isset($line[1])) {
 					$line = '';
 				} elseif (str_starts_with($line, '> ')) {
 					$line = substr($line, 2);
+				} elseif (str_starts_with($line, '>')) {
+					$line = substr($line, 1);
 				} else {
 					--$i;
 					break;
