@@ -231,7 +231,7 @@ trait FootnoteTrait
 	 */
 	protected function identifyFootnoteList($line): bool
 	{
-		return preg_match('/^\[\^(.+?)]:/', $line);
+		return preg_match('/^ {0,3}\[\^(.+?)]:/', $line);
 	}
 
 	/**
@@ -244,7 +244,7 @@ trait FootnoteTrait
 
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-			$startsFootnote = preg_match('/^\[\^(.+?)]:[ \t]*/', $line, $matches);
+			$startsFootnote = preg_match('/^ {0,3}\[\^(.+?)]:[ \t]*/', $line, $matches);
 			if ($startsFootnote) {
 				// The start of a footnote.
 				$name = function_exists("mb_strtolower") ?
