@@ -17,18 +17,14 @@ trait FigureTrait
 	 */
 	protected function identifyFigure($line): bool
 	{
-		return (
-			(
-				$line[0] === ':'
-				&& !isset($line[1])
-			)
-			|| str_starts_with($line, ': ')
-			|| (
-				str_starts_with($line, '::')
-				&& !isset($line[2])
-			)
-			|| str_starts_with($line, ':: ')
-		);
+		if (
+			$line[0] === ' '
+			&& strspn($line, ' ') < 4
+		) {
+		// trim up to three spaces
+			$line = ltrim($line, ' ');
+		}
+		return $line[0] === ':';
 	}
 
 	/**
@@ -42,25 +38,29 @@ trait FigureTrait
 		// consume until end of markers
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
+			if (
+				isset($line[0])
+				&& $line[0] === ' '
+				&& strspn($line, ' ') < 4
+			) {
+			// trim up to three spaces
+				$line = ltrim($line, ' ');
+			}
 			if (ltrim($line) !== '') {
-				if ($line[0] == ':' && !isset($line[1])) {
-					$line = '';
-				} elseif (str_starts_with($line, ': ')) {
-					$line = substr($line, 2);
-				} elseif (
-					str_starts_with($line, '::')
-					&& !isset($line[2])
-				) {
-					$caption[$i] = '';
-					continue;
-				} elseif (str_starts_with($line, ':: ')) {
+				if (str_starts_with($line, ':: ')) {
 					$caption[$i] = substr($line, 3);
 					continue;
+				} elseif (str_starts_with($line, '::')) {
+					$caption[$i] = substr($line, 2);
+					continue;
+				} elseif (str_starts_with($line, ': ')) {
+					$content[] = substr($line, 2);
+				} elseif (str_starts_with($line, ':')) {
+					$content[] = substr($line, 1);
 				} else {
 					--$i;
 					break;
 				}
-				$content[] = $line;
 			} else {
 				break;
 			}
