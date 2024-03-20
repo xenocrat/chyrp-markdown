@@ -39,6 +39,13 @@ trait HtmlTrait
 	 */
 	protected function identifyHtml($line, $lines, $current): bool
 	{
+		if (
+			$line[0] === ' '
+			&& strspn($line, ' ') < 4
+		) {
+		// trim up to three spaces
+			$line = ltrim($line, ' ');
+		}
 		if ($line[0] !== '<' || isset($line[1]) && $line[1] == ' ') {
 		// no tag
 			return false;
@@ -108,8 +115,9 @@ trait HtmlTrait
 	protected function consumeHtml($lines, $current): array
 	{
 		$content = [];
+		$line = ltrim($lines[$current], ' ');
 
-		if (strncasecmp($lines[$current], '<script', 7) === 0) {
+		if (strncasecmp($line, '<script', 7) === 0) {
 		// type 1: script
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -118,7 +126,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncasecmp($lines[$current], '<pre', 4) === 0) {
+		} elseif (strncasecmp($line, '<pre', 4) === 0) {
 		// type 1: pre
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -127,7 +135,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncasecmp($lines[$current], '<style', 6) === 0) {
+		} elseif (strncasecmp($line, '<style', 6) === 0) {
 		// type 1: style
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -136,7 +144,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncasecmp($lines[$current], '<textarea', 9) === 0) {
+		} elseif (strncasecmp($line, '<textarea', 9) === 0) {
 		// type 1: textarea
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -145,7 +153,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncmp($lines[$current], '<!--', 4) === 0) {
+		} elseif (strncmp($line, '<!--', 4) === 0) {
 		// type 2: comment
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -154,7 +162,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncmp($lines[$current], '<?', 2) === 0) {
+		} elseif (strncmp($line, '<?', 2) === 0) {
 		// type 3: processor
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -163,7 +171,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncmp($lines[$current], '<!', 2) === 0) {
+		} elseif (strncmp($line, '<!', 2) === 0) {
 		// type 4: declaration
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
@@ -172,7 +180,7 @@ trait HtmlTrait
 					break;
 				}
 			}
-		} elseif (strncmp($lines[$current], '<![CDATA[', 9) === 0) {
+		} elseif (strncmp($line, '<![CDATA[', 9) === 0) {
 		// type 5: cdata
 			for ($i = $current, $count = count($lines); $i < $count; $i++) {
 				$line = $lines[$i];
