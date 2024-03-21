@@ -46,6 +46,10 @@ trait CodeTrait
 
 	protected function renderInlineCode($block): string
 	{
+		if (isset($this->context[1]) && $this->context[1] === 'table') {
+			// unescape pipes if inside a table cell.
+			$block[1] = str_replace('\|', '|', $block[1]);
+		}
 		return '<code>'
 			. $this->escapeHtmlEntities(
 				$block[1],
