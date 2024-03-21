@@ -46,7 +46,7 @@ trait FigureTrait
 			// trim up to three spaces
 				$line = ltrim($line, ' ');
 			}
-			if (ltrim($line) !== '') {
+			if ($line !== '') {
 				if (str_starts_with($line, ':: ')) {
 					$caption[$i] = substr($line, 3);
 					continue;
