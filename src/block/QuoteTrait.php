@@ -45,7 +45,7 @@ trait QuoteTrait
 			// trim up to three spaces
 				$line = ltrim($line, ' ');
 			}
-			if ($line !== '') {
+			if (ltrim($line) !== '') {
 				if ($line[0] == '>' && !isset($line[1])) {
 					$line = '';
 				} elseif (str_starts_with($line, '> ')) {
