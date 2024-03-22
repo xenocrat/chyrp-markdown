@@ -241,6 +241,7 @@ trait FootnoteTrait
 	{
 		$footnotes = [];
 		$parsedFootnotes = [];
+		$mw = 0;
 
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
@@ -251,6 +252,7 @@ trait FootnoteTrait
 					mb_strtolower($matches[1], 'UTF-8') :
 					strtolower($matches[1]) ;
 
+				$mw = strlen($matches[0]);
 				$str = substr($line, strlen($matches[0]));
 				$footnotes[$name] = [$str];
 			} elseif (
@@ -260,12 +262,14 @@ trait FootnoteTrait
 			) {
 				if (
 					ltrim($line) === ''
-					&& end($footnotes[$name]) === ''
+					&& ltrim(end($footnotes[$name])) === ''
 				) {
 				// Two blank lines end this list of footnotes.
 					break;
 				} else {
 				// Current line continues the current footnote.
+					$indent = strspn($line, " \t");
+					$line = substr($line, ($indent < $mw ? $indent : $mw));
 					$footnotes[$name][] = $line;	
 				}
 			} else {
