@@ -12,7 +12,7 @@ Currently the following Markdown flavors are supported:
 Requirements
 -----------
 
-- [PHP 8.0+](http://www.php.net/downloads.php) is required.
+- PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
 
 Limitations
@@ -21,9 +21,9 @@ Limitations
 Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 72% of CommonMark test cases and 71% of GFM test cases.
 
 The most notable limitations of the parser are:
-1. It does not support indentation with intermingled tabs and spaces.
-2. It does not allow "lazy" continuation lines in blockquotes or lists.
-3. It does not recognize setext headings that span multiple lines.
+1. It does not support indentation with intermingled tabs and spaces;
+2. It does not recognize setext headings that span multiple lines;
+3. It does not allow "lazy" continuation lines in blockquotes or lists.
 
 Usage
 -----
@@ -60,7 +60,7 @@ $parser = new \cebe\markdown\GithubMarkdown();
 echo $parser->parseParagraph($markdown);
 ```
 
-You may optionally set one of the following options on the parser object before parsing:
+You may set one of the following options on the parser object before parsing:
 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
 - `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
@@ -150,7 +150,6 @@ This software was created by the following people:
 License
 -------
 
-This software is open source and licensed under the [MIT License][]. Check the [license][] for details.
+This software is open source and licensed under the MIT License. See [LICENSE][] for details.
 
-[MIT License]: http://opensource.org/licenses/MIT
-[license]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
+[LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
