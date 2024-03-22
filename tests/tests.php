@@ -90,6 +90,10 @@
 		foreach ($data as $parser => $tests) {
 			echo '<table>' . "\n";
 			echo '<thead>' . "\n";
+			echo '<colgroup>' . "\n";
+			echo '<col>' . "\n";
+			echo '<col span="3">' . "\n";
+			echo '</colgroup>' . "\n";
 			echo '<tr>' . "\n";
 			echo '<th colspan="4">' . $parser . '</th>';
 			echo '</tr>' . "\n";
@@ -174,9 +178,13 @@
 				margin: 0.5rem;
 			}
 			table {
+				table-layout: fixed;
 			    width: 100%;
 			    margin: 0.5rem 0rem;
 			    border-collapse: collapse;
+			}
+			col:first-child {
+				width: calc(3ch + 2rem);
 			}
 			tr {
 				background-color: #efefef;
@@ -188,14 +196,10 @@
 			    border: 1px solid #000000;
 			}
 			td {
-				width: calc(33.3% - 4ch);
 				font-family: monospace;
 				vertical-align: top;
 				padding: 1rem;
 			    border: 1px solid #000000;
-			}
-			td:first-child {
-				width: 4ch;
 			}
 			td.pass {
 				background-color: #ebfae4;
