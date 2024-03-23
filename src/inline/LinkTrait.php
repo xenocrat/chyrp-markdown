@@ -109,7 +109,7 @@ trait LinkTrait
 	{
 		if (
 			strpos($markdown, ']') !== false
-			&& preg_match('/\[(.*?)(?<!\\\\)\]/', $markdown, $textMatches)
+			&& preg_match('/^\[(.*?)(?<!\\\\)\]/', $markdown, $textMatches)
 		) {
 			$text = $textMatches[1];
 			$offset = strlen($textMatches[0]);
@@ -148,7 +148,7 @@ REGEXP;
 					$offset + strlen($refMatches[0]),
 					$key,
 				];
-			} elseif (preg_match('/^([ \n]?\[(.*?)\])?/s', $markdown, $refMatches)) {
+			} elseif (preg_match('/^(\[(.*?)\])?/s', $markdown, $refMatches)) {
 			// reference style link
 				$key = empty($refMatches[2]) ? $text : $refMatches[2];
 
@@ -190,12 +190,12 @@ REGEXP;
 					return [
 						[
 							'url',
-							$matches[1]
+							$this->unEscapeBackslash($matches[1])
 						],
 						strlen($matches[0])
 					];
 				} elseif (
-					preg_match('/^<([^\s>]*?@[^\s]*?\.\w+?)>/',
+					preg_match('/^<([^\\\\\s>]*?@[^\s]*?\.\w+?)>/',
 						$text, $matches
 					)
 				) {
@@ -203,7 +203,7 @@ REGEXP;
 					return [
 						[
 							'email',
-							$matches[1]
+							$this->unEscapeBackslash($matches[1])
 						],
 						strlen($matches[0])
 					];
@@ -323,7 +323,7 @@ REGEXP;
 			isset($line[0])
 			&& ($line[0] === ' ' || $line[0] === '[')
 			&& preg_match(
-				'/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/',
+				'/^ {0,3}\[(.+?)\]:\s*(([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*)?$/',
 				$line
 			)
 		);
@@ -337,7 +337,7 @@ REGEXP;
 		while (
 			isset($lines[$current])
 			&& preg_match(
-				'/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/',
+				'/^ {0,3}\[(.+?)\]:\s*(?:(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*)?$/',
 				$lines[$current],
 				$matches
 			)
@@ -345,7 +345,21 @@ REGEXP;
 			$key = function_exists("mb_strtolower") ?
 				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]) ;
 
-			$url = $matches[2];
+			if (isset($matches[2])) {
+				$url = $matches[2];
+			} else {
+			// url may be on the next line
+				if (
+					isset($lines[$current + 1])
+					&& trim($lines[$current + 1]) !== ''
+				) {
+					$url = trim($lines[$current + 1]);
+					$current++;
+				} else {
+				// url not found - consume lines as paragraph
+					return $this->consumeParagraph($lines, $current);
+				}
+			}
 			if (str_starts_with($url, '<') && str_ends_with($url, '>')) {
 				$url = str_replace(' ', '%20', substr($url, 1, -1));
 			}
@@ -355,7 +369,7 @@ REGEXP;
 			if (isset($matches[3])) {
 				$ref['title'] = $this->unEscapeBackslash($matches[3]);
 			} else {
-				// title may be on the next line
+			// title may be on the next line
 				if (
 					isset($lines[$current + 1])
 					&& preg_match(
@@ -373,6 +387,7 @@ REGEXP;
 			}
 			$current++;
 		}
+
 		return [false, --$current];
 	}
 
