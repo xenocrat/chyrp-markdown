@@ -110,6 +110,8 @@ trait LinkTrait
 		if (
 			strpos($markdown, ']') !== false
 			&& preg_match('/^\[(.*?)(?<!\\\\)\]/', $markdown, $textMatches)
+			// unescaped brackets are not allowed
+			&& !preg_match('/(?<!\\\\)[\[\]]/', $textMatches[1])
 		) {
 			$text = $textMatches[1];
 			$offset = strlen($textMatches[0]);
@@ -122,6 +124,7 @@ trait LinkTrait
 					^\(\s*(((?><[^<>\n]+>)|(?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
 				)/xs
 REGEXP;
+
 			if (preg_match($pattern, $markdown, $refMatches)) {
 			// inline link
 				$url = isset($refMatches[2]) ?
@@ -152,8 +155,9 @@ REGEXP;
 			// reference style link
 				$key = empty($refMatches[2]) ? $text : $refMatches[2];
 
-				$key = function_exists("mb_strtolower") ?
-					mb_strtolower($key, 'UTF-8') : strtolower($key) ;
+				$key = function_exists("mb_convert_case") ?
+					mb_convert_case($key, MB_CASE_FOLD, 'UTF-8') :
+					strtolower($key) ;
 
 				$url = null;
 				$title = null;
@@ -323,7 +327,7 @@ REGEXP;
 			isset($line[0])
 			&& ($line[0] === ' ' || $line[0] === '[')
 			&& preg_match(
-				'/^ {0,3}\[(.+?)\]:\s*(([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*)?$/',
+				'/^ {0,3}\[(.+?)(?<!\\\\)\]:\s*(([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*)?$/',
 				$line
 			)
 		);
@@ -337,13 +341,18 @@ REGEXP;
 		while (
 			isset($lines[$current])
 			&& preg_match(
-				'/^ {0,3}\[(.+?)\]:\s*(?:(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*)?$/',
+				'/^ {0,3}\[(.+?)(?<!\\\\)\]:\s*(?:(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*)?$/',
 				$lines[$current],
 				$matches
 			)
 		) {
-			$key = function_exists("mb_strtolower") ?
-				mb_strtolower($matches[1], 'UTF-8') : strtolower($matches[1]) ;
+			if (preg_match('/(?<!\\\\)[\[\]]/', $matches[1])) {
+			// unescaped brackets are not allowed
+				return $this->consumeParagraph($lines, $current);
+			}
+			$key = function_exists("mb_convert_case") ?
+				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
+				strtolower($matches[1]) ;
 
 			if (isset($matches[2])) {
 				$url = $matches[2];
