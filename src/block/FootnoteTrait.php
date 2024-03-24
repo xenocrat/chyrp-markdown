@@ -166,9 +166,13 @@ trait FootnoteTrait
 	 */
 	protected function parseFootnoteLink($text): array
 	{
-		if (preg_match('/^\[\^(.+?)\]/', $text, $matches)) {
-			$footnoteName = function_exists("mb_strtolower") ?
-				mb_strtolower($matches[1], 'UTF-8') :
+		if (
+			preg_match('/^\[\^(.+?)(?<!\\\\)\]/', $text, $matches)
+			// unescaped brackets are not allowed
+			&& !preg_match('/(?<!\\\\)[\[\]]/', $matches[1])
+		) {
+			$footnoteName = function_exists("mb_convert_case") ?
+				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 				strtolower($matches[1]) ;
 
 			// We will later order the footnotes
@@ -245,11 +249,15 @@ trait FootnoteTrait
 
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
-			$startsFootnote = preg_match('/^ {0,3}\[\^(.+?)]:[ \t]*/', $line, $matches);
+			$startsFootnote = preg_match(
+				'/^ {0,3}\[\^(.+?)(?<!\\\\)\]:[ \t]*/',
+				$line,
+				$matches
+			);
 			if ($startsFootnote) {
 				// The start of a footnote.
-				$name = function_exists("mb_strtolower") ?
-					mb_strtolower($matches[1], 'UTF-8') :
+				$name = function_exists("mb_convert_case") ?
+					mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 					strtolower($matches[1]) ;
 
 				$mw = strlen($matches[0]);
