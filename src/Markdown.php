@@ -123,8 +123,9 @@ class Markdown extends Parser
 	protected function renderText($text): string
 	{
 		$br = $this->html5 ? "<br>\n" : "<br />\n";
+		$text = $text[1];
 		// two or more spaces
-		$text = preg_replace("/ {2,}\n/", $br, $text[1]);
+		$text = preg_replace("/ {2,}\n/", $br, $text);
 		// trim single spaces
 		$text = str_replace(" \n", "\n", $text);
 		return $text;
