@@ -53,7 +53,7 @@ trait CodeTrait
 		return '<code>'
 			. $this->escapeHtmlEntities(
 				$block[1],
-				ENT_QUOTES | ENT_SUBSTITUTE
+				ENT_COMPAT | ENT_SUBSTITUTE
 			)
 			. '</code>';
 	}
