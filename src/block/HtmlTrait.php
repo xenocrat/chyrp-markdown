@@ -312,4 +312,18 @@ trait HtmlTrait
 	{
 		return [['text', '&gt;'], 1];
 	}
+
+	protected function parseDoubleQuoteMarkers(): array
+	{
+		return array('"');
+	}
+
+	/**
+	 * Escapes `"` characters.
+	 * @marker "
+	 */
+	protected function parseDoubleQuote($text): array
+	{
+		return [['text', '&quot;'], 1];
+	}
 }
