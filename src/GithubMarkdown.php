@@ -29,29 +29,6 @@ class GithubMarkdown extends Markdown
 	public $enableNewlines = false;
 
 	/**
-	 * @inheritDoc
-	 */
-	protected $escapeCharacters = [
-		// from Markdown
-		'\\', // backslash
-		'`', // backtick
-		'*', // asterisk
-		'_', // underscore
-		'{', '}', // curly braces
-		'[', ']', // square brackets
-		'(', ')', // parentheses
-		'#', // hash mark
-		'+', // plus sign
-		'-', // minus sign (hyphen)
-		'.', // dot
-		'!', // exclamation mark
-		'<', '>', // angle brackets
-		// added by GithubMarkdown
-		':', // colon
-		'|', // pipe
-	];
-
-	/**
 	 * Consume lines for a paragraph.
 	 *
 	 * Allow other block types to break paragraphs.

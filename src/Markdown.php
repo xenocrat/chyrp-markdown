@@ -35,6 +35,7 @@ class Markdown extends Parser
 	 */
 	protected $escapeCharacters = [
 		'\\', // backslash
+		'/', // forward slash
 		'`', // backtick
 		'*', // asterisk
 		'_', // underscore
@@ -45,8 +46,22 @@ class Markdown extends Parser
 		'+', // plus sign
 		'-', // minus sign (hyphen)
 		'.', // dot
+		',', // comma
 		'!', // exclamation mark
 		'<', '>', // angle brackets
+		'"', // double quote
+		'\'', // single quote
+		'$', // dollar sign
+		'%', // percent sign
+		'&', // ampersand
+		':', // colon
+		';', // semicolon
+		'=', // equals sign
+		'?', // question mark
+		'@', // at symbol
+		'~', // tilde
+		'^', // caret
+		'|', // pipe
 	];
 
 	/**
