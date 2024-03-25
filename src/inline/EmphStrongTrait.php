@@ -45,7 +45,7 @@ trait EmphStrongTrait
 				)
 				|| $marker === '_'
 				&& preg_match(
-					'/^__((?>\\\\_|[^_]|_[^_]*_)+?)__/us',
+					'/^__((?>\\\\_|[^_]|_[^_]*_)+?)__\b/us',
 					$text,
 					$matches
 				)
