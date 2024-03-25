@@ -18,7 +18,7 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 76% of CommonMark test cases and 75% of GFM test cases.
+Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 76% of CommonMark test cases and 76% of GFM test cases.
 
 The most notable limitations of the parser are:
 1. It does not support indentation with intermingled tabs and spaces;
