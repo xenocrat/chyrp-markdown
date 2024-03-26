@@ -55,8 +55,8 @@ echo $parser->parse($markdown);
 $parser = new \cebe\markdown\ChyrpMarkdown();
 echo $parser->parse($markdown);
 
-// GFM; parse only inline elements (useful for one-line descriptions)
-$parser = new \cebe\markdown\GithubMarkdown();
+// CommonMark; parse only inline elements (useful for one-line descriptions)
+$parser = new \cebe\markdown\Markdown();
 echo $parser->parseParagraph($markdown);
 ```
 
