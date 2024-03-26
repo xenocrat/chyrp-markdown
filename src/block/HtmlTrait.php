@@ -97,11 +97,10 @@ trait HtmlTrait
 		}
 		if (
 			preg_match(
-				'/^<\/?[a-z][a-z0-9\-]*( [^>]*)?>(\s)*$/i',
+				'/^<(\/)?[a-z][a-z0-9\-]*(?(1) *| .*?)?>(\s)*$/i',
 				$line,
 				$matches
 			)
-			&& substr_count($matches[0], '"') % 2 === 0
 			&& (
 				!isset($lines[$current - 1])
 				|| $lines[$current - 1] === ''
@@ -280,7 +279,7 @@ trait HtmlTrait
 				// processor
 				|| preg_match('/^<\?.*?\?>/s', $text, $matches)
 				// declaration
-				|| preg_match('/^<![a-z].*?>/si', $text, $matches)
+				|| preg_match('/^<![a-z].*?>/is', $text, $matches)
 				// cdata
 				|| preg_match('/^<!\[CDATA\[.*?\]\]>/s', $text, $matches)
 			) {
@@ -289,11 +288,10 @@ trait HtmlTrait
 			if (
 				// tag
 				preg_match(
-					'/^<\/?[a-z][a-z0-9\-]*(\/|[ \n].*?)?>/is',
+					'/^<(\/)?[a-z][a-z0-9\-]*(?(1)[ \n]*|(\/|[ \n].*?))?>/is',
 					$text,
 					$matches
 				)
-				&& substr_count($matches[0], '"') % 2 === 0
 			) {
 				return [['lt', $matches[0]], strlen($matches[0])];
 			}
