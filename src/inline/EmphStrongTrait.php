@@ -34,7 +34,7 @@ trait EmphStrongTrait
 		// strong
 			// avoid excessive regex backtracking if there is no closing marker
 			if (strpos($text, $marker . $marker, 2) === false) {
-				return [['text', $text[0] . $text[1]], 2];
+				return [['text', $text[0]], 1];
 			}
 			if (
 				$marker === '*'
@@ -56,10 +56,10 @@ trait EmphStrongTrait
 				if ($content === '') {
 					return [['text', $text[0]], 2];
 				}
-				// first and last chars must be graphical
+				// first and last chars of the strong text cannot be blank
 				if (
-					ctype_graph($content[0])
-					&& ctype_graph(substr($content, -1))
+					strspn($content, " \t\n", 0, 1) === 0
+					&& strspn($content, " \t\n", -1) === 0
 				) {
 					return [
 						[
@@ -96,10 +96,10 @@ trait EmphStrongTrait
 				if ($content === '') {
 					return [['text', $text[0]], 2];
 				}
-				// first and last chars must be graphical
+				// first and last chars of the emphasised text cannot be blank
 				if (
-					ctype_graph($content[0])
-					&& ctype_graph(substr($content, -1))
+					strspn($content, " \t\n", 0, 1) === 0
+					&& strspn($content, " \t\n", -1) === 0
 				) {
 					return [
 						[
