@@ -49,9 +49,9 @@ class ChyrpMarkdown extends GithubMarkdown
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $lines[$i];
 			if ($line === ''
-				|| ltrim($line) === ''
+				|| ($trimmed = ltrim($line)) === ''
 				|| (
-					(ctype_punct($line[0]) || ctype_digit($line[0]))
+					(ctype_punct($trimmed[0]) || ctype_digit($trimmed[0]))
 					&& (
 						$this->identifyQuote($line, $lines, $i)
 						|| $this->identifyFencedCode($line, $lines, $i)
