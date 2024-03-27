@@ -88,14 +88,16 @@ class Markdown extends Parser
 			if (
 				$line === ''
 				|| ltrim($line) === ''
-				|| !ctype_alpha($line[0])
-				&& (
-					$this->identifyQuote($line, $lines, $i)
-					|| $this->identifyFencedCode($line, $lines, $i)
-					|| $this->identifyUl($line, $lines, $i)
-					|| $this->identifyOl($line, $lines, $i)
-					|| $this->identifyHr($line, $lines, $i)
-					|| $this->identifyHtml($line, $lines, $i)
+				|| (
+					(ctype_punct($line[0]) || ctype_digit($line[0]))
+					&& (
+						$this->identifyQuote($line, $lines, $i)
+						|| $this->identifyFencedCode($line, $lines, $i)
+						|| $this->identifyUl($line, $lines, $i)
+						|| $this->identifyOl($line, $lines, $i)
+						|| $this->identifyHr($line, $lines, $i)
+						|| $this->identifyHtml($line, $lines, $i)
+					)
 				)
 				|| $this->identifyHeadline($line, $lines, $i)
 			) {
