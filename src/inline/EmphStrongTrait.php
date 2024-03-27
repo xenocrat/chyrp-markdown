@@ -51,12 +51,13 @@ trait EmphStrongTrait
 				)
 			) {
 				$content = $matches[1];
-				// if only a single whitespace or nothing is contained in a strong,
+				// if nothing is contained in a strong,
 				// do not consider it valid
 				if ($content === '') {
 					return [['text', $text[0]], 2];
 				}
-				// first and last chars of the strong text cannot be blank
+				// first and last chars of the strong text
+				// cannot be whitespace
 				if (
 					strspn($content, " \t\n", 0, 1) === 0
 					&& strspn($content, " \t\n", -1) === 0
@@ -91,12 +92,13 @@ trait EmphStrongTrait
 				)
 			) {
 				$content = $matches[1];
-				// if only a single whitespace or nothing is contained in an emphasis,
+				// if nothing is contained in an emphasis,
 				// do not consider it valid
 				if ($content === '') {
 					return [['text', $text[0]], 2];
 				}
-				// first and last chars of the emphasised text cannot be blank
+				// first and last chars of the emphasised text
+				// cannot be whitespace
 				if (
 					strspn($content, " \t\n", 0, 1) === 0
 					&& strspn($content, " \t\n", -1) === 0
