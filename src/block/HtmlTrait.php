@@ -74,10 +74,7 @@ trait HtmlTrait
 		// type 3: processor
 			return true;
 		}
-		if (
-			strncmp($line, '<!', 2) === 0
-			&& ctype_alpha(substr($line, 2, 1))
-		) {
+		if (preg_match('/^<![a-z]/i', $line)) {
 		// type 4: declaration
 			return true;
 		}
