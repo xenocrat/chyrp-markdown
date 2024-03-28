@@ -83,8 +83,8 @@ trait HtmlTrait
 			return true;
 		}
 
-		static $patterns;
 		if (!isset($patterns)) {
+			static $patterns;
 			$patterns = implode('|', $this->type6HtmlElements);
 		}
 
