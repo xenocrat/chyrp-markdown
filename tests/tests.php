@@ -11,7 +11,7 @@
 			ltrim($class, "\\")
 		) . '.php';
 
-		$namespace = 'cebe' . DIR . 'markdown';
+		$namespace = 'xenocrat' . DIR . 'markdown';
 		$filepath = str_replace($namespace, '', $filepath);
 		$fullpath = MAIN_DIR . DIR . 'src' . DIR . $filepath;
 
@@ -64,7 +64,7 @@
 
 	function run_tests($data): array {
 		foreach ($data as $parser => $tests) {
-			$instance = new ('\cebe\markdown\\' . $parser)();
+			$instance = new ('\xenocrat\markdown\\' . $parser)();
 			$instance->html5 = false;
 
 			foreach ($tests as $number => $values) {

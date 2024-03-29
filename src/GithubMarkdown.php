@@ -5,7 +5,7 @@
  * @link https://github.com/xenocrat/chyrp-markdown#readme
  */
 
-namespace cebe\markdown;
+namespace xenocrat\markdown;
 
 /**
  * Markdown parser for [GitHub-Flavored Markdown](https://github.github.com/gfm/).
