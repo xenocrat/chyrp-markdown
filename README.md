@@ -30,11 +30,11 @@ Usage
 
 The first step is to choose the Markdown flavor and instantiate the parser:
 - CommonMark:  
-  `$parser = new \cebe\markdown\Markdown();`
+  `$parser = new \xenocrat\markdown\Markdown();`
 - GitHub-Flavored Markdown:  
-  `$parser = new \cebe\markdown\GithubMarkdown();`
+  `$parser = new \xenocrat\markdown\GithubMarkdown();`
 - Chyrp-Flavoured Markdown:  
-  `$parser = new \cebe\markdown\ChyrpMarkdown();`
+  `$parser = new \xenocrat\markdown\ChyrpMarkdown();`
 
 The next step is to call the parser method:
 - Use `parse()` for parsing the text using the full Markdown language;
@@ -44,19 +44,19 @@ Here are some examples:
 
 ```php
 // CommonMark; parse full text
-$parser = new \cebe\markdown\Markdown();
+$parser = new \xenocrat\markdown\Markdown();
 echo $parser->parse($markdown);
 
 // GFM
-$parser = new \cebe\markdown\GithubMarkdown();
+$parser = new \xenocrat\markdown\GithubMarkdown();
 echo $parser->parse($markdown);
 
 // CFM
-$parser = new \cebe\markdown\ChyrpMarkdown();
+$parser = new \xenocrat\markdown\ChyrpMarkdown();
 echo $parser->parse($markdown);
 
 // CommonMark; parse only inline elements (useful for one-line descriptions)
-$parser = new \cebe\markdown\Markdown();
+$parser = new \xenocrat\markdown\Markdown();
 echo $parser->parseParagraph($markdown);
 ```
 
@@ -131,7 +131,7 @@ Depending on the language features you have chosen to implement, a different set
 
 Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the `Markdown` and `GithubMarkdown` classes for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
 
-Acknowledgements <a name="ack"></a>
+Acknowledgements
 ----------------
 
 Carsten Brandt would like to thank [@erusev][] for creating [Parsedown][] which heavily influenced this work and provided the idea of the line based parsing approach.
