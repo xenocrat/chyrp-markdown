@@ -1,0 +1,28 @@
+{
+	"name": "xenocrat/chyrp-markdown",
+	"description": "A fast and extensible Markdown parser, written in PHP.",
+	"keywords": ["parser", "markdown", "commonmark", "gfm", "cfm"],
+	"homepage": "https://github.com/xenocrat/chyrp-markdown",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Carsten Brandt",
+			"role": "Creator"
+		},
+		{
+			"name": "Daniel Pimley",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=8.0.0",
+		"ext-ctype": "*",
+		"lib-pcre": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"xenocrat\\markdown\\": "src/"
+		}
+	}
+}
