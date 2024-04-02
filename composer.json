@@ -18,7 +18,9 @@
 	"require": {
 		"php": ">=8.0.0",
 		"ext-ctype": "*",
-		"lib-pcre": "*"
+		"ext-pcre": "*",
+		"lib-pcre": "*",
+		"ext-Reflection": "*"
 	},
 	"autoload": {
 		"psr-4": {
