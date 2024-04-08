@@ -157,7 +157,8 @@ trait FootnoteTrait
 				// some have a footnote number and an additional link number.
 				// If footnote is referenced more than once, add `-n` suffix.
 					$linkNum = array_search(
-						$match[2], $footnotesSorted[$footnoteName]['refs']
+						$match[2],
+						$footnotesSorted[$footnoteName]['refs']
 					);
 					return $footnotesSorted[$footnoteName]['num']
 						. '-'
