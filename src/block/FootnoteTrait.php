@@ -95,7 +95,11 @@ trait FootnoteTrait
 		if (empty($footnotesSorted)) {
 			return '';
 		}
-		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '' ;
+
+		$prefix = empty($this->contextId) ?
+			'' :
+			$this->contextId . '-';
+
 		$hr = $this->html5 ? "<hr>\n" : "<hr />\n";
 		$footnotesHtml = "<div class=\"footnotes\" role=\"doc-endnotes\">\n$hr<ol>\n";
 		foreach ($footnotesSorted as $footnoteInfo) {
@@ -218,7 +222,10 @@ trait FootnoteTrait
 	 */
 	protected function renderFootnoteLink($block): string
 	{
-		$prefix = !empty($this->contextId) ? $this->contextId . '-' : '' ;
+		$prefix = empty($this->contextId) ?
+			'' :
+			$this->contextId . '-';
+
 		$objChr = "\u{FFFC}";
 
 		$substituteRefnum = $objChr
