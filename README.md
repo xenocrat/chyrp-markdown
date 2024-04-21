@@ -67,8 +67,9 @@ You may set one of the following options on the parser object before parsing:
 - `$parser->contextId` to set an optional context identifier string for this instance.
 - `$parser->maximumNestingLevel` to set the maximum level of nested elements to parse.
 - `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
+- `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
 
-For GithubMarkdown:
+For GitHub-Flavored Markdown:
 
 - `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only lines ending with two or more spaces, or `\` will force a line break.
 
