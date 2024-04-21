@@ -77,16 +77,15 @@ trait HeadlineTrait
 	 */
 	protected function renderHeadline($block): string
 	{
-
 		$tag = 'h' . $block['level'];
 		$id = '';
 		$content = $this->renderAbsy($block['content']);
 
 		if (
 			$this->headlineAnchors
-			&& function_exists('mb_convert_case')
-			&& function_exists('mb_str_split')
 			&& class_exists('\\IntlChar')
+			&& function_exists('mb_str_split')
+			&& function_exists('mb_convert_case')
 		) {
 			$str = strip_tags($content);
 			$exploded = mb_str_split($str, 1, 'UTF-8');
