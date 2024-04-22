@@ -97,7 +97,7 @@ trait HeadlineTrait
 			foreach ($exploded as $chr) {
 				$type = \IntlChar::charType($chr);
 				if (
-					$chr === ' ' || $chr === '-'
+					$chr === ' ' || $chr === '-' || $chr === '_'
 					|| $type === \IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER
 					|| $type === \IntlChar::CHAR_CATEGORY_LOWERCASE_LETTER
 					|| $type === \IntlChar::CHAR_CATEGORY_TITLECASE_LETTER
