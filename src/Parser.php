@@ -162,11 +162,12 @@ abstract class Parser
 
 	/**
 	 * Detect registered block types.
-	 * @return array a list of block element types available.
 	 *
 	 * You can bust the alphabetical sort/call strategy with a `Priority` method
 	 * matching the identify method name, returning a different string to compare.
 	 * E.g. identifyUl() and identifyUlPriority().
+	 *
+	 * @return array a list of block element types available.
 	 */
 	protected function blockTypes(): array
 	{
@@ -207,6 +208,7 @@ abstract class Parser
 	/**
 	 * Given a set of lines and an index of a current line it uses
 	 * the registered block types to detect the type of this line.
+	 *
 	 * @param array $lines
 	 * @param integer $current
 	 * @return string name of the block type in lower case
@@ -227,6 +229,7 @@ abstract class Parser
 	/**
 	 * Parse block elements by calling `detectLineType()` to identify them
 	 * and call consume function afterwards.
+	 *
 	 * @param array $lines
 	 * @return array
 	 */
@@ -260,6 +263,7 @@ abstract class Parser
 	/**
 	 * Parses the block at current line by identifying the block type
 	 * and parsing the content.
+	 *
 	 * @param $lines
 	 * @param $current
 	 * @return array Array of two elements:
@@ -376,8 +380,6 @@ abstract class Parser
 	/**
 	 * Prepare markers that are used in the text to parse.
 	 *
-	 * Add all markers that are present in markdown.
-	 * Check is done to avoid iterations in parseInline(), good for huge markdown files
 	 * @param string $text
 	 */
 	protected function prepareMarkers($text): void
@@ -466,6 +468,7 @@ abstract class Parser
 
 	/**
 	 * Parses escaped special characters.
+	 *
 	 * @marker \
 	 */
 	protected function parseEscape($text): array
@@ -492,6 +495,7 @@ abstract class Parser
 
 	/**
 	 * Add backslash to escapeable characters in text.
+	 *
 	 * @param string $text
 	 * @return string
 	 */
@@ -506,6 +510,7 @@ abstract class Parser
 
 	/**
 	 * Remove backslash from escaped characters in text.
+	 *
 	 * @param string $text
 	 * @return string
 	 */
@@ -520,6 +525,7 @@ abstract class Parser
 
 	/**
 	 * Encode HTML special characters as HTML entities.
+	 *
 	 * @param string $text
 	 * @param integer $flags
 	 * @return string
@@ -534,6 +540,7 @@ abstract class Parser
 
 	/**
 	 * Decode HTML entities to corresponding characters.
+	 *
 	 * @param string $text
 	 * @param integer $flags
 	 * @return string

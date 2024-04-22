@@ -46,6 +46,7 @@ trait FootnoteTrait
 
 	/**
 	 * Add footnotes' HTML to the end of parsed HTML.
+	 *
 	 * @param string $html The HTML output of Markdown::parse().
 	 * @return string
 	 */
@@ -183,6 +184,7 @@ trait FootnoteTrait
 
 	/**
 	 * Parses a footnote link indicated by `[^`.
+	 *
 	 * @marker [^
 	 * @param $text
 	 * @return array
