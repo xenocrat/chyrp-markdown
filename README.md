@@ -64,7 +64,7 @@ You may set one of the following options on the parser object before parsing:
 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
 - `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
-- `$parser->contextId` to set an optional context identifier string for this instance.
+- `$parser->contextId` to set an optional identifier string for the rendering context.
 - `$parser->maximumNestingLevel` to set the maximum level of nested elements to parse.
 - `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
 - `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
