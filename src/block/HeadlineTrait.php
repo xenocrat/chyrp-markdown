@@ -87,12 +87,15 @@ trait HeadlineTrait
 			&& function_exists('mb_str_split')
 			&& function_exists('mb_convert_case')
 		) {
-			$str = strip_tags($content);
+			$str = $this->unEscapeHtmlEntities(
+				strip_tags($content),
+				ENT_QUOTES | ENT_SUBSTITUTE
+			);
+
 			$exploded = mb_str_split($str, 1, 'UTF-8');
 
 			foreach ($exploded as $chr) {
 				$type = \IntlChar::charType($chr);
-
 				if (
 					$chr === ' ' || $chr === '-'
 					|| $type === \IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER
