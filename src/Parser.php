@@ -53,6 +53,9 @@ abstract class Parser
 		'\\', // backslash
 	];
 
+	/**
+	 * @var integer The current nesting level for language elements.
+	 */
 	private $_depth = 0;
 
 	/**
