@@ -506,4 +506,17 @@ abstract class Parser
 		$text = htmlspecialchars($text, $flags | $ent, 'UTF-8');
 		return $text;
 	}
+
+	/**
+	 * Decode HTML entities to corresponding characters.
+	 * @param $text
+	 * @param int $flags html_entity_decode bitmask.
+	 * @return string
+	 */
+	protected function unEscapeHtmlEntities($text, $flags = 0): string
+	{
+		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
+		$text = html_entity_decode($text, $flags | $ent, 'UTF-8');
+		return $text;
+	}
 }
