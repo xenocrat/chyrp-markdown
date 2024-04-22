@@ -35,14 +35,10 @@ abstract class Parser
 	public $html5 = false;
 
 	/**
-	 * @var string Optional context identifier for this instance.
+	 * @var string Optional identifier string for the rendering context.
+	 * Traits use this string to prefix `id` attributes in rendered HTML.
 	 */
 	public $contextId = '';
-
-	/**
-	 * @var array The current context the parser is in.
-	 */
-	protected $context = [];
 
 	/**
 	 * @var array These are "escapeable" characters.
@@ -54,7 +50,12 @@ abstract class Parser
 	];
 
 	/**
-	 * @var integer The current nesting level for language elements.
+	 * @var array The parser's current context.
+	 */
+	protected $context = [];
+
+	/**
+	 * @var integer The parser's current nesting level.
 	 */
 	private $_depth = 0;
 
