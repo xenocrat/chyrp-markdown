@@ -227,6 +227,8 @@ abstract class Parser
 	/**
 	 * Parse block elements by calling `detectLineType()` to identify them
 	 * and call consume function afterwards.
+	 * @param array $lines
+	 * @return array
 	 */
 	protected function parseBlocks($lines): array
 	{
@@ -261,8 +263,8 @@ abstract class Parser
 	 * @param $lines
 	 * @param $current
 	 * @return array Array of two elements:
-	 * 			(array) the parsed block;
-	 * 			(int) the the next line index to be parsed.
+	 * 	(array) the parsed block;
+	 * 	(int) the the next line index to be parsed.
 	 */
 	protected function parseBlock($lines, $current): array
 	{
@@ -274,6 +276,12 @@ abstract class Parser
 		return $this->{'consume' . $blockType}($lines, $current);
 	}
 
+	/**
+	 * Renders a Markdown abstract syntax tree as HTML.
+	 *
+	 * @param array $blocks
+	 * @return string
+	 */
 	protected function renderAbsy($blocks): string
 	{
 		$output = '';
@@ -288,8 +296,8 @@ abstract class Parser
 	/**
 	 * Consume lines for a paragraph.
 	 *
-	 * @param $lines
-	 * @param $current
+	 * @param array $lines
+	 * @param integer $current
 	 * @return array
 	 */
 	protected function consumeParagraph($lines, $current): array
@@ -313,7 +321,7 @@ abstract class Parser
 	/**
 	 * Render a paragraph block.
 	 *
-	 * @param $block
+	 * @param array $block
 	 * @return string
 	 */
 	protected function renderParagraph($block): string
@@ -483,8 +491,22 @@ abstract class Parser
 	}
 
 	/**
+	 * Add backslash to escapeable characters in text.
+	 * @param string $text
+	 * @return string
+	 */
+	protected function escapeBackslash($text): string
+	{
+		$strtr = [];
+		foreach($this->escapeCharacters as $chr) {
+			$strtr[$chr] = "\\$chr";
+		}
+		return strtr($text, $strtr);
+	}
+
+	/**
 	 * Remove backslash from escaped characters in text.
-	 * @param $text
+	 * @param string $text
 	 * @return string
 	 */
 	protected function unEscapeBackslash($text): string
@@ -498,9 +520,10 @@ abstract class Parser
 
 	/**
 	 * Encode HTML special characters as HTML entities.
-	 * @param $text
-	 * @param int $flags htmlspecialchars bitmask.
+	 * @param string $text
+	 * @param integer $flags
 	 * @return string
+	 * @see https://www.php.net/manual/en/function.htmlspecialchars
 	 */
 	protected function escapeHtmlEntities($text, $flags = 0): string
 	{
@@ -511,9 +534,10 @@ abstract class Parser
 
 	/**
 	 * Decode HTML entities to corresponding characters.
-	 * @param $text
-	 * @param int $flags html_entity_decode bitmask.
+	 * @param string $text
+	 * @param integer $flags
 	 * @return string
+	 * @see https://www.php.net/manual/en/function.html-entity-decode
 	 */
 	protected function unEscapeHtmlEntities($text, $flags = 0): string
 	{
