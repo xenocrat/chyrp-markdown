@@ -18,6 +18,11 @@ trait HeadlineTrait
 	public $headlineAnchors = false;
 
 	/**
+	 * @var string[] Incrementing counter of rendered anchor links.
+	 */
+	protected $headlineAnchorLinks = [];
+
+	/**
 	 * Bust the alphabetical calling strategy.
 	 */
 	protected function identifyHeadlinePriority(): string
@@ -120,6 +125,12 @@ trait HeadlineTrait
 				$prefix = empty($this->contextId) ?
 					'' :
 					$this->contextId . '-';
+
+				while (isset($this->headlineAnchorLinks[$id])) {
+					$id .= '-' . $this->headlineAnchorLinks[$id]++;
+				}
+
+				$this->headlineAnchorLinks[$id] = 1;
 
 				$id = ' id="'
 					. $prefix
