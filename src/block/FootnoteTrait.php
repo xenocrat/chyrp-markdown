@@ -15,7 +15,6 @@ namespace xenocrat\markdown\block;
  * ```php
  * protected function prepare()
  * {
- *		// reset footnote properties
  *		$this->footnotes = [];
  *		$this->footnoteLinkNum = 0;
  *		$this->footnoteLinks = [];

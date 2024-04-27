@@ -9,6 +9,15 @@ namespace xenocrat\markdown\block;
 
 /**
  * Adds headline blocks.
+ * 
+ * Make sure to reset anchor link counter on prepare():
+ *
+ * ```php
+ * protected function prepare()
+ * {
+ *		$this->headlineAnchorLinks = [];
+ * }
+ * ```
  */
 trait HeadlineTrait
 {
