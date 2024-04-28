@@ -146,22 +146,20 @@ abstract class Parser
 	/**
 	 * Get the identifier string for this rendering context.
 	 *
-	 * @return string|false contextId or false if unset
+	 * @return string the identifier string
 	 */
-	public function getContextId(): string|false
+	public function getContextId(): string
 	{
-		return $this->contextId === '' ?
-			false :
-			$this->contextId;
+		return $this->contextId;
 	}
 
 	/**
 	 * Set the identifier string for this rendering context.
 	 *
 	 * @param string $string contextId to set
-	 * @return string|false contextId or false if unset
+	 * @return string the new identifier string
 	 */
-	public function setContextId($string): string|false
+	public function setContextId($string): string
 	{
 		$id = str_replace(
 			['&', '<', '>', '"'],
@@ -169,9 +167,7 @@ abstract class Parser
 			strval($string)
 		);
 
-		return $id === '' ?
-			false :
-			$this->contextId = $id;
+		return $this->contextId = $id;
 	}
 
 	/**
