@@ -112,9 +112,9 @@ trait FootnoteTrait
 			return '';
 		}
 
-		$prefix = $this->getContextId() ?
-			$this->getContextId() . '-' :
-			'';
+		$prefix = ($this->getContextId() === '') ?
+			'' :
+			$this->getContextId() . '-';
 
 		$hr = $this->html5 ? "<hr>\n" : "<hr />\n";
 		$footnotesHtml = "<div class=\"footnotes\" role=\"doc-endnotes\">\n$hr<ol>\n";
@@ -239,9 +239,9 @@ trait FootnoteTrait
 	 */
 	protected function renderFootnoteLink($block): string
 	{
-		$prefix = $this->getContextId() ?
-			$this->getContextId() . '-' :
-			'';
+		$prefix = ($this->getContextId() === '') ?
+			'' :
+			$this->getContextId() . '-';
 
 		$objChr = "\u{FFFC}";
 
