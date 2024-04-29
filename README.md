@@ -120,9 +120,9 @@ If you want to extend a flavor and add features you can use one of the existing 
 
 #### Select language feature traits
 
-In general, just adding traits with `use` is enough. During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy with a `Priority` method matching the identify method name, returning a different string to compare. E.g. `identifyUl()` and `identifyUlPriority()`.
+In general, just adding traits with `use` is enough. During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy by defining the property `blockPriorities` in your Markdown flavor and supplying a predefined call order for block identifier methods. Any methods detected at runtime that are not listed in the predefined call order will be called in alphabetical order after all predefined methods.
 
-If you use LinkTrait or FootnoteTrait it may be useful to implement `prepare()` to reset references before parsing to ensure you get a reusable object.
+If you use HeadlineTrait, LinkTrait, or FootnoteTrait it may be useful to implement `prepare()` to reset variables before parsing to ensure you get a reusable parser object.
 
 #### Define escapeable characters
 
