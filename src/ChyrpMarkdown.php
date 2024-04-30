@@ -15,7 +15,8 @@ namespace xenocrat\markdown;
 class ChyrpMarkdown extends GithubMarkdown
 {
 	// Include block element parsing using traits.
-	use block\AsideTrait;
+	use block\FencedAsideTrait;
+	use block\FencedQuoteTrait;
 	use block\FigureTrait;
 	use block\FootnoteTrait;
 
@@ -29,14 +30,16 @@ class ChyrpMarkdown extends GithubMarkdown
 	 */
 	protected $blockPriorities = [
 		'Hr',
+		'FencedAside',
 		'Aside',
 		'Ul',
-		'Code',
 		'FencedCode',
+		'Code',
 		'Figure',
 		'FootnoteList',
 		'Html',
 		'Ol',
+		'FencedQuote',
 		'Quote',
 		'Reference',
 		'Table',
@@ -73,9 +76,11 @@ class ChyrpMarkdown extends GithubMarkdown
 				|| (
 					(ctype_punct($trimmed[0]) || ctype_digit($trimmed[0]))
 					&& (
-						$this->identifyQuote($line, $lines, $i)
+						$this->identifyFencedQuote($line, $lines, $i)
+						|| $this->identifyQuote($line, $lines, $i)
 						|| $this->identifyFencedCode($line, $lines, $i)
 						|| $this->identifyFigure($line, $lines, $i)
+						|| $this->identifyFencedAside($line, $lines, $i)
 						|| $this->identifyAside($line, $lines, $i)
 						|| $this->identifyUl($line, $lines, $i)
 						|| $this->identifyOl($line, $lines, $i)
