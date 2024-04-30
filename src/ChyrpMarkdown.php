@@ -61,8 +61,6 @@ class ChyrpMarkdown extends GithubMarkdown
 
 	/**
 	 * @inheritDoc
-	 *
-	 * Allow other block types to break paragraphs.
 	 */
 	protected function consumeParagraph($lines, $current): array
 	{

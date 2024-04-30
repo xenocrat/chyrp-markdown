@@ -48,8 +48,6 @@ class GithubMarkdown extends Markdown
 
 	/**
 	 * @inheritDoc
-	 *
-	 * Allow other block types to break paragraphs.
 	 */
 	protected function consumeParagraph($lines, $current): array
 	{
@@ -90,7 +88,7 @@ class GithubMarkdown extends Markdown
 	/**
 	 * @inheritDoc
 	 *
-	 * Parses a newline indicated by two or more spaces on the end of a markdown line.
+	 * Parses all newlines as hard line breaks if `enableNewlines` is set.
 	 */
 	protected function renderText($text): string
 	{
