@@ -20,8 +20,8 @@ class GithubMarkdown extends Markdown
 	use block\TableTrait;
 
 	// Include inline element parsing using traits.
-	use inline\StrikeoutTrait;
 	use inline\AutoLinkTrait;
+	use inline\StrikeoutTrait;
 
 	/**
 	 * @inheritDoc
