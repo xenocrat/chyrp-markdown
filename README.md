@@ -7,6 +7,7 @@ Currently the following Markdown flavors are supported:
 
 - [CommonMark](https://spec.commonmark.org/)
 - [GitHub-Flavored Markdown](https://github.github.com/gfm/)
+- [GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
 - [Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
 
 Requirements
@@ -49,6 +50,10 @@ echo $parser->parse($markdown);
 
 // GFM
 $parser = new \xenocrat\markdown\GithubMarkdown();
+echo $parser->parse($markdown);
+
+// GLM
+$parser = new \xenocrat\markdown\GitlabMarkdown();
 echo $parser->parse($markdown);
 
 // CFM
