@@ -19,11 +19,12 @@ class GitlabMarkdown extends Markdown
 	// Include block element parsing using traits.
 	use block\FencedQuoteTrait;
 	use block\FootnoteTrait;
+	use block\FrontMatterTrait;
 	use block\TableTrait;
 
 	// Include inline element parsing using traits.
-	use inline\StrikeoutTrait;
 	use inline\AutoLinkTrait;
+	use inline\StrikeoutTrait;
 	use inline\LinkTrait, inline\MediaLinkTrait {
 		inline\MediaLinkTrait::renderImage insteadof inline\LinkTrait;
 	}
@@ -32,6 +33,7 @@ class GitlabMarkdown extends Markdown
 	 * @inheritDoc
 	 */
 	protected $blockPriorities = [
+		'FrontMatter',
 		'Hr',
 		'Ul',
 		'FencedCode',
@@ -86,6 +88,7 @@ class GitlabMarkdown extends Markdown
 						$this->identifyFencedQuote($line, $lines, $i)
 						|| $this->identifyQuote($line, $lines, $i)
 						|| $this->identifyFencedCode($line, $lines, $i)
+						|| $this->identifyFrontMatter($line, $lines, $i)
 						|| $this->identifyUl($line, $lines, $i)
 						|| $this->identifyOl($line, $lines, $i)
 						|| $this->identifyHr($line, $lines, $i)
