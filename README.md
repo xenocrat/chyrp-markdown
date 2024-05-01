@@ -86,32 +86,36 @@ For GitLab-Flavored Markdown:
 Security Considerations
 -----------------------
 
-By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows it to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
-
-In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed.
+By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows it to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)). In that case you should process the result of the Markdown conversion with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed.
 
 Extending the language
 ----------------------
 
-Markdown consists of two types of language elements, I'll call them block and inline elements simlar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spreads over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
+Markdown consists of two types of language elements, let's call them block and inline elements similar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spread over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
 
-This Markdown parser allows you to extend the Markdown language by changing existing elements behavior and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them as you will see in the following sections.
+This Markdown parser allows you to extend the Markdown language by changing the behavior of existing elements and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them as you will see in the following sections.
 
 ### Adding block elements
 
-The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods having a name beginning with `identify`. An identify function returns true if it has identified the block element it is responsible for or false if the line does not match its requirements.
+The Markdown is parsed line by line to identify each non-empty line as one of the block element types. To identify a line as the beginning of a block element it calls all protected class methods having a name beginning with `identify`. An identify method returns true if it has identified the block element it is responsible for or false if the line does not match its requirements.
 
-Parsing of a block element is done in two steps:
+Parsing a block element is done in three steps:
 
-1. **Consuming** all the lines belonging to it, by iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify function above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
+1. **Identifying** the method responsible for parsing a block, by calling all detected `identify{blockName}()` methods until one returns true.
 
-2. **Rendering** the element. After all blocks have been consumed, each block is rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree.
+2. **Consuming** all the lines belonging to a block, by iterating over the lines starting from the identified line until an end condition occurs. This step is implemented by a method named `consume{blockName}()` where `{blockName}` is the same name as used for the identify method above. The consume method also takes the lines array and the number of the current line. It will return two arguments: an array representing the block element in the abstract syntax tree of the Markdown document and the line number to parse next. In the abstract syntax array the first element refers to the name of the element, all other array elements can be freely defined by yourself.
+
+3. **Rendering** the element. After all blocks have been consumed, each block is rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree.
 
 ### Adding inline elements
 
 Adding inline elements is done differently from block elements because they are parsed using string markers in the text. An inline element is identified by a marker of one or more characters that marks the possible beginning of an inline element (e.g. `[` marks the possible beginning of a link or `` ` `` marks possible inline code).
 
-Parsing methods for inline elements are protected and have names beginning with `parse`. Additionally a matching method suffixed with `Markers` is needed to register a parse function for one or more markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The parse method will be called when any of its registered markers is found in the text. As an argument the parse method takes the text starting at the position of the marker. The parser method will return an array containing an element to be added to the abstract sytnax tree and the offset of text it has parsed from the input. All text up to this offset will be removed from the Markdown before the search continues for the next marker.
+Parsing an inline element is done in two steps:
+
+1. **Parsing** methods for inline elements are protected and have names beginning with `parse`. Additionally a matching method suffixed with `Markers` is needed to register a parse method for one or more markers. E.g. `parseEscape()` and `parseEscapeMarkers()`. The parse method will be called when any of its registered markers is found in the text. As an argument the parse method takes the text starting at the position of the marker. The parser method will return an array containing an element to be added to the abstract sytnax tree and the offset of the text it has parsed from the input. All text up to this offset will be removed from the Markdown before the search continues for the next marker.
+
+2. **Rendering** the element. Each element is rendered using the method `render{elementName}()` where `elementName` refers to the name of the element in the abstract syntax tree.
 
 ### Composing your own Markdown flavor
 
@@ -126,7 +130,7 @@ Designing your Markdown flavor consists of four steps:
 
 #### Select a base class
 
-If you want to extend a flavor and add features you can use one of the existing classes (`Markdown`, `GithubMarkdown` or `ChyrpMarkdown`) as your base class. If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
+If you want to extend a flavor and add features you can use one of the existing classes as your base class. If you want to define a subset of the Markdown language, i.e. remove some of the features, you have to extend your class from `Parser`.
 
 #### Select language feature traits
 
@@ -140,7 +144,7 @@ Depending on the language features you have chosen to implement, a different set
 
 #### Add custom rendering behavior
 
-Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the `Markdown` and `GithubMarkdown` classes for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
+Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the flavors for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
 
 Acknowledgements
 ----------------
