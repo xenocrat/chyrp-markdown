@@ -11,7 +11,8 @@ namespace xenocrat\markdown;
  * Markdown parser for GitHub-Flavored Markdown.
  *
  * @see https://github.github.com/gfm/
- * @author Carsten Brandt <mail@cebe.cc>
+ * @author Carsten Brandt
+ * @author Daniel Pimley
  */
 class GithubMarkdown extends Markdown
 {

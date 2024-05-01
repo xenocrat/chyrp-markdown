@@ -11,7 +11,8 @@ use ReflectionMethod;
 /**
  * A generic parser for Markdown-like languages.
  *
- * @author Carsten Brandt <mail@cebe.cc>
+ * @author Carsten Brandt
+ * @author Daniel Pimley
  */
 abstract class Parser
 {

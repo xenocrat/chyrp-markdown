@@ -11,6 +11,8 @@ namespace xenocrat\markdown;
  * Markdown parser for Chyrp-Flavoured Markdown.
  *
  * @see https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html
+ * @author Carsten Brandt
+ * @author Daniel Pimley
  */
 class ChyrpMarkdown extends GithubMarkdown
 {
