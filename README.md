@@ -76,7 +76,12 @@ You may set one of the following options on the parser object before parsing:
 
 For GitHub-Flavored Markdown:
 
-- `$parser->enableNewlines = true` to convert all newlines to `<br/>` tags. By default only lines ending with two or more spaces, or `\` will force a line break.
+- `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
+
+For GitLab-Flavored Markdown:
+
+- `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
+- `$parser->renderFrontMatter = false` to disable rendering of front matter blocks as code.
 
 Security Considerations
 -----------------------
