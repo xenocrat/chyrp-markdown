@@ -72,8 +72,8 @@ class Markdown extends Parser
 	protected $blockPriorities = [
 		'Hr',
 		'Ul',
-		'Code',
 		'FencedCode',
+		'Code',
 		'Html',
 		'Ol',
 		'Quote',
