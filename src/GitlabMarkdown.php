@@ -18,6 +18,7 @@ class GitlabMarkdown extends Markdown
 {
 	// Include block element parsing using traits.
 	use block\FencedQuoteTrait;
+	use block\FootnoteTrait;
 	use block\TableTrait;
 
 	// Include inline element parsing using traits.
@@ -33,8 +34,9 @@ class GitlabMarkdown extends Markdown
 	protected $blockPriorities = [
 		'Hr',
 		'Ul',
-		'Code',
 		'FencedCode',
+		'Code',
+		'FootnoteList',
 		'Html',
 		'Ol',
 		'FencedQuote',
@@ -51,6 +53,19 @@ class GitlabMarkdown extends Markdown
 	 * meant to be hard line breaks.
 	 */
 	public $enableNewlines = false;
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function prepare(): void
+	{
+		parent::prepare();
+
+		// Reset footnote properties.
+		$this->footnotes = [];
+		$this->footnoteLinkNum = 0;
+		$this->footnoteLinks = [];
+	}
 
 	/**
 	 * @inheritDoc
