@@ -131,7 +131,7 @@ class GitlabMarkdown extends Markdown
 	/**
 	 * @inheritDoc
 	 *
-	 * Add parsed footnotes and TOC, then post-processes markup.
+	 * Add parsed footnotes and TOC, then post-process markup.
 	 */
 	function postprocess($markup): string
 	{

@@ -107,7 +107,7 @@ class ChyrpMarkdown extends GithubMarkdown
 	/**
 	 * @inheritDoc
 	 *
-	 * Add parsed footnotes and then post-processes markup.
+	 * Add parsed footnotes and then post-process markup.
 	 */
 	function postprocess($markup): string
 	{
