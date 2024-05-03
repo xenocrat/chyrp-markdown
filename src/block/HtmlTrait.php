@@ -352,4 +352,6 @@ trait HtmlTrait
 	{
 		return [['text', '&quot;'], 1];
 	}
+
+	abstract protected function unEscapeHtmlEntities($text, $flags = 0);
 }

@@ -90,4 +90,5 @@ trait MediaLinkTrait
 	abstract protected function parseImage($markdown);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
+	abstract protected function escapeHtmlEntities($text, $flags = 0);
 }

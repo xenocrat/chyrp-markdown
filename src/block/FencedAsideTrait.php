@@ -71,4 +71,6 @@ trait FencedAsideTrait
 
 		return [$block, $i];
 	}
+
+	abstract protected function parseBlocks($lines);
 }

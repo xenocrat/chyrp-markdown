@@ -76,4 +76,5 @@ trait FrontMatterTrait
 	}
 
 	abstract protected function renderCode($block);
+	abstract protected function unEscapeBackslash($text);
 }

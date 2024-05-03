@@ -71,4 +71,6 @@ trait FencedQuoteTrait
 
 		return [$block, $i];
 	}
+
+	abstract protected function parseBlocks($lines);
 }

@@ -50,16 +50,6 @@ trait FootnoteTrait
 	protected $footnoteLinks = [];
 
 	/**
-	 * @inheritDoc
-	 */
-	abstract protected function parseBlocks($lines);
-
-	/**
-	 * @inheritDoc
-	 */
-	abstract protected function renderAbsy($blocks);
-
-	/**
 	 * Add footnotes' HTML to the end of parsed HTML.
 	 *
 	 * @param string $html - The HTML output of Markdown::parse().
@@ -351,4 +341,7 @@ trait FootnoteTrait
 		// at the end of the text using the flavor's `postprocess` method.
 		return '';
 	}
+
+	abstract protected function parseBlocks($lines);
+	abstract protected function renderAbsy($absy);
 }

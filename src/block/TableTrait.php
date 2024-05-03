@@ -202,4 +202,5 @@ trait TableTrait
 
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($absy);
+	abstract protected function detectLineType($lines, $current);
 }

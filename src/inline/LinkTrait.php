@@ -409,4 +409,6 @@ REGEXP;
 
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
+	abstract protected function unEscapeBackslash($text);
+	abstract protected function escapeHtmlEntities($text, $flags = 0);
 }

@@ -98,4 +98,6 @@ trait CodeTrait
 			. ($block['content'] === '' ? '' : "\n" )
 			. "</code></pre>\n";
 	}
+
+	abstract protected function escapeHtmlEntities($text, $flags = 0);
 }
