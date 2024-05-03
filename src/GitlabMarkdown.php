@@ -44,6 +44,7 @@ class GitlabMarkdown extends Markdown
 		'Quote',
 		'Reference',
 		'Table',
+		'Toc',
 		'Headline',
 	];
 
@@ -91,6 +92,7 @@ class GitlabMarkdown extends Markdown
 						|| $this->identifyQuote($line, $lines, $i)
 						|| $this->identifyFencedCode($line, $lines, $i)
 						|| $this->identifyFrontMatter($line, $lines, $i)
+						|| $this->identifyToc($line, $lines, $i)
 						|| $this->identifyUl($line, $lines, $i)
 						|| $this->identifyOl($line, $lines, $i)
 						|| $this->identifyHr($line, $lines, $i)
