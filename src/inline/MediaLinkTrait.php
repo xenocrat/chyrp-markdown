@@ -9,6 +9,7 @@ namespace xenocrat\markdown\inline;
 
 /**
  * Adds images, embedded audio and video.
+ * This method overloads LinkTrait::renderImage().
  */
 trait MediaLinkTrait
 {

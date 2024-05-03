@@ -337,6 +337,8 @@ trait FootnoteTrait
 	}
 
 	/**
+	 * Renders a footnote.
+	 *
 	 * @param array $block
 	 * @return string
 	 */
