@@ -71,6 +71,7 @@ You may set one of the following options on the parser object before parsing:
 - `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
 - `$parser->setContextId(string)` to set an identifier string for the rendering context.
 - `$parser->maximumNestingLevel = int` to set the maximum level of nested elements to parse.
+- `$parser->maximumNestingLevelThrow = true` to throw if the maximum nesting level is exceeded.
 - `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
 - `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
 
