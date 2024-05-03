@@ -21,13 +21,12 @@ class GitlabMarkdown extends Markdown
 	use block\FootnoteTrait;
 	use block\FrontMatterTrait;
 	use block\TableTrait;
+	use block\TocTrait;
 
 	// Include inline element parsing using traits.
 	use inline\AutoLinkTrait;
+	use inline\MediaLinkTrait;
 	use inline\StrikeoutTrait;
-	use inline\LinkTrait, inline\MediaLinkTrait {
-		inline\MediaLinkTrait::renderImage insteadof inline\LinkTrait;
-	}
 
 	/**
 	 * @inheritDoc
@@ -62,6 +61,9 @@ class GitlabMarkdown extends Markdown
 	protected function prepare(): void
 	{
 		parent::prepare();
+
+		// Reset TOC.
+		$this->toc = [];
 
 		// Reset footnote properties.
 		$this->footnotes = [];
@@ -122,5 +124,19 @@ class GitlabMarkdown extends Markdown
 			$text[1] = preg_replace("/ *\n/", $br, $text[1]);
 		}
 		return parent::renderText($text);
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * Add parsed footnotes and TOC, then post-processes markup.
+	 */
+	function postprocess($markup): string
+	{
+		return parent::postprocess(
+			$this->addParsedFootnotes(
+				$this->addToc($markup)
+			)
+		);
 	}
 }
