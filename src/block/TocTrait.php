@@ -121,9 +121,9 @@ trait TocTrait
 				$this->headlineAnchorLinks[$id] = 1;
 
 				$this->toc[] = [
-					'depth' => $block['level'],
 					'id' => $id,
-					'text' => $str,
+					'level' => $block['level'],
+					'content' => $content,
 				];
 
 				$id = ' id="'
@@ -160,16 +160,16 @@ trait TocTrait
 
 			foreach ($this->toc as $h) {
 				// Ignore h1; this is the document title.
-				if ($h['depth'] < 2) {
+				if ($h['level'] < 2) {
 					continue;
 				}
 				// Go deeper in hierarchy if necessary.
-				while ($depth < 6 && $depth < $h['depth']) {
+				while ($depth < 6 && $depth < $h['level']) {
 					$depth++;
 					$toc .= "<ul>\n";
 				}
 				// Go higher in hierarchy if necessary.
-				while ($depth > 2 && $depth > $h['depth']) {
+				while ($depth > 2 && $depth > $h['level']) {
 					$depth--;
 					$toc .= "</ul>\n";
 				}
@@ -180,7 +180,7 @@ trait TocTrait
 						ENT_COMPAT | ENT_SUBSTITUTE
 					);
 
-				$toc .= "<li><a href=\"#{$id}\">{$h['text']}</a></li>\n";
+				$toc .= "<li><a href=\"#{$id}\">{$h['content']}</a></li>\n";
 			}
 
 			$toc .= "</ul>\n";
@@ -194,6 +194,7 @@ trait TocTrait
 		);
 	}
 
-	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($absy);
+	abstract protected function escapeHtmlEntities($text, $flags = 0);
+	abstract protected function unEscapeHtmlEntities($text, $flags = 0);
 }
