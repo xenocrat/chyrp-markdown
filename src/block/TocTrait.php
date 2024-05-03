@@ -62,7 +62,7 @@ trait TocTrait
 
 		// Render a placeholder to be populated
 		// using the flavor's `postprocess` method.
-		return "{$objChr}[[_TOC_]]{$objChr}";
+		return "{$objChr}[[_TOC_]]{$objChr}\n";
 	}
 
 	/**
@@ -150,6 +150,7 @@ trait TocTrait
 		$objChr = "\u{FFFC}";
 		$toc = '';
 		$depth = 2;
+		$items = 0;
 
 		$prefix = ($this->getContextId() === '') ?
 			'' :
@@ -181,15 +182,16 @@ trait TocTrait
 					);
 
 				$toc .= "<li><a href=\"#{$id}\">{$h['content']}</a></li>\n";
+				$items++;
 			}
 
-			$toc .= "</ul>\n";
+			$toc .= '</ul>';
 		}
 
 		// Replace TOC placeholder.
 		return str_replace(
 			"{$objChr}[[_TOC_]]{$objChr}",
-			$toc,
+			($items) ? $toc : "<p>[[_TOC_]]</p>",
 			$html
 		);
 	}
