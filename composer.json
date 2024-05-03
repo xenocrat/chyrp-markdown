@@ -20,7 +20,8 @@
 		"ext-ctype": "*",
 		"ext-pcre": "*",
 		"lib-pcre": "*",
-		"ext-Reflection": "*"
+		"ext-Reflection": "*",
+		"ext-SPL": "*"
 	},
 	"autoload": {
 		"psr-4": {
