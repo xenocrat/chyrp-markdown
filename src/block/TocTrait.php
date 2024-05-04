@@ -90,7 +90,7 @@ trait TocTrait
 			foreach ($exploded as $chr) {
 				$type = \IntlChar::charType($chr);
 				if (
-					$chr === ' ' || $chr === '-' || $chr === '_'
+					$chr === ' ' || $chr === "\t" || $chr === '-' || $chr === '_'
 					|| $type === \IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER
 					|| $type === \IntlChar::CHAR_CATEGORY_LOWERCASE_LETTER
 					|| $type === \IntlChar::CHAR_CATEGORY_TITLECASE_LETTER
@@ -103,7 +103,7 @@ trait TocTrait
 					|| $type === \IntlChar::CHAR_CATEGORY_ENCLOSING_MARK
 					|| $type === \IntlChar::CHAR_CATEGORY_COMBINING_SPACING_MARK
 				) {
-					$id .= ($chr === ' ') ?
+					$id .= ($chr === ' ' || $chr === "\t") ?
 						'-' :
 						mb_convert_case($chr, MB_CASE_LOWER, 'UTF-8');
 				}
