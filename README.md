@@ -73,7 +73,7 @@ You may set one of the following options on the parser object before parsing:
 - `$parser->maximumNestingLevel = int` to set the maximum level of nested elements to parse.
 - `$parser->maximumNestingLevelThrow = true` to throw if the maximum nesting level is exceeded.
 - `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
-- `$parser->headlineAnchors = true` to add GitHub/GitLab-style anchors when rendering headings. This is always active for GitLab-Flavored Markdown.
+- `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
 
 For GitHub-Flavored Markdown:
 
