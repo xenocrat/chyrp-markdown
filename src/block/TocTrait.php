@@ -191,7 +191,7 @@ trait TocTrait
 		// Replace TOC placeholder.
 		return str_replace(
 			"{$objChr}[[_TOC_]]{$objChr}",
-			($items) ? $toc : "<p>[[_TOC_]]</p>",
+			($items) ? $toc : '',
 			$html
 		);
 	}
