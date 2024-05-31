@@ -480,7 +480,7 @@ abstract class Parser
 			$parsed = false;
 
 			foreach ($this->_inlineMarkers[$text[0]] as $marker => $method) {
-				if (strncmp($text, $marker, strlen($marker)) === 0) {
+				if (str_starts_with($text, $marker)) {
 					// Parse the marker.
 					array_unshift($this->context, $method);
 					list($output, $offset) = $this->$method($text);
