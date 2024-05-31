@@ -435,7 +435,7 @@ abstract class Parser
 				// Put the longest marker first.
 				if (isset($this->_inlineMarkers[$m])) {
 					reset($this->_inlineMarkers[$m]);
-					if (strlen($marker) > strlen(key($this->_inlineMarkers[$m]))) {
+					if (strlen($marker) >= strlen(key($this->_inlineMarkers[$m]))) {
 						$this->_inlineMarkers[$m] = array_merge(
 							[$marker => $method], $this->_inlineMarkers[$m]
 						);
@@ -469,7 +469,10 @@ abstract class Parser
 		$markers = implode('', array_keys($this->_inlineMarkers));
 		$paragraph = [];
 
-		while (!empty($markers) && ($found = strpbrk($text, $markers)) !== false) {
+		while (
+			!empty($markers)
+			&& ($found = strpbrk($text, $markers)) !== false
+		) {
 			$pos = strpos($text, $found);
 			// Add the text up to next marker to the paragraph.
 			if ($pos !== 0) {
