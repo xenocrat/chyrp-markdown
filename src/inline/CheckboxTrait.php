@@ -39,9 +39,10 @@ trait CheckboxTrait
 
 	protected function renderCheckbox($block): string
 	{
-		return '<input type="checkbox"'
-			. ($block['incomplete'] ? '' : ' checked=""')
-			. ($block['inapplicable'] ? ' disabled=""' : '')
-			. ($this->html5 ? '>' : ' />');
+		if ($block['inapplicable']) {
+			return "\u{1F6AB}";
+		}
+
+		return $block['incomplete'] ? "\u{274E}" : "\u{2705}";
 	}
 }
