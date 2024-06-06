@@ -34,6 +34,8 @@ The first step is to choose the Markdown flavor and instantiate the parser:
   `$parser = new \xenocrat\markdown\Markdown();`
 - GitHub-Flavored Markdown:  
   `$parser = new \xenocrat\markdown\GithubMarkdown();`
+- GitLab-Flavored Markdown:  
+  `$parser = new \xenocrat\markdown\GitlabMarkdown();`
 - Chyrp-Flavoured Markdown:  
   `$parser = new \xenocrat\markdown\ChyrpMarkdown();`
 
