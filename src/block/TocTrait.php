@@ -163,15 +163,13 @@ trait TocTrait
 			$this->getContextId() . '-';
 
 		if (!empty($this->toc)) {
-			$toc .= "<{$tag}>\n";
-
 			foreach ($this->toc as $index => $h) {
 				$loopFirst = ($index === 0);
 				$loopFinal = !isset($this->toc[$index + 1]);
 				$thisLevel = $h['level'];
 
 				$prevLevel = ($loopFirst) ?
-					2 :
+					1 :
 					$this->toc[$index - 1]['level'];
 
 				$nextLevel = ($loopFinal) ?
@@ -179,9 +177,6 @@ trait TocTrait
 					$this->toc[$index + 1]['level'];
 
 				if ($thisLevel > $prevLevel) {
-					if ($loopFirst) {
-						$toc .= "<li>\n";
-					}
 					$toc .= str_repeat(
 						"<{$tag}>\n<li>\n",
 						$thisLevel - $prevLevel
