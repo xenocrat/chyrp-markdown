@@ -87,6 +87,7 @@ For GitLab-Flavored Markdown:
 - `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
 - `$parser->renderCheckboxInputs = true` to render task items as inputs instead of emoji.
 - `$parser->renderFrontMatter = false` to disable rendering of front matter blocks as code.
+- `$parser->renderOrderedToc = true` to render the table of contents as an ordered list.
 
 Security Considerations
 -----------------------
