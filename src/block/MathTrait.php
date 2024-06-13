@@ -8,12 +8,12 @@
 namespace xenocrat\markdown\block;
 
 /**
- * Adds math (LaTeX) blocks.
+ * Adds math expression (LaTeX) blocks.
  */
 trait MathTrait
 {
 	/**
-	 * Identify a line as the beginning of a math block.
+	 * Identify a line as the beginning of a math expression.
 	 */
 	protected function identifyMath($line): bool
 	{
@@ -28,7 +28,7 @@ trait MathTrait
 	}
 
 	/**
-	 * Consume lines for a math block.
+	 * Consume lines for a math expression.
 	 */
 	protected function consumeMath($lines, $current): array
 	{
@@ -68,7 +68,7 @@ trait MathTrait
 	}
 
 	/**
-	 * Renders a math block.
+	 * Renders a math expression.
 	 */
 	protected function renderMath($block): string
 	{

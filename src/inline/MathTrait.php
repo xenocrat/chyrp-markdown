@@ -8,7 +8,7 @@
 namespace xenocrat\markdown\inline;
 
 /**
- * Adds math (LaTeX) inline elements.
+ * Adds math expression (LaTeX) inline elements.
  */
 trait MathTrait
 {
