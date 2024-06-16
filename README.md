@@ -92,7 +92,11 @@ For GitLab-Flavored Markdown:
 Security Considerations
 -----------------------
 
-By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows it to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing user input as Markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)). In that case you should process the resulting HTML with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed.
+By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks). This also means that it may contain Javascript and CSS styles. This allows Markdown to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing untrusted input (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
+
+The GitLab-Flavored Markdown specification includes an extension to CommonMark, [Disallowed Raw HTML (section 6.11)](https://github.github.com/gfm/#disallowed-raw-html-extension-), which filters some raw HTML and renders it as text in the output. This parser **does not** implement section 6.11 of the GitHub-Flavored Markdown specification.
+
+If you are parsing user input or any other type of untrusted input, you should process the resulting HTML with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which you have chosen to disallow.
 
 Extending the language
 ----------------------
