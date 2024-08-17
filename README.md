@@ -82,6 +82,7 @@ For GitHub-Flavored Markdown:
 
 - `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
 - `$parser->renderCheckboxInputs = true` to render task items as inputs instead of emoji.
+- `$parser->disallowedRawHTML = false` to disable section 6.11 of the GFM specification.
 
 For GitLab-Flavored Markdown:
 
@@ -95,9 +96,9 @@ Security Considerations
 
 By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks), meaning that the input may contain Javascript and CSS styles. This allows Markdown to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing untrusted input (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
 
-The GitHub-Flavored Markdown specification includes an extension to CommonMark, [Disallowed Raw HTML (section 6.11)](https://github.github.com/gfm/#disallowed-raw-html-extension-), which defines a subset of raw HTML to be filtered and rendered as text in the output. **This parser does not implement section 6.11 of the GitHub-Flavored Markdown specification.**
+The GitHub-Flavored Markdown specification includes an extension to CommonMark, [Disallowed Raw HTML (section 6.11)](https://github.github.com/gfm/#disallowed-raw-html-extension-), which defines a subset of raw HTML to be filtered and rendered as text in the output. This parser implements section 6.11 of the GFM specification.
 
-If you are parsing user input or any other type of untrusted input, you should process the resulting HTML with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which you have chosen to disallow.
+If you are parsing user input or any other type of untrusted input, you are strongly advised to process the resulting HTML with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which you have chosen to disallow.
 
 Extending the language
 ----------------------
