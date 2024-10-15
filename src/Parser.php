@@ -175,7 +175,7 @@ abstract class Parser
 	public function setContextId($string): string
 	{
 		$id = str_replace(
-			['&', '<', '>', '"'],
+			['&', '<', '>', '"', ' '],
 			'',
 			strval($string)
 		);
