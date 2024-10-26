@@ -19,7 +19,7 @@ use RuntimeException;
 abstract class Parser
 {
 	const VERSION_MAJOR = 3;
-	const VERSION_MINOR = 8;
+	const VERSION_MINOR = 9;
 
 	/**
 	 * @var integer - The maximum nesting level for language elements.
