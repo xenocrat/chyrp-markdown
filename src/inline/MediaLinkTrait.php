@@ -34,6 +34,16 @@ trait MediaLinkTrait
 			return '<video src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
 				. (
+					empty($block['width']) ?
+						'' :
+						' width="' . $block['width'] . '"'
+				)
+				. (
+					empty($block['height']) ?
+						'' :
+						' height="' . $block['height'] . '"'
+				)
+				. (
 					empty($block['title']) ?
 						'' :
 						' title="'
@@ -51,6 +61,16 @@ trait MediaLinkTrait
 		) {
 			return '<audio src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
+				. (
+					empty($block['width']) ?
+						'' :
+						' width="' . $block['width'] . '"'
+				)
+				. (
+					empty($block['height']) ?
+						'' :
+						' height="' . $block['height'] . '"'
+				)
 				. (
 					empty($block['title']) ?
 						'' :
@@ -73,6 +93,21 @@ trait MediaLinkTrait
 					ENT_COMPAT | ENT_SUBSTITUTE
 				)
 				. '"'
+				. (
+					empty($block['width']) ?
+						'' :
+						' width="' . $block['width'] . '"'
+				)
+				. (
+					empty($block['height']) ?
+						'' :
+						' height="' . $block['height'] . '"'
+				)
+				. (
+					$this->renderLazyImages ?
+						' loading="lazy"' :
+						''
+				)
 				. (
 					empty($block['title']) ?
 						'' :
