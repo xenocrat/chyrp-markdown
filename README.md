@@ -77,6 +77,8 @@ You may set one of the following options on the parser object before parsing:
 - `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
 - `$parser->keepReversedList = true` to enable ordered lists with descending numbers.
 - `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
+- `$parser->renderLazyImages = true` to render images with a deferred loading attribute.
+- `$parser->enableImageDimensions = false` to disable extended syntax for image dimensions.
 
 For GitHub-Flavored Markdown:
 
