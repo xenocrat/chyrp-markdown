@@ -92,6 +92,7 @@ For GitLab-Flavored Markdown:
 - `$parser->renderCheckboxInputs = true` to render task items as inputs instead of emoji.
 - `$parser->renderFrontMatter = false` to disable rendering of front matter blocks as code.
 - `$parser->renderOrderedToc = true` to render the table of contents as an ordered list.
+- `$parser->renderLazyMedia = true` to render video and audio with a deferred loading attribute.
 
 Security Considerations
 -----------------------
@@ -102,12 +103,17 @@ The GitHub-Flavored Markdown specification includes an extension to CommonMark, 
 
 If you are parsing user input or any other type of untrusted input, you are strongly advised to process the resulting HTML with tools like [HTML Purifier](http://htmlpurifier.org/) that filter out all elements which you have chosen to disallow.
 
+Extended image syntax
+---------------------
+
+By default, LinkTrait enables an extension to the Markdown syntax for specifying the intrinsic dimensions of an image. The image width and height can be specified as `![title](url){width}` or `![title](url){width:height}`, with `width` and `height` values being numbers between 1 and 999999999. See above if you wish to disable this extended syntax.
+
 Extending the language
 ----------------------
 
-Markdown consists of two types of language elements, let's call them block and inline elements similar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spread over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
+Markdown consists of two types of language elements - let's call them block and inline elements, similar to what you have in HTML with `<div>` and `<span>`. Block elements are normally spread over several lines and are separated by blank lines. The most basic block element is a paragraph (`<p>`). Inline elements are elements that are added inside of block elements i.e. inside of text.
 
-This Markdown parser allows you to extend the Markdown language by changing the behavior of existing elements and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them as you will see in the following sections.
+This Markdown parser allows you to extend the Markdown language by changing the behavior of existing elements and also adding new block and inline elements. You do this by extending from the parser class and adding/overriding class methods and properties. For the different element types there are different ways to extend them, as you will see in the following sections.
 
 ### Adding block elements
 
