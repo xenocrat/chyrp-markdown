@@ -13,6 +13,11 @@ namespace xenocrat\markdown\inline;
  */
 trait MediaLinkTrait
 {
+	/**
+	 * @var bool Render video and audio with a deferred loading attribute.
+	 */
+	public $renderLazyMedia = false;
+
 	protected function renderImage($block): string
 	{
 		if (isset($block['refkey'])) {
@@ -31,7 +36,7 @@ trait MediaLinkTrait
 		if (
 			preg_match('/\.(mpe?g|mp4|m4v|mov|webm|ogv)$/i', $block['url'])
 		) {
-			return '<video src="'
+			return '<video controls="" src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
 				. (
 					empty($block['width']) ?
@@ -42,6 +47,11 @@ trait MediaLinkTrait
 					empty($block['height']) ?
 						'' :
 						' height="' . $block['height'] . '"'
+				)
+				. (
+					$this->renderLazyMedia ?
+						' preload="none"' :
+						' preload="metadata"'
 				)
 				. (
 					empty($block['title']) ?
@@ -59,7 +69,7 @@ trait MediaLinkTrait
 		} elseif (
 			preg_match('/\.(mp3|m4a|oga|ogg|spx|wav|aiff?)$/i', $block['url'])
 		) {
-			return '<audio src="'
+			return '<audio controls="" src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
 				. (
 					empty($block['width']) ?
@@ -70,6 +80,11 @@ trait MediaLinkTrait
 					empty($block['height']) ?
 						'' :
 						' height="' . $block['height'] . '"'
+				)
+				. (
+					$this->renderLazyMedia ?
+						' preload="none"' :
+						' preload="metadata"'
 				)
 				. (
 					empty($block['title']) ?
