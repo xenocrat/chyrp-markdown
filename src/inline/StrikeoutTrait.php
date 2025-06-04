@@ -24,13 +24,28 @@ trait StrikeoutTrait
 	 */
 	protected function parseStrike($markdown): array
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$markdown
+		);
 		if (
 			preg_match(
-				'/^(~{1,2})(?!~)(.*?([^~\\\\]|(?<=\\\\)~|(?<=\\\\)\\\\))\1(?!~)/s',
-				$markdown,
+				'/^(~{1,2})(?!~)(.*?([^~\\\\]|(?<=\\\\)~))\1(?!~)/s',
+				$regexable,
 				$matches
 			)
 		) {
+			$matches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[0]
+			);
+			$matches[2] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[2]
+			);
 			return [
 				[
 					'strike',

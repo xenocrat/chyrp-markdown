@@ -24,13 +24,28 @@ trait SupSubTrait
 	 */
 	protected function parseSup($markdown): array
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$markdown
+		);
 		if (
 			preg_match(
-				'/^\+\+(?!\+)(.*?([^\+\\\\]|(?<=\\\\)\+|(?<=\\\\)\\\\))\+\+(?!\+)/s',
-				$markdown,
+				'/^\+\+(?!\+)(.*?([^\+\\\\]|(?<=\\\\)\+))\+\+(?!\+)/s',
+				$regexable,
 				$matches
 			)
 		) {
+			$matches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[0]
+			);
+			$matches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[1]
+			);	
 			return [
 				[
 					'sup',
@@ -61,13 +76,28 @@ trait SupSubTrait
 	 */
 	protected function parseSub($markdown): array
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$markdown
+		);
 		if (
 			preg_match(
-				'/^--(?!-)(.*?([^-\\\\]|(?<=\\\\)-|(?<=\\\\)\\\\))--(?!-)/s',
-				$markdown,
+				'/^--(?!-)(.*?([^-\\\\]|(?<=\\\\)-))--(?!-)/s',
+				$regexable,
 				$matches
 			)
 		) {
+			$matches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[0]
+			);
+			$matches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[1]
+			);
 			return [
 				[
 					'sub',

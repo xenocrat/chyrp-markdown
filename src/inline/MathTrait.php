@@ -24,13 +24,28 @@ trait MathTrait
 	 */
 	protected function parseMath($text): array
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$text
+		);
 		if (
 			preg_match(
 				'/^\$`(.*?[^\\\\])`\$/s',
-				$text,
+				$regexable,
 				$matches
 			)
 		) {
+			$matches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[0]
+			);
+			$matches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[1]
+			);
 			$math = str_replace("\n", ' ', $matches[1]);
 			if (
 				strlen($math) > 2

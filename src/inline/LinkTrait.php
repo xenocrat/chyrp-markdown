@@ -146,7 +146,7 @@ trait LinkTrait
 		if (
 			strpos($markdown, ']') !== false
 			&& preg_match(
-				'/\[((?>(\\\\\[|\\\\\]|\\\\|[^\]\[\\\\])+|(?R))*)\]/',
+				'/\[((?>([^\[\]\\\\]|\\\\\[|\\\\\]|\\\\)+|(?R))*)\]/',
 				$markdown,
 				$textMatches
 			)
@@ -387,7 +387,11 @@ REGEXP;
 			&& ($line[0] === ' ' || $line[0] === '[')
 			&& preg_match(
 				'/^ {0,3}\[(.+?)(?<!\\\\)\]:\s*(([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*)?$/',
-				$line
+				str_replace(
+					"\\\\",
+					"\\\\".chr(31),
+					$line
+				)
 			)
 		);
 	}
@@ -401,7 +405,11 @@ REGEXP;
 			isset($lines[$current])
 			&& preg_match(
 				'/^ {0,3}\[(.+?)(?<!\\\\)\]:\s*(?:(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*)?$/',
-				$lines[$current],
+				str_replace(
+					"\\\\",
+					"\\\\".chr(31),
+					$lines[$current]
+				),
 				$matches
 			)
 		) {
@@ -409,11 +417,21 @@ REGEXP;
 			// Unescaped brackets are not allowed.
 				return $this->consumeParagraph($lines, $current);
 			}
+			$matches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[1]
+			);
 			$key = function_exists("mb_convert_case") ?
 				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 				strtolower($matches[1]) ;
 
 			if (isset($matches[2])) {
+				$matches[2] = str_replace(
+					"\\\\".chr(31),
+					"\\\\",
+					$matches[2]
+				);
 				$url = $matches[2];
 			} else {
 			// URL may be on the next line.
@@ -435,6 +453,11 @@ REGEXP;
 				'url' => $this->unEscapeBackslash($url),
 			];
 			if (isset($matches[3])) {
+				$matches[3] = str_replace(
+					"\\\\".chr(31),
+					"\\\\",
+					$matches[3]
+				);
 				$ref['title'] = $this->unEscapeBackslash($matches[3]);
 			} else {
 			// Title may be on the next line.

@@ -24,13 +24,28 @@ trait CiteTrait
 	 */
 	protected function parseCite($markdown): array
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$markdown
+		);
 		if (
 			preg_match(
-				'/^\*_(.*?([^\\\\]|(?<=\\\\)\\\\))_\*/s',
-				$markdown,
+				'/^\*_(.*?[^\\\\])_\*/s',
+				$regexable,
 				$matches
 			)
 		) {
+			$matches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[0]
+			);
+			$matches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$matches[1]
+			);
 			return [
 				[
 					'cite',
