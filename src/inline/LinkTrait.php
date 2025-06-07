@@ -143,14 +143,29 @@ trait LinkTrait
 
 	protected function parseLinkOrImage($markdown): array|false
 	{
+		$regexable = str_replace(
+			"\\\\",
+			"\\\\".chr(31),
+			$markdown
+		);
 		if (
 			strpos($markdown, ']') !== false
 			&& preg_match(
 				'/\[((?>([^\[\]\\\\]|\\\\\[|\\\\\]|\\\\)+|(?R))*)\]/',
-				$markdown,
+				$regexable,
 				$textMatches
 			)
 		) {
+			$textMatches[0] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$textMatches[0]
+			);
+			$textMatches[1] = str_replace(
+				"\\\\".chr(31),
+				"\\\\",
+				$textMatches[1]
+			);
 			$text = $textMatches[1];
 			$offset = strlen($textMatches[0]);
 			$markdown = substr($markdown, $offset);
@@ -166,7 +181,7 @@ REGEXP;
 			if (preg_match($pattern, $markdown, $refMatches)) {
 			// Inline link.
 				$url = isset($refMatches[2]) ?
-					$this->unEscapeBackslash($refMatches[2]) :
+					$refMatches[2] :
 					'';
 
 				$lt = str_starts_with($url, '<');
@@ -180,7 +195,7 @@ REGEXP;
 				}
 				$title = empty($refMatches[5]) ?
 					null :
-					$this->unEscapeBackslash($refMatches[5]);
+					$refMatches[5];
 
 				$key = null;
 
@@ -191,7 +206,9 @@ REGEXP;
 					$offset + strlen($refMatches[0]),
 					$key,
 				];
-			} elseif (preg_match('/^(\[(.*?)\])?/s', $markdown, $refMatches)) {
+			} elseif (
+				preg_match('/^(\[(.*?)\])?/s', $markdown, $refMatches)
+			) {
 			// Reference style link.
 				$key = empty($refMatches[2]) ? $text : $refMatches[2];
 
@@ -478,7 +495,7 @@ REGEXP;
 				$url = str_replace(' ', '%20', substr($url, 1, -1));
 			}
 			$ref = [
-				'url' => $this->unEscapeBackslash($url),
+				'url' => $url,
 			];
 			if (isset($matches[3])) {
 				$matches[3] = str_replace(
@@ -486,7 +503,7 @@ REGEXP;
 					"\\\\",
 					$matches[3]
 				);
-				$ref['title'] = $this->unEscapeBackslash($matches[3]);
+				$ref['title'] = $matches[3];
 			} else {
 			// Title may be on the next line.
 				if (
@@ -497,7 +514,7 @@ REGEXP;
 						$matches
 					)
 				) {
-					$ref['title'] = $this->unEscapeBackslash($matches[1]);
+					$ref['title'] = $matches[1];
 					$current++;
 				}
 			}
