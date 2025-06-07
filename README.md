@@ -19,7 +19,7 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 77% of CommonMark test cases and 76% of GFM test cases.
+Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark and GFM specifications. Currently it is able to pass 79% of CommonMark test cases and 78% of GFM test cases.
 
 The most notable limitations of the parser are:
 1. It does not support indentation with intermingled tabs and spaces;
@@ -70,7 +70,7 @@ echo $parser->parseParagraph($markdown);
 You may set one of the following options on the parser object before parsing:
 
 - `$parser->html5 = true` to enable HTML5 output instead of HTML4.
-- `$parser->convertTabsToSpaces = true` to convert all tabs into 4 spaces before parsing.
+- `$parser->convertTabsToSpaces = true` to convert all tabs into 1-4 spaces before parsing.
 - `$parser->setContextId(string)` to set an identifier string for the rendering context.
 - `$parser->maximumNestingLevel = int` to set the maximum level of nested elements to parse.
 - `$parser->maximumNestingLevelThrow = true` to throw if the maximum nesting level is exceeded.
