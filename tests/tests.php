@@ -65,7 +65,16 @@
 	function run_tests($data): array {
 		foreach ($data as $parser => $tests) {
 			$instance = new ('\xenocrat\markdown\\' . $parser)();
-			$instance->html5 = false;
+
+			switch ($parser) {
+				case 'GithubMarkdown':
+					$instance->html5 = true;
+					$instance->renderCheckboxInputs = true;
+					break;
+				case 'Markdown':
+					$instance->html5 = false;
+					break;
+			}
 
 			foreach ($tests as $number => $values) {
 				if (!array_key_exists('source', $values) ||
@@ -82,7 +91,6 @@
 				$data[$parser][$number]['passed'] = $passed;
 			}
 		}
-
 		return $data;
 	}
 
