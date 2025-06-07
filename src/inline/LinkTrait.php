@@ -235,7 +235,7 @@ REGEXP;
 					return [
 						[
 							'url',
-							$this->unEscapeBackslash($matches[1])
+							$matches[1]
 						],
 						strlen($matches[0])
 					];
@@ -248,7 +248,7 @@ REGEXP;
 					return [
 						[
 							'email',
-							$this->unEscapeBackslash($matches[1])
+							$matches[1]
 						],
 						strlen($matches[0])
 					];
@@ -311,13 +311,27 @@ REGEXP;
 			}
 		}
 		return '<a href="'
-			. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
+			. $this->escapeHtmlEntities(
+				$this->unEscapeHtmlEntities(
+					$this->unEscapeBackslash(
+						$block['url']
+					),
+					ENT_QUOTES | ENT_SUBSTITUTE
+				),
+				ENT_COMPAT | ENT_SUBSTITUTE
+			)
+			. '"'
 			. (
 				empty($block['title']) ?
 					'' :
 					' title="' 
 					. $this->escapeHtmlEntities(
-						$block['title'],
+						$this->unEscapeHtmlEntities(
+							$this->unEscapeBackslash(
+								$block['title']
+							),
+							ENT_QUOTES | ENT_SUBSTITUTE
+						),
 						ENT_COMPAT | ENT_SUBSTITUTE
 					)
 					. '"'
@@ -341,10 +355,24 @@ REGEXP;
 			}
 		}
 		return '<img src="'
-			. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
+			. $this->escapeHtmlEntities(
+				$this->unEscapeHtmlEntities(
+					$this->unEscapeBackslash(
+						$block['url']
+					),
+					ENT_QUOTES | ENT_SUBSTITUTE
+				),
+				ENT_COMPAT | ENT_SUBSTITUTE
+			)
+			. '"'
 			. ' alt="'
 			. $this->escapeHtmlEntities(
-				$block['text'],
+				$this->unEscapeHtmlEntities(
+					$this->unEscapeBackslash(
+						$block['text']
+					),
+					ENT_QUOTES | ENT_SUBSTITUTE
+				),
 				ENT_COMPAT | ENT_SUBSTITUTE
 			)
 			. '"'
