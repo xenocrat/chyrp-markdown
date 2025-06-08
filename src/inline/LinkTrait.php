@@ -384,8 +384,10 @@ REGEXP;
 			. ' alt="'
 			. $this->escapeHtmlEntities(
 				$this->unEscapeHtmlEntities(
-					$this->unEscapeBackslash(
-						$block['text']
+					strip_tags(
+						$this->renderAbsy(
+							$this->parseInline($block['text'])
+						)
 					),
 					ENT_QUOTES | ENT_SUBSTITUTE
 				),
