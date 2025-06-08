@@ -143,16 +143,15 @@ trait LinkTrait
 
 	protected function parseLinkOrImage($markdown): array|false
 	{
-		$regexable = str_replace(
-			"\\\\",
-			"\\\\".chr(31),
-			$markdown
-		);
 		if (
 			strpos($markdown, ']') !== false
 			&& preg_match(
 				'/\[((?>([^\[\]\\\\]|\\\\\[|\\\\\]|\\\\)+|(?R))*)\]/',
-				$regexable,
+				str_replace(
+					"\\\\",
+					"\\\\".chr(31),
+					$markdown
+				),
 				$textMatches
 			)
 		) {

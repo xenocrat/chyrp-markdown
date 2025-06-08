@@ -24,15 +24,14 @@ trait HighlightTrait
 	 */
 	protected function parseHighlight($markdown): array
 	{
-		$regexable = str_replace(
-			"\\\\",
-			"\\\\".chr(31),
-			$markdown
-		);
 		if (
 			preg_match(
 				'/^==(?!=)(.*?([^=\\\\]|(?<=\\\\)=))==(?!=)/s',
-				$regexable,
+				str_replace(
+					"\\\\",
+					"\\\\".chr(31),
+					$markdown
+				),
 				$matches
 			)
 		) {
