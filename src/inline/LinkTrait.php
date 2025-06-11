@@ -414,7 +414,12 @@ REGEXP;
 					'' :
 					' title="'
 					. $this->escapeHtmlEntities(
-						$block['title'],
+						$this->unEscapeHtmlEntities(
+							$this->unEscapeBackslash(
+								$block['title']
+							),
+							ENT_QUOTES | ENT_SUBSTITUTE
+						),
 						ENT_COMPAT | ENT_SUBSTITUTE
 					)
 					. '"'
