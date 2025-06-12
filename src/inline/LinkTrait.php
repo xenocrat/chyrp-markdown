@@ -383,13 +383,10 @@ REGEXP;
 			. '"'
 			. ' alt="'
 			. $this->escapeHtmlEntities(
-				$this->unEscapeHtmlEntities(
-					strip_tags(
-						$this->renderAbsy(
-							$this->parseInline($block['text'])
-						)
-					),
-					ENT_QUOTES | ENT_SUBSTITUTE
+				strip_tags(
+					$this->renderAbsy(
+						$this->parseInline($block['text'])
+					)
 				),
 				ENT_COMPAT | ENT_SUBSTITUTE
 			)
