@@ -39,7 +39,7 @@ trait HeadlineTrait
 		return (
 			// ATX headline.
 			preg_match('/^ {0,3}(#{1,6})([ \t]|$)/', $line)
-			// setext headline.
+			// Setext headline.
 			|| !empty($lines[$current + 1])
 			&& preg_match('/^ {0,3}(\-+|=+)\s*$/', $lines[$current + 1])
 		);
