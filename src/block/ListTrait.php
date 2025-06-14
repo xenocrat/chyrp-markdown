@@ -172,7 +172,7 @@ trait ListTrait
 				$block['attr']['reversed'] = '';
 			}
 		}
-		// Tight list? check it...
+		// Tight list? Check it...
 		if (!$block['loose']) {
 			foreach ($block['items'] as $itemLines) {
 				// Empty list item.
@@ -180,7 +180,7 @@ trait ListTrait
 					continue;
 				}
 				// Everything else.
-				for ($x = 0; $x < count($itemLines); $x++) { 
+				for ($x = 0; $x < count($itemLines); $x++) {
 					if (
 						ltrim($itemLines[$x]) === ''
 						|| $this->detectLineType($itemLines, $x) !== 'paragraph'
