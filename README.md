@@ -7,7 +7,7 @@ Currently the following Markdown flavors are supported:
 
 - [CommonMark](https://spec.commonmark.org/)
 - [GFM: GitHub-Flavored Markdown](https://github.github.com/gfm/)
-- [GLM: GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+- [GLFM: GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
 - [CFM: Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
 
 Requirements
@@ -19,7 +19,7 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLM specifications. Currently it is able to pass 81% of CommonMark test cases.
+Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 81% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not support indentation with intermingled tabs and spaces;
@@ -53,7 +53,7 @@ echo $parser->parse($markdown);
 $parser = new \xenocrat\markdown\GithubMarkdown();
 echo $parser->parse($markdown);
 
-// GLM
+// GLFM
 $parser = new \xenocrat\markdown\GitlabMarkdown();
 echo $parser->parse($markdown);
 
