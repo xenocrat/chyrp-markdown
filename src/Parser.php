@@ -615,6 +615,9 @@ abstract class Parser
 		if ($text === '') {
 			return '';
 		}
+		if (!function_exists('mb_strlen')) {
+			return str_replace("\t", "    ", $text);
+		}
 		$expanded = '';
 		$lines = preg_split(
 				"/(\n)/",
@@ -634,7 +637,7 @@ abstract class Parser
 				if ($chunk === "\t") {
 					$output .= str_repeat(
 						' ',
-						(4 - (strlen($output) % 4))
+						(4 - (mb_strlen($output) % 4))
 					);
 				} else {
 					$output .= $chunk;
