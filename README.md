@@ -6,9 +6,9 @@ This is a set of PHP classes for converting Markdown to HTML, with a focus on sp
 Currently the following Markdown flavors are supported:
 
 - [CommonMark](https://spec.commonmark.org/)
-- [GitHub-Flavored Markdown](https://github.github.com/gfm/)
-- [GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
-- [Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
+- [GitHub-Flavored Markdown (GFM)](https://github.github.com/gfm/)
+- [GitLab-Flavored Markdown (GLM)](https://docs.gitlab.com/ee/user/markdown.html)
+- [Chyrp-Flavoured Markdown (CFM)](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
 
 Requirements
 -----------
@@ -19,12 +19,11 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLM specifications. Currently it is able to pass 80% of CommonMark test cases.
+Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLM specifications. Currently it is able to pass 81% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not support indentation with intermingled tabs and spaces;
-2. It does not recognize setext headings that span multiple lines;
-3. It does not allow "lazy" continuation lines in blockquotes or lists.
+2. It does not allow "lazy" continuation lines in blockquotes or lists.
 
 Usage
 -----
