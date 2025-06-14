@@ -6,9 +6,9 @@ This is a set of PHP classes for converting Markdown to HTML, with a focus on sp
 Currently the following Markdown flavors are supported:
 
 - [CommonMark](https://spec.commonmark.org/)
-- [GitHub-Flavored Markdown (GFM)](https://github.github.com/gfm/)
-- [GitLab-Flavored Markdown (GLM)](https://docs.gitlab.com/ee/user/markdown.html)
-- [Chyrp-Flavoured Markdown (CFM)](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
+- [GFM: GitHub-Flavored Markdown](https://github.github.com/gfm/)
+- [GLM: GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+- [CFM: Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
 
 Requirements
 -----------
