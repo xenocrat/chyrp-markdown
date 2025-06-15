@@ -81,7 +81,7 @@ trait ListTrait
 
 		// Consume until end condition...
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
-			$line = $lines[$i];
+			$line = $this->expandTabs($lines[$i]);
 			$pattern = ($type === 'ol') ?
 				'/^( {0,3})(\d{1,9})([\.\)])([ \t]+|$)/' :
 				'/^( {0,3})([\-\+\*])([ \t]+|$)/' ;
@@ -123,7 +123,7 @@ trait ListTrait
 				if (!isset($lines[$i + 1])) {
 					break;
 				}
-				$next = $lines[$i + 1];
+				$next = $this->expandTabs($lines[$i + 1]);
 				$line = substr($line, $mw);
 				if ($next === '' || ltrim($next) === '') {
 				// Next line is also blank.
