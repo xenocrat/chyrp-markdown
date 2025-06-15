@@ -81,7 +81,7 @@ trait HeadlineTrait
 	protected function consumeAtxHeadline($lines, $current): array
 	{
 		$line = ltrim($lines[$current], "# \t");
-		$line = preg_replace('/ +(\#+[ \t]*)?$/', '', $line);
+		$line = preg_replace('/[ \t]+(\#+[ \t]*)?$/', '', $line);
 		$block = [
 			'headline',
 			'content' => $this->parseInline($line),
