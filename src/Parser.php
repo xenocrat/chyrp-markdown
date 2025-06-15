@@ -637,7 +637,7 @@ abstract class Parser
 				if ($chunk === "\t") {
 					$output .= str_repeat(
 						' ',
-						(4 - (mb_strlen($output) % 4))
+						4 - (mb_strlen($output, 'UTF-8') % 4)
 					);
 				} else {
 					$output .= $chunk;
