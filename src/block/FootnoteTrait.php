@@ -308,7 +308,7 @@ trait FootnoteTrait
 		$mw = 0;
 
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
-			$line = $lines[$i];
+			$line = $this->expandTabs($lines[$i]);
 			$startsFootnote = preg_match(
 				'/^ {0,3}\[\^(.+?)(?<!\\\\)\]:[ \t]*/',
 				str_replace(
