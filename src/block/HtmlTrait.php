@@ -232,7 +232,7 @@ trait HtmlTrait
 	{
 		if (
 			preg_match(
-				'/^&(#[\d]{1,7}|#[x][a-f0-9]{1,6}|[\w\d]{2,});/i',
+				'/^&(\#[\d]{1,7}|\#[x][a-f0-9]{1,6}|[\w\d]{2,});/i',
 				$text,
 				$matches
 			)
