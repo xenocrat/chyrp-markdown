@@ -97,14 +97,14 @@ trait CodeTrait
 					),
 					ENT_QUOTES | ENT_SUBSTITUTE
 				),
-				ENT_COMPAT | ENT_SUBSTITUTE
+				ENT_COMPAT | ENT_SUBSTITUTE | ENT_DISALLOWED
 			)
 			. '"' : '';
 
 		return "<pre><code$class>"
 			. $this->escapeHtmlEntities(
 				$block['content'],
-				ENT_COMPAT | ENT_SUBSTITUTE
+				ENT_COMPAT | ENT_SUBSTITUTE | ENT_DISALLOWED
 			)
 			. ($block['content'] === '' ? '' : "\n" )
 			. "</code></pre>\n";

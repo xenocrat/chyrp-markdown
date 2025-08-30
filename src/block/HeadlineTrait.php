@@ -150,7 +150,7 @@ trait HeadlineTrait
 					. $prefix
 					. $this->escapeHtmlEntities(
 						$id,
-						ENT_COMPAT | ENT_SUBSTITUTE
+						ENT_COMPAT | ENT_SUBSTITUTE | ENT_DISALLOWED
 					)
 					. '"';
 			}

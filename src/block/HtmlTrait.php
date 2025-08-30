@@ -255,7 +255,7 @@ trait HtmlTrait
 				$block[1],
 				ENT_QUOTES | ENT_SUBSTITUTE
 			),
-			ENT_COMPAT | ENT_SUBSTITUTE
+			ENT_COMPAT | ENT_SUBSTITUTE | ENT_DISALLOWED
 		);
 	}
 
