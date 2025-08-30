@@ -83,8 +83,8 @@ trait ListTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i]);
 			$pattern = ($type === 'ol') ?
-				'/^( {0,3})(\d{1,9})([\.\)])([ \t]+|$)/' :
-				'/^( {0,3})([\-\+\*])([ \t]+|$)/' ;
+				'/^( {0,3})(\d{1,9})([\.\)])( +|$)/' :
+				'/^( {0,3})([\-\+\*])( +|$)/' ;
 			// If not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
 			// of the current item containing a marker for a sub-list item.
@@ -128,7 +128,7 @@ trait ListTrait
 				if ($next === '' || ltrim($next) === '') {
 				// Next line is also blank.
 					$block['items'][$item][] = $line;
-				} elseif (strspn($next, " \t") >= $mw) {
+				} elseif (strspn($next, ' ') >= $mw) {
 				// Next line is indented enough to continue this item.
 					$block['items'][$item][] = $line;
 				} elseif (preg_match($pattern, $next)) {
@@ -141,7 +141,7 @@ trait ListTrait
 				}
 			} elseif (
 				strlen($line) > $mw
-				&& strspn($line, " \t") >= $mw
+				&& strspn($line, ' ') >= $mw
 			) {
 				// Line is indented enough to continue this item.
 				$line = substr($line, $mw);

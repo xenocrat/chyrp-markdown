@@ -310,7 +310,7 @@ trait FootnoteTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i]);
 			$startsFootnote = preg_match(
-				'/^ {0,3}\[\^(.+?)(?<!\\\\)\]:[ \t]*/',
+				'/^ {0,3}\[\^(.+?)(?<!\\\\)\]: */',
 				str_replace(
 					"\\\\",
 					"\\\\".chr(31),
@@ -350,7 +350,7 @@ trait FootnoteTrait
 					break;
 				} else {
 				// Current line continues the current footnote.
-					$indent = strspn($line, " \t");
+					$indent = strspn($line, ' ');
 					$line = substr($line, ($indent < $mw ? $indent : $mw));
 					$footnotes[$name][] = $line;	
 				}
