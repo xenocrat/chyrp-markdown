@@ -152,7 +152,7 @@ abstract class Parser
 		$safeChr = "\u{FFFD}";
 		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safeChr, $markup);
-		$markup = preg_replace('/&#[Xx]?0+;/', $safeChr, $markup);
+		$markup = preg_replace('/&\#[Xx]?0+;/', $safeChr, $markup);
 		return $markup;
 	}
 
