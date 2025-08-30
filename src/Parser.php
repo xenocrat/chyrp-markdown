@@ -616,6 +616,7 @@ abstract class Parser
 			return '';
 		}
 
+		$mb_str = function_exists('mb_strlen');
 		$expanded = '';
 		$lines = preg_split(
 				"/(\n)/",
@@ -633,7 +634,7 @@ abstract class Parser
 			);
 			foreach ($chunks as $chunk) {
 				if ($chunk === "\t") {
-					$length = function_exists('mb_strlen') ?
+					$length = $mb_str ?
 						mb_strlen($output, 'UTF-8') :
 						strlen($output);
 
