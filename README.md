@@ -105,7 +105,7 @@ If you are parsing user input or any other type of untrusted input, you are stro
 Extended image syntax
 ---------------------
 
-By default, LinkTrait enables an extension to the Markdown syntax for specifying the intrinsic dimensions of an image. The HTML width and height attributes can be specified as `![title](url){width}` or `![title](url){width:height}`, with `width` and `height` being integers between 1 and 999999999. See above if you wish to disable this extended syntax.
+By default, LinkTrait enables an extension to the Markdown syntax for specifying the intrinsic dimensions of an image. The HTML width and height attributes can be specified as `![title](url){width}` or `![title](url){width:height}`, with `width` and `height` being integers between 1 and 999999999. The value 0 is valid but ignored. See above if you wish to disable this extended syntax.
 
 Extending the language
 ----------------------
