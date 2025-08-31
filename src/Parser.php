@@ -610,7 +610,7 @@ abstract class Parser
 	 * @param string $text
 	 * @return string
 	 */
-	protected function expandTabs($text): string
+	protected function expandTabs($text, $chr = ' '): string
 	{
 		if ($text === '') {
 			return '';
@@ -638,7 +638,7 @@ abstract class Parser
 						mb_strlen($output, 'UTF-8') :
 						strlen($output);
 
-					$output .= str_repeat(' ', 4 - ($length % 4));
+					$output .= str_repeat($chr, 4 - ($length % 4));
 				} else {
 					$output .= $chunk;
 				}
