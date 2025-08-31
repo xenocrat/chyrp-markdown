@@ -22,7 +22,7 @@ Limitations
 Because it is focused on speed, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 81% of CommonMark test cases.
 
 The most notable limitations of the parser are:
-1. It has limited support for indentation with mixed spaces and tabs;
+1. It does not fully implement delimeter flanking rules for em/strong;
 2. It does not allow "lazy" continuation lines in blockquotes or lists.
 
 Usage
