@@ -49,8 +49,8 @@ trait CodeTrait
 				($line === '' || ltrim($line) === '')
 				&& isset($lines[$i + 1])
 			) {
-			// ...Or if the line blank and the next is also blank
-			// or the next is indented by 4+ spaces and/or a tab.
+			// ...Or if the line is blank and the next is also blank
+			// or if the next is indented by 4+ spaces and/or a tab.
 				$next = $lines[$i + 1];
 				if (
 					$next === ''
