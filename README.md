@@ -107,6 +107,11 @@ Extended image syntax
 
 By default, LinkTrait enables an extension to the Markdown syntax for specifying the intrinsic dimensions of an image. The HTML width and height attributes can be specified as `![title](url){width}` or `![title](url){width:height}`, with `width` and `height` being integers between 1 and 999999999. The value 0 is valid but ignored. See above if you wish to disable this extended syntax.
 
+Use of special characters
+-------------------------
+
+The parser uses some special characters internally for processing text. The characters used are: unit separator (Unicode codepoint `U+001F`); pad (Unicode codepoint `U+0080`); object replacement character (Unicode codepoint `U+FFFC`). These characters are extremely unlikely to appear in Markdown input text and are therefore deemed safe for internal use. The characters are removed from output text.
+
 Extending the language
 ----------------------
 
