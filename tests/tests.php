@@ -84,8 +84,19 @@
 
 				$source = $values['source'];
 				$expect = $values['expect'];
+
+		        if (!mb_check_encoding($source, "UTF-8"))
+		            throw new RuntimeException(
+                    	"$parser test $number source is invalid UTF-8."
+                	);
+
 				$result = $instance->parse($source);
 				$passed = strcmp($expect, $result) === 0;
+
+		        if (!mb_check_encoding($result, "UTF-8"))
+		            throw new RuntimeException(
+                    	"$parser test $number result is invalid UTF-8."
+                	);
 
 				$data[$parser][$number]['result'] = $result;
 				$data[$parser][$number]['passed'] = $passed;
