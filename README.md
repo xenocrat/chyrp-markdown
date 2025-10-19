@@ -110,7 +110,7 @@ By default, LinkTrait enables an extension to the Markdown syntax for specifying
 Use of special characters
 -------------------------
 
-The parser inserts some special characters into text during processing. The characters inserted are: separators (Unicode codepoints `U+001C`, `U+001D`, `U+001E`, `U+001F`) and the object replacement character (Unicode codepoint `U+FFFC`). These characters are extremely unlikely to appear in Markdown input text and are therefore deemed safe for internal use. The characters are removed from output text.
+The parser inserts some special characters into text during processing. The characters inserted are separators (Unicode codepoints `U+001C`, `U+001D`, `U+001E`, `U+001F`) and the object replacement character (Unicode codepoint `U+FFFC`). These characters are extremely unlikely to appear in Markdown input text and are therefore deemed safe for internal use. The characters are removed from output text.
 
 Extending the language
 ----------------------
