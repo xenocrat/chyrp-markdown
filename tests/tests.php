@@ -85,18 +85,18 @@
 				$source = $values['source'];
 				$expect = $values['expect'];
 
-		        if (!mb_check_encoding($source, "UTF-8"))
-		            throw new RuntimeException(
-                    	"$parser test $number source is invalid UTF-8."
-                	);
+				if (!mb_check_encoding($source, "UTF-8"))
+					throw new RuntimeException(
+						"$parser test $number source is invalid UTF-8."
+					);
 
 				$result = $instance->parse($source);
 				$passed = strcmp($expect, $result) === 0;
 
-		        if (!mb_check_encoding($result, "UTF-8"))
-		            throw new RuntimeException(
-                    	"$parser test $number result is invalid UTF-8."
-                	);
+				if (!mb_check_encoding($result, "UTF-8"))
+					throw new RuntimeException(
+						"$parser test $number result is invalid UTF-8."
+					);
 
 				$data[$parser][$number]['result'] = $result;
 				$data[$parser][$number]['passed'] = $passed;
@@ -198,9 +198,9 @@
 			}
 			table {
 				table-layout: fixed;
-			    width: 100%;
-			    margin: 0.5rem 0rem;
-			    border-collapse: collapse;
+				width: 100%;
+				margin: 0.5rem 0rem;
+				border-collapse: collapse;
 			}
 			col:first-child {
 				width: calc(3ch + 2rem);
@@ -211,14 +211,14 @@
 			th {
 				background-color: #dfdfdf;
 				vertical-align: middle;
-			    padding: 0.5rem;
-			    border: 1px solid #000000;
+				padding: 0.5rem;
+				border: 1px solid #000000;
 			}
 			td {
 				font-family: monospace;
 				vertical-align: top;
 				padding: 1rem;
-			    border: 1px solid #000000;
+				border: 1px solid #000000;
 			}
 			td.pass {
 				background-color: #ebfae4;
