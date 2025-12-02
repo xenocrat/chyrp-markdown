@@ -23,9 +23,20 @@
 		"ext-Reflection": "*",
 		"ext-SPL": "*"
 	},
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0|^11.0|^12.0"
+    },
 	"autoload": {
 		"psr-4": {
 			"xenocrat\\markdown\\": "src/"
 		}
-	}
+	},
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
 }
