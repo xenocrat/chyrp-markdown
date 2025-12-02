@@ -11,7 +11,7 @@ final class ChyrpMarkdownTest extends TestCase
 {
     public static function provideTestCases() : iterable
     {
-        return parent::getTestCases('GithubMarkdown');
+        return parent::getTestCases('ChyrpMarkdown');
     }
 
     /**
