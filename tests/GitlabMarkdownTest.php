@@ -23,6 +23,9 @@ final class GitlabMarkdownTest extends TestCase
     {
         $instance = new GitlabMarkdown();
 
-        self::assertSame($instance->parse($source), $expected);
+        $html = $instance->parse($source);
+
+        self::assertTrue(mb_check_encoding($html, "UTF-8"));
+        self::assertSame($html, $expected);
     }
 }

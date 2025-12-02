@@ -24,6 +24,9 @@ final class MarkdownTest extends TestCase
         $instance = new Markdown();
         $instance->html5 = false;
 
-        self::assertSame($instance->parse($source), $expected);
+        $html = $instance->parse($source);
+
+        self::assertTrue(mb_check_encoding($html, "UTF-8"));
+        self::assertSame($html, $expected);
     }
 }

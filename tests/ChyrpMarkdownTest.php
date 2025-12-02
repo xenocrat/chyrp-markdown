@@ -23,6 +23,9 @@ final class ChyrpMarkdownTest extends TestCase
     {
         $instance = new ChyrpMarkdown();
 
-        self::assertSame($instance->parse($source), $expected);
+        $html = $instance->parse($source);
+
+        self::assertTrue(mb_check_encoding($html, "UTF-8"));
+        self::assertSame($html, $expected);
     }
 }
