@@ -47,6 +47,7 @@ class TestCase extends BaseTestCase
             switch ($extension) {
                 case 'md':
                     $data[$basename]['source'] = $contents;
+                    $data[$basename]['test'] = $basename;
                     break;
 
                 case 'html':

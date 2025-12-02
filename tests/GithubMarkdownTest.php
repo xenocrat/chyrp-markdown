@@ -17,9 +17,10 @@ final class GithubMarkdownTest extends TestCase
     /**
      * @param string $source
      * @param string $expected
+     * @param string $test
      */
     #[DataProvider('provideTestCases')]
-    public function test(string $source, string $expected) : void
+    public function test(string $source, string $expected, string $test) : void
     {
         $instance = new GithubMarkdown();
         $instance->html5 = true;
@@ -28,6 +29,6 @@ final class GithubMarkdownTest extends TestCase
         $html = $instance->parse($source);
 
         self::assertTrue(mb_check_encoding($html, "UTF-8"));
-        self::assertSame($html, $expected);
+        self::assertSame($html, $expected, "test {$test} failed");
     }
 }

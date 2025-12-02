@@ -17,15 +17,16 @@ final class ChyrpMarkdownTest extends TestCase
     /**
      * @param string $source
      * @param string $expected
+     * @param string $test
      */
     #[DataProvider('provideTestCases')]
-    public function test(string $source, string $expected) : void
+    public function test(string $source, string $expected, string $test) : void
     {
         $instance = new ChyrpMarkdown();
 
         $html = $instance->parse($source);
 
         self::assertTrue(mb_check_encoding($html, "UTF-8"));
-        self::assertSame($html, $expected);
+        self::assertSame($html, $expected, "test {$test} failed");
     }
 }
