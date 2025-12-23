@@ -93,7 +93,7 @@ For GitLab-Flavored Markdown:
 - `$parser->renderOrderedToc = true` to render the table of contents as an ordered list.
 - `$parser->renderLazyMedia = true` to render video and audio with a deferred loading attribute.
 
-Security Considerations
+Security considerations
 -----------------------
 
 By design Markdown [allows HTML to be included within the Markdown text](https://spec.commonmark.org/0.31.2/#html-blocks), meaning that the input may contain Javascript and CSS styles. This allows Markdown to be very flexible for creating output that is not limited by the Markdown syntax, but it comes with a security risk if you are parsing untrusted input (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) for an overview).
