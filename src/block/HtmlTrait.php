@@ -13,28 +13,6 @@ namespace xenocrat\markdown\block;
 trait HtmlTrait
 {
 	/**
-	 * @var array HTML elements defined in CommonMark spec
-	 * @see https://spec.commonmark.org/0.31.2/#html-blocks
-	 */
-	protected $type6HtmlElements = [
-		'address', 'article', 'aside',
-		'base', 'basefont', 'blockquote', 'body',
-		'caption', 'center', 'col', 'colgroup',
-		'dd', 'details', 'dialog', 'dir', 'div', 'dl', 'dt',
-		'fieldset', 'figcaption', 'figure', 'footer', 'form', 'frame', 'frameset',
-		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html',
-		'iframe',
-		'legend', 'li', 'link',
-		'main', 'menu', 'menuitem',
-		'nav', 'noframes', 
-		'ol', 'optgroup', 'option',
-		'p', 'param',
-		'section', 'source', 'summary',
-		'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'title', 'tr', 'track',
-		'ul',
-	];
-
-	/**
 	 * Identify a line as the beginning of a HTML block.
 	 */
 	protected function identifyHtml($line, $lines, $current): bool
@@ -82,19 +60,37 @@ trait HtmlTrait
 		// Type 5: CDATA.
 			return true;
 		}
-
-		if (!isset($patterns)) {
-			static $patterns;
-			$patterns = implode('|', $this->type6HtmlElements);
-		}
-
-		if (preg_match("/^<\/?($patterns)(\s|>|\/>|$)/i", $line)) {
+		if (
+			preg_match(
+				'/^<\/?(
+					address|article|aside|
+					base|basefont|blockquote|body|
+					caption|center|col|colgroup|
+					dd|details|dialog|dir|div|dl|dt|
+					fieldset|figcaption|figure|footer|form|frame|frameset|
+					h1|h2|h3|h4|h5|h6|head|header|hr|html|
+					iframe|
+					legend|li|link|
+					main|menu|menuitem|
+					nav|noframes| 
+					ol|optgroup|option|
+					p|param|
+					section|source|summary|
+					table|tbody|td|tfoot|th|thead|title|tr|track|
+					ul
+					)(\s|>|\/>|$)/ix',
+				$line
+			)
+		) {
 		// Type 6.
 			return true;
 		}
 		if (
 			preg_match(
-				'/^<(\/)?[a-z][a-z0-9\-]*(?(1) *| .*?)?>(\s)*$/i',
+				'/^<(\/)?[a-z][a-z0-9\-]*
+					(?(1)[\s\n]*|([\s\n]+[a-z_:][a-z0-9_:\.\-]*(?:[\s\n]*=[\s\n]*
+							(?(?=[\"\'])([\"\'])(?:(?!\3).)*\3|[^\s\n"\'=<>`]+)
+					)?)*[\s\n]*\/?)>\s*$/ix',
 				$line,
 				$matches
 			)
@@ -294,7 +290,10 @@ trait HtmlTrait
 			if (
 				// Tag.
 				preg_match(
-					'/^<(\/)?[a-z][a-z0-9\-]*(?(1)[ \n]*|(\/|[ \n].*?))?>/is',
+					'/^<(\/)?[a-z][a-z0-9\-]*
+						(?(1)[\s\n]*|([\s\n]+[a-z_:][a-z0-9_:\.\-]*(?:[\s\n]*=[\s\n]*
+								(?(?=[\"\'])([\"\'])(?:(?!\3).)*\3|[^\s\n"\'=<>`]+)
+						)?)*[\s\n]*\/?)>/isx',
 					$text,
 					$matches
 				)
