@@ -124,8 +124,9 @@ trait ListTrait
 				);
 				$block['items'][$item][] = $line;
 			} elseif ($line === '' || ltrim($line) === '') {
-				// No more lines: end of list.
+			// Line is blank.
 				if (!isset($lines[$i + 1])) {
+				// No more lines: end of list.
 					break;
 				}
 				$next = $this->expandTabs($lines[$i + 1], $pad);
@@ -150,7 +151,7 @@ trait ListTrait
 					break;
 				}
 			} elseif (strspn($line, ' ' . $pad) >= $mw) {
-				// Line is indented enough to continue this item.
+			// Line continues the current item.
 				$line = preg_replace(
 					'/\x1D{1,4}/',
 					"\t",
@@ -158,7 +159,7 @@ trait ListTrait
 				);
 				$block['items'][$item][] = $line;
 			} else {
-				// Everything else ends the list.
+			// Everything else ends the list.
 				--$i;
 				break;
 			}
@@ -187,7 +188,7 @@ trait ListTrait
 			$itemBlocks = $this->parseBlocks($itemLines);
 			if (!empty($itemBlocks)) {
 				if (count($itemBlocks) > 1) {
-					// Multiple blocks: loose list.
+				// Multiple blocks: loose list.
 					$block['loose'] = true;
 				}
 			}
@@ -204,7 +205,7 @@ trait ListTrait
 		$type = $block['list'];
 		if (!empty($block['attr'])) {
 			$output = "<$type "
-				. $this->generateHtmlAttributes($block['attr'])
+				. $this->generateListAttributes($block['attr'])
 				. ">\n";
 		} else {
 			$output = "<$type>\n";
@@ -213,7 +214,7 @@ trait ListTrait
 			$li = empty($itemBlocks) ? '<li>' : "<li>\n";
 			if (!$block['loose'] && !empty($itemBlocks)) {
 				if ($itemBlocks[0][0] === 'paragraph') {
-					// Tight list: unwrap paragraph blocks.
+				// Tight list with inline paragraphs.
 					$itemBlocks = $itemBlocks[0]['content'];
 					$li = '<li>';
 				}
@@ -224,12 +225,12 @@ trait ListTrait
 	}
 
 	/**
-	 * Return HTML attributes string from [attrName => attrValue] list.
+	 * Return attributes from [attrName => attrValue] list.
 	 *
 	 * @param array $attributes - The attribute name-value pairs.
 	 * @return string
 	 */
-	private function generateHtmlAttributes($attributes): string
+	private function generateListAttributes($attributes): string
 	{
 		foreach ($attributes as $name => $value) {
 			$attributes[$name] = "$name=\"$value\"";
