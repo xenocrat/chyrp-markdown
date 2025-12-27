@@ -138,20 +138,18 @@ trait ListTrait
 				// Next line is also blank.
 					$block['items'][$item][] = $line;
 				} elseif (strspn($next, ' ' . $pad) >= $mw) {
-				// Next line is indented enough to continue this item.
+				// Next line is indented: loose list.
 					$block['items'][$item][] = $line;
+					$block['loose'] = true;
 				} elseif (preg_match($pattern, $next)) {
-				// Next line is the next item in this list: loose list.
+				// Next line is a marker: loose list.
 					$block['items'][$item][] = $line;
 					$block['loose'] = true;
 				} else {
 				// next line is not list content.
 					break;
 				}
-			} elseif (
-				strlen($line) > $mw
-				&& strspn($line, ' ' . $pad) >= $mw
-			) {
+			} elseif (strspn($line, ' ' . $pad) >= $mw) {
 				// Line is indented enough to continue this item.
 				$line = preg_replace(
 					'/\x1D{1,4}/',
@@ -164,7 +162,6 @@ trait ListTrait
 				--$i;
 				break;
 			}
-
 			// If next line is <hr>, end the list.
 			if (
 				!empty($lines[$i + 1])
@@ -185,31 +182,16 @@ trait ListTrait
 				$block['attr']['reversed'] = '';
 			}
 		}
-		// Tight list? Check it...
-		if (!$block['loose']) {
-			foreach ($block['items'] as $itemLines) {
-				// Empty list item.
-				if (ltrim($itemLines[0]) === '' && !isset($itemLines[1])) {
-					continue;
-				}
-				// Everything else.
-				for ($x = 0; $x < count($itemLines); $x++) {
-					if (
-						ltrim($itemLines[$x]) === ''
-						|| $this->detectLineType($itemLines, $x) !== 'paragraph'
-					) {
-						// Blank line or non-paragraph block marker detected:
-						// make the list loose because block parsing is required.
-						$block['loose'] = true;
-						break 2;
-					}
+		// Parse the items.
+		foreach ($block['items'] as $itemId => $itemLines) {
+			$itemBlocks = $this->parseBlocks($itemLines);
+			if (!empty($itemBlocks)) {
+				if (count($itemBlocks) > 1) {
+					// Multiple blocks: loose list.
+					$block['loose'] = true;
 				}
 			}
-		}
-		foreach ($block['items'] as $itemId => $itemLines) {
-			$block['items'][$itemId] = $block['loose'] ?
-				$this->parseBlocks($itemLines) :
-				$this->parseInline(implode("\n", $itemLines)) ;
+			$block['items'][$itemId] = $itemBlocks;
 		}
 		return [$block, $i];
 	}
@@ -220,8 +202,6 @@ trait ListTrait
 	protected function renderList($block): string
 	{
 		$type = $block['list'];
-		$li = $block['loose'] ? "<li>\n" : '<li>';
-
 		if (!empty($block['attr'])) {
 			$output = "<$type "
 				. $this->generateHtmlAttributes($block['attr'])
@@ -229,9 +209,16 @@ trait ListTrait
 		} else {
 			$output = "<$type>\n";
 		}
-
-		foreach ($block['items'] as $item => $itemLines) {
-			$output .= $li . $this->renderAbsy($itemLines). "</li>\n";
+		foreach ($block['items'] as $item => $itemBlocks) {
+			$li = empty($itemBlocks) ? '<li>' : "<li>\n";
+			if (!$block['loose'] && !empty($itemBlocks)) {
+				if ($itemBlocks[0][0] === 'paragraph') {
+					// Tight list: unwrap paragraph blocks.
+					$itemBlocks = $itemBlocks[0]['content'];
+					$li = '<li>';
+				}
+			}
+			$output .= $li . $this->renderAbsy($itemBlocks) . "</li>\n";
 		}
 		return $output . "</$type>\n";
 	}
