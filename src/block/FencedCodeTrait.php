@@ -72,6 +72,4 @@ trait FencedCodeTrait
 
 		return [$block, $i];
 	}
-
-	abstract protected function unEscapeBackslash($text);
 }

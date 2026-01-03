@@ -63,6 +63,7 @@ trait CiteTrait
 			. '</cite>';
 	}
 
+	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
 }

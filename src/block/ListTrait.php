@@ -238,8 +238,7 @@ trait ListTrait
 		return implode(' ', $attributes);
 	}
 
+	abstract protected function expandTabs($text, $chr = ' ');
 	abstract protected function parseBlocks($lines);
-	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($absy);
-	abstract protected function detectLineType($lines, $current);
 }

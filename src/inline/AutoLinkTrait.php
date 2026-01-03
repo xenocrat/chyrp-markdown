@@ -63,5 +63,6 @@ REGEXP;
 		return "<a href=\"$href\">$text</a>";
 	}
 
+	abstract protected function renderText($block);
 	abstract protected function escapeHtmlEntities($text, $flags = 0);
 }

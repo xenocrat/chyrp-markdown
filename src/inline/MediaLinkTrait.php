@@ -165,8 +165,10 @@ trait MediaLinkTrait
 		}
 	}
 
-	abstract protected function parseImage($markdown);
+	abstract protected function lookupReference($key);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
+	abstract protected function unEscapeBackslash($text);
 	abstract protected function escapeHtmlEntities($text, $flags = 0);
+	abstract protected function unescapeHtmlEntities($text, $flags = 0);
 }

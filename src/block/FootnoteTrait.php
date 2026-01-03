@@ -392,6 +392,9 @@ trait FootnoteTrait
 		return '';
 	}
 
+	abstract public function getContextId();
+	abstract protected function renderText($block);
+	abstract protected function expandTabs($text, $chr = ' ');
 	abstract protected function parseBlocks($lines);
 	abstract protected function renderAbsy($absy);
 }

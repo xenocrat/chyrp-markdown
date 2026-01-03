@@ -159,6 +159,7 @@ trait HeadlineTrait
 		return "<{$tag}{$id}>{$content}</{$tag}>\n";
 	}
 
+	abstract public function getContextId();
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($absy);
 	abstract protected function escapeHtmlEntities($text, $flags = 0);
