@@ -38,8 +38,8 @@ trait EmphStrongTrait
 				return [['text', $markdown[0]], 1];
 			}
 			$regexable = str_replace(
-				"\\\\",
-				"\\\\".chr(31),
+				'\\\\',
+				'\\\\'.chr(31),
 				$markdown
 			);
 			if (
@@ -57,13 +57,13 @@ trait EmphStrongTrait
 				)
 			) {
 				$matches[0] = str_replace(
-					"\\\\".chr(31),
-					"\\\\",
+					'\\\\'.chr(31),
+					'\\\\',
 					$matches[0]
 				);
 				$matches[1] = str_replace(
-					"\\\\".chr(31),
-					"\\\\",
+					'\\\\'.chr(31),
+					'\\\\',
 					$matches[1]
 				);
 				$content = $matches[1];
@@ -93,8 +93,8 @@ trait EmphStrongTrait
 				return [['text', $markdown[0]], 1];
 			}
 			$regexable = str_replace(
-				"\\\\",
-				"\\\\".chr(31),
+				'\\\\',
+				'\\\\'.chr(31),
 				$markdown
 			);
 			if (
@@ -112,13 +112,13 @@ trait EmphStrongTrait
 				)
 			) {
 				$matches[0] = str_replace(
-					"\\\\".chr(31),
-					"\\\\",
+					'\\\\'.chr(31),
+					'\\\\',
 					$matches[0]
 				);
 				$matches[1] = str_replace(
-					"\\\\".chr(31),
-					"\\\\",
+					'\\\\'.chr(31),
+					'\\\\',
 					$matches[1]
 				);
 				$content = $matches[1];
