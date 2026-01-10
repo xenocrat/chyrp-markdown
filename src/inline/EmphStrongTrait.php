@@ -67,16 +67,13 @@ trait EmphStrongTrait
 					$matches[1]
 				);
 				$content = $matches[1];
-				// If nothing is contained in a strong,
-				// do not consider it valid.
-				if ($content === '') {
-					return [['text', $markdown[0]], 2];
-				}
-				// First and last chars of the strong text
-				// cannot be whitespace.
+				// Strong cannot be empty.
+				// First char cannot be a space separator, close or final punctuation.
+				// Last char cannot be a space separator, open or initial punctuation.
 				if (
-					preg_match(
-						'/^(?![\s\p{Zs}]).+(?<![\s\p{Zs}])$/us',
+					$content !== ''
+					&& preg_match(
+						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
 						$content
 					)
 				) {
@@ -125,16 +122,13 @@ trait EmphStrongTrait
 					$matches[1]
 				);
 				$content = $matches[1];
-				// If nothing is contained in an emphasis,
-				// do not consider it valid.
-				if ($content === '') {
-					return [['text', $markdown[0]], 2];
-				}
-				// First and last chars of the emphasised text
-				// cannot be whitespace.
+				// Emphasis cannot be empty.
+				// First char cannot be a space separator, close or final punctuation.
+				// Last char cannot be a space separator, open or initial punctuation.
 				if (
-					preg_match(
-						'/^(?![\s\p{Zs}]).+(?<![\s\p{Zs}])$/us',
+					$content !== ''
+					&& preg_match(
+						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
 						$content
 					)
 				) {
