@@ -67,14 +67,32 @@ trait EmphStrongTrait
 					$matches[1]
 				);
 				$content = $matches[1];
-				// Strong cannot be empty.
-				// First char cannot be a space separator, close or final punctuation.
-				// Last char cannot be a space separator, open or initial punctuation.
 				if (
+					// Strong cannot be empty.
+					// First char cannot be a space separator, close or final punctuation.
+					// Last char cannot be a space separator, open or initial punctuation.
 					$content !== ''
 					&& preg_match(
 						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
 						$content
+					)
+					// Inline HTML takes precedence.
+					&& (
+						($pos = strpos($content, '<')) === false
+						|| !method_exists($this, 'parseLt')
+						|| $this->parseLt(substr($markdown, (2 + $pos)))[0][0] === 'text'
+					)
+					// Inline link takes precedence.
+					&& (
+						($pos = strpos($content, '[')) === false
+						|| !method_exists($this, 'parseLink')
+						|| $this->parseLink(substr($markdown, (2 + $pos)))[0][0] === 'text'
+					)
+					// Inline image takes precedence.
+					&& (
+						($pos = strpos($content, '![')) === false
+						|| !method_exists($this, 'parseImage')
+						|| $this->parseImage(substr($markdown, (2 + $pos)))[0][0] === 'text'
 					)
 				) {
 					return [
@@ -122,14 +140,32 @@ trait EmphStrongTrait
 					$matches[1]
 				);
 				$content = $matches[1];
-				// Emphasis cannot be empty.
-				// First char cannot be a space separator, close or final punctuation.
-				// Last char cannot be a space separator, open or initial punctuation.
 				if (
+					// Emphasis cannot be empty.
+					// First char cannot be a space separator, close or final punctuation.
+					// Last char cannot be a space separator, open or initial punctuation.
 					$content !== ''
 					&& preg_match(
 						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
 						$content
+					)
+					// Inline HTML takes precedence.
+					&& (
+						($pos = strpos($content, '<')) === false
+						|| !method_exists($this, 'parseLt')
+						|| $this->parseLt(substr($markdown, (1 + $pos)))[0][0] === 'text'
+					)
+					// Inline link takes precedence.
+					&& (
+						($pos = strpos($content, '[')) === false
+						|| !method_exists($this, 'parseLink')
+						|| $this->parseLink(substr($markdown, (1 + $pos)))[0][0] === 'text'
+					)
+					// Inline image takes precedence.
+					&& (
+						($pos = strpos($content, '![')) === false
+						|| !method_exists($this, 'parseImage')
+						|| $this->parseImage(substr($markdown, (1 + $pos)))[0][0] === 'text'
 					)
 				) {
 					return [
