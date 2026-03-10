@@ -83,7 +83,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseLt(substr($markdown, (2 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 					// Inline link takes precedence.
 					&& (
@@ -92,7 +92,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseLink(substr($markdown, (2 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 					// Inline image takes precedence.
 					&& (
@@ -101,7 +101,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseImage(substr($markdown, (2 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 				) {
 					return [
@@ -165,7 +165,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseLt(substr($markdown, (1 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 					// Inline link takes precedence.
 					&& (
@@ -174,7 +174,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseLink(substr($markdown, (1 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 					// Inline image takes precedence.
 					&& (
@@ -183,7 +183,7 @@ trait EmphStrongTrait
 							=== false
 						|| ($arr = $this->parseImage(substr($markdown, (1 + $pos))))[0][0]
 							=== 'text'
-						|| $arr[1] <= (strlen($matches[1]) - $pos)
+						|| $arr[1] <= (strlen($content) - $pos)
 					)
 				) {
 					return [
