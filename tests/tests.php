@@ -108,7 +108,6 @@
 	function display_results($data): void {
 		foreach ($data as $parser => $tests) {
 			echo '<table>' . "\n";
-			echo '<thead>' . "\n";
 			echo '<colgroup>' . "\n";
 			echo '<col>' . "\n";
 			echo '<col span="3">' . "\n";
@@ -122,7 +121,6 @@
 			echo '<th scope="col">Expect</th>' . "\n";
 			echo '<th scope="col">Result</th>' . "\n";
 			echo '</tr>' . "\n";
-			echo '</thead>' . "\n";
 			echo '<tbody>' . "\n";
 
 			$test_total = 0;
