@@ -15,7 +15,7 @@ Requirements
 
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
-- Multibyte string support is recommended for accurate tab expansion.
+- Multibyte string support is recommended for fast tab expansion.
 
 Limitations
 -----------
