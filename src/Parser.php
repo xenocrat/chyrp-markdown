@@ -613,12 +613,12 @@ abstract class Parser
 	 */
 	protected function utf8_strlen($text): int
 	{
-		$len = strlen($text);
-		$pos = 0;
-		$count = 0;
 		if (function_exists('mb_strlen')) {
 			return mb_strlen($text, 'UTF-8');
 		}
+		$len = strlen($text);
+		$pos = 0;
+		$count = 0;
 		while ($pos < $len) {
 			$ord = ord($text[$pos]);
 			if ($ord < 128) {
