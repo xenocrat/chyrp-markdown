@@ -118,7 +118,7 @@ Parses text using the full Markdown language.
 
 #### Return Values
 
-Returns a string of parsed markup.
+Returns a UTF-8 encoded string of parsed markup.
 
 ### `parseParagraph`
 
@@ -140,7 +140,7 @@ Parses only inline elements in the text.
 
 #### Return Values
 
-Returns a string of parsed markup.
+Returns a UTF-8 encoded string of parsed markup.
 
 ### `getContextId`
 
