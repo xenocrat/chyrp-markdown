@@ -95,6 +95,90 @@ For GitLab-Flavored Markdown:
 - `$parser->renderOrderedToc = true` to render the table of contents as an ordered list.
 - `$parser->renderLazyMedia = true` to render video and audio with a deferred loading attribute.
 
+Methods
+-------
+
+### `parse`
+
+#### Description
+
+``` php
+public Parser::parse(
+    string $text
+): string
+```
+
+Parses text using the full Markdown language.
+
+#### Parameters
+
+* _text_
+
+  A UTF-8 encoded string of text to parse.
+
+#### Return Values
+
+Returns a string of parsed markup.
+
+### `parseParagraph`
+
+#### Description
+
+``` php
+public Parser::parseParagraph(
+    string $text
+): string
+```
+
+Parses only inline elements in the text.
+
+#### Parameters
+
+* _text_
+
+  A UTF-8 encoded string of text to parse.
+
+#### Return Values
+
+Returns a string of parsed markup.
+
+### `getContextId`
+
+#### Description
+
+``` php
+public Parser::getContextId(
+): string
+```
+
+Get the identifier for this rendering context.
+
+#### Return Values
+
+Returns a string containing the current context ID.
+
+### `setContextId`
+
+#### Description
+
+``` php
+public Parser::setContextId(
+    string $string
+): string
+```
+
+Set the identifier for this rendering context.
+
+#### Parameters
+
+* _text_
+
+  A UTF-8 encoded string of text to use as the identifier. Any occurrences of the characters '&', '<', '>', '"', and ' ' (space) will be removed from the string.
+
+#### Return Values
+
+Returns a string containing the new context ID.
+
 Security considerations
 -----------------------
 
