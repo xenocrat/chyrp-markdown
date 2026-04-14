@@ -155,7 +155,7 @@ Get the identifier for this rendering context.
 
 #### Return Values
 
-Returns a string containing the current context ID.
+Returns a string containing the context ID.
 
 ### `setContextId`
 
@@ -178,6 +178,171 @@ Set the identifier for this rendering context.
 #### Return Values
 
 Returns a string containing the new context ID.
+
+Properties
+----------
+
+### `html5`
+
+#### Description
+
+``` php
+public bool Parser::html5
+```
+
+Whether to enable HTML5 output instead of HTML4.
+
+### `convertTabsToSpaces`
+
+#### Description
+
+``` php
+public bool Parser::convertTabsToSpaces
+```
+
+Whether to convert all tabs into 1-4 spaces before parsing.
+
+### `maximumNestingLevel`
+
+#### Description
+
+``` php
+public int Parser::maximumNestingLevel
+```
+
+The maximum level of nested elements to parse.
+
+### `maximumNestingLevelThrow`
+
+#### Description
+
+``` php
+public bool Parser::maximumNestingLevelThrow
+```
+
+Whether to throw if the maximum nesting level is exceeded.
+
+### `keepListStartNumber`
+
+#### Description
+
+``` php
+public bool Markdown::keepListStartNumber
+```
+
+Whether to ignore the starting numbers of ordered lists.
+
+### `keepReversedList`
+
+#### Description
+
+``` php
+public bool Markdown::keepReversedList
+```
+
+Whether to enable ordered lists with descending numbers.
+
+### `headlineAnchors`
+
+#### Description
+
+``` php
+public bool Markdown::headlineAnchors
+```
+
+Whether to add GitHub-style anchors when rendering headings.
+
+### `renderLazyImages`
+
+#### Description
+
+``` php
+public bool Markdown::renderLazyImages
+```
+
+Whether to render images with a deferred loading attribute.
+
+### `enableImageDimensions`
+
+#### Description
+
+``` php
+public bool Markdown::enableImageDimensions
+```
+
+Whether to enable extended syntax for image dimensions.
+
+### `enableNewlines`
+
+#### Description
+
+``` php
+public bool GithubMarkdown::enableNewlines
+public bool GitlabMarkdown::enableNewlines
+```
+
+Whether to convert all newlines in the text to `<br/>` tags.
+
+### `renderCheckboxInputs`
+
+#### Description
+
+``` php
+public bool GithubMarkdown::renderCheckboxInputs
+public bool GitlabMarkdown::renderCheckboxInputs
+```
+
+Whether to render task items as inputs instead of emoji.
+
+### `disallowedRawHTML`
+
+#### Description
+
+``` php
+public bool GithubMarkdown::disallowedRawHTML
+```
+
+Whether to enable section 6.11 of the GFM specification.
+
+### `disallowedRawHTML`
+
+#### Description
+
+``` php
+public bool GithubMarkdown::disallowedRawHTML
+```
+
+Whether to enable section 6.11 of the GFM specification.
+
+### `renderFrontMatter`
+
+#### Description
+
+``` php
+public bool GitlabMarkdown::renderFrontMatter
+```
+
+Whether to render front matter blocks as code.
+
+### `renderOrderedToc`
+
+#### Description
+
+``` php
+public bool GitlabMarkdown::renderOrderedToc
+```
+
+Whether to render the table of contents as an ordered list.
+
+### `renderLazyMedia`
+
+#### Description
+
+``` php
+public bool GitlabMarkdown::renderLazyMedia
+```
+
+Whether to render video and audio with a deferred loading attribute.
 
 Security considerations
 -----------------------
