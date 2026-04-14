@@ -68,32 +68,7 @@ $parser = new \xenocrat\markdown\Markdown();
 echo $parser->parseParagraph($markdown);
 ```
 
-You may set one of the following options on the parser object before parsing:
-
-- `$parser->html5 = true` to enable HTML5 output instead of HTML4.
-- `$parser->convertTabsToSpaces = true` to convert all tabs into 1-4 spaces before parsing.
-- `$parser->setContextId(string)` to set an identifier string for the rendering context.
-- `$parser->maximumNestingLevel = int` to set the maximum level of nested elements to parse.
-- `$parser->maximumNestingLevelThrow = true` to throw if the maximum nesting level is exceeded.
-- `$parser->keepListStartNumber = false` to ignore the starting numbers of ordered lists.
-- `$parser->keepReversedList = true` to enable ordered lists with descending numbers.
-- `$parser->headlineAnchors = true` to add GitHub-style anchors when rendering headings.
-- `$parser->renderLazyImages = true` to render images with a deferred loading attribute.
-- `$parser->enableImageDimensions = false` to disable extended syntax for image dimensions.
-
-For GitHub-Flavored Markdown:
-
-- `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
-- `$parser->renderCheckboxInputs = true` to render task items as inputs instead of emoji.
-- `$parser->disallowedRawHTML = false` to disable section 6.11 of the GFM specification.
-
-For GitLab-Flavored Markdown:
-
-- `$parser->enableNewlines = true` to convert all newlines in the text to `<br/>` tags.
-- `$parser->renderCheckboxInputs = true` to render task items as inputs instead of emoji.
-- `$parser->renderFrontMatter = false` to disable rendering of front matter blocks as code.
-- `$parser->renderOrderedToc = true` to render the table of contents as an ordered list.
-- `$parser->renderLazyMedia = true` to render video and audio with a deferred loading attribute.
+You may adjust the properties on the parser object before parsing – see below.
 
 Methods
 -------
@@ -187,7 +162,7 @@ Properties
 #### Description
 
 ``` php
-public bool Parser::html5
+public bool Parser::html5 = false;
 ```
 
 Whether to enable HTML5 output instead of HTML4.
@@ -197,7 +172,7 @@ Whether to enable HTML5 output instead of HTML4.
 #### Description
 
 ``` php
-public bool Parser::convertTabsToSpaces
+public bool Parser::convertTabsToSpaces = false;
 ```
 
 Whether to convert all tabs into 1-4 spaces before parsing.
@@ -207,7 +182,7 @@ Whether to convert all tabs into 1-4 spaces before parsing.
 #### Description
 
 ``` php
-public int Parser::maximumNestingLevel
+public int Parser::maximumNestingLevel = 32;
 ```
 
 The maximum level of nested elements to parse.
@@ -217,7 +192,7 @@ The maximum level of nested elements to parse.
 #### Description
 
 ``` php
-public bool Parser::maximumNestingLevelThrow
+public bool Parser::maximumNestingLevelThrow = false;
 ```
 
 Whether to throw if the maximum nesting level is exceeded.
@@ -227,7 +202,7 @@ Whether to throw if the maximum nesting level is exceeded.
 #### Description
 
 ``` php
-public bool Markdown::keepListStartNumber
+public bool Markdown::keepListStartNumber = true;
 ```
 
 Whether to ignore the starting numbers of ordered lists.
@@ -237,7 +212,7 @@ Whether to ignore the starting numbers of ordered lists.
 #### Description
 
 ``` php
-public bool Markdown::keepReversedList
+public bool Markdown::keepReversedList = true;
 ```
 
 Whether to enable ordered lists with descending numbers.
@@ -247,7 +222,7 @@ Whether to enable ordered lists with descending numbers.
 #### Description
 
 ``` php
-public bool Markdown::headlineAnchors
+public bool Markdown::headlineAnchors = true;
 ```
 
 Whether to add GitHub-style anchors when rendering headings.
@@ -257,7 +232,7 @@ Whether to add GitHub-style anchors when rendering headings.
 #### Description
 
 ``` php
-public bool Markdown::renderLazyImages
+public bool Markdown::renderLazyImages = true;
 ```
 
 Whether to render images with a deferred loading attribute.
@@ -267,7 +242,7 @@ Whether to render images with a deferred loading attribute.
 #### Description
 
 ``` php
-public bool Markdown::enableImageDimensions
+public bool Markdown::enableImageDimensions = true;
 ```
 
 Whether to enable extended syntax for image dimensions.
@@ -277,8 +252,8 @@ Whether to enable extended syntax for image dimensions.
 #### Description
 
 ``` php
-public bool GithubMarkdown::enableNewlines
-public bool GitlabMarkdown::enableNewlines
+public bool GithubMarkdown::enableNewlines = false;
+public bool GitlabMarkdown::enableNewlines = false;
 ```
 
 Whether to convert all newlines in the text to `<br/>` tags.
@@ -288,8 +263,8 @@ Whether to convert all newlines in the text to `<br/>` tags.
 #### Description
 
 ``` php
-public bool GithubMarkdown::renderCheckboxInputs
-public bool GitlabMarkdown::renderCheckboxInputs
+public bool GithubMarkdown::renderCheckboxInputs = false;
+public bool GitlabMarkdown::renderCheckboxInputs = false;
 ```
 
 Whether to render task items as inputs instead of emoji.
@@ -299,17 +274,7 @@ Whether to render task items as inputs instead of emoji.
 #### Description
 
 ``` php
-public bool GithubMarkdown::disallowedRawHTML
-```
-
-Whether to enable section 6.11 of the GFM specification.
-
-### `disallowedRawHTML`
-
-#### Description
-
-``` php
-public bool GithubMarkdown::disallowedRawHTML
+public bool GithubMarkdown::disallowedRawHTML = true;
 ```
 
 Whether to enable section 6.11 of the GFM specification.
@@ -319,7 +284,7 @@ Whether to enable section 6.11 of the GFM specification.
 #### Description
 
 ``` php
-public bool GitlabMarkdown::renderFrontMatter
+public bool GitlabMarkdown::renderFrontMatter = true;
 ```
 
 Whether to render front matter blocks as code.
@@ -329,7 +294,7 @@ Whether to render front matter blocks as code.
 #### Description
 
 ``` php
-public bool GitlabMarkdown::renderOrderedToc
+public bool GitlabMarkdown::renderOrderedToc = false;
 ```
 
 Whether to render the table of contents as an ordered list.
@@ -339,7 +304,8 @@ Whether to render the table of contents as an ordered list.
 #### Description
 
 ``` php
-public bool GitlabMarkdown::renderLazyMedia
+public bool GitlabMarkdown::renderLazyMedia = false;
+public bool ChyrpMarkdown::renderLazyMedia = false;
 ```
 
 Whether to render video and audio with a deferred loading attribute.
