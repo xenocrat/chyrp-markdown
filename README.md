@@ -15,7 +15,7 @@ Requirements
 
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
-- Multibyte string support is recommended for fast tab expansion.
+- Multibyte string support is recommended.
 
 Limitations
 -----------
@@ -68,7 +68,7 @@ $parser = new \xenocrat\markdown\Markdown();
 echo $parser->parseParagraph($markdown);
 ```
 
-You may adjust the properties on the parser object before parsing – see below.
+You may adjust the properties on the parser object before parsing – see public properties below.
 
 Methods
 -------
@@ -195,7 +195,7 @@ The maximum level of nested elements to parse.
 public bool Parser::maximumNestingLevelThrow = false;
 ```
 
-Whether to throw if the maximum nesting level is exceeded.
+Whether to throw an exception if the maximum nesting level is exceeded.
 
 ### `keepListStartNumber`
 
