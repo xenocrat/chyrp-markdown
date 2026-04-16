@@ -17,33 +17,29 @@ trait TableTrait
 	 */
 	protected function identifyTable($line, $lines, $current): bool
 	{
-		if (
-			!str_contains($line, '|')
-			|| !isset($lines[$current + 1])
-			|| !str_contains($lines[$current + 1], '|')
-			|| !preg_match(
+		return (
+			str_contains($line, '|')
+			&& isset($lines[$current + 1])
+			&& str_contains($lines[$current + 1], '|')
+			&& preg_match(
 				'/^\s*\|?(?:\s*:?-[\-\s]*:?\s*\|?)*\s*$/',
 				$lines[$current + 1]
 			)
-		) {
-			return false;
-		}
-
-		$line = str_replace(
-			'\\\\',
-			'\\\\'.chr(31),
-			$line
-		);
-		$next = str_replace(
-			'\\\\',
-			'\\\\'.chr(31),
-			$lines[$current + 1]
-		);
-
-		return (
-			preg_match_all('/(?<!^|\\\\)\|(?!$)/', $line)
-			===
-			preg_match_all('/(?<!^|\\\\)\|(?!$)/', $lines[$current + 1])
+			&& (
+				preg_match_all(
+					'/(?<!^|\\\\)\|(?!$)/',
+					str_replace(
+						'\\\\',
+						'\\\\'.chr(31),
+						$line
+					)
+				)
+				===
+				preg_match_all(
+					'/(?<!^)\|(?!$)/',
+					$lines[$current + 1]
+				)
+			)
 		);
 	}
 
