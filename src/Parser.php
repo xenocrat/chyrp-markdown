@@ -654,11 +654,11 @@ abstract class Parser
 		}
 		$expanded = '';
 		$lines = preg_split(
-				"/(\n)/",
-				$text,
-				-1,
-				PREG_SPLIT_DELIM_CAPTURE
-			);
+			"/(\n)/",
+			$text,
+			-1,
+			PREG_SPLIT_DELIM_CAPTURE
+		);
 		foreach ($lines as $line) {
 			$output = '';
 			$chunks = preg_split(
