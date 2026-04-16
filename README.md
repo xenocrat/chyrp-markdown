@@ -212,7 +212,7 @@ Whether to ignore the starting numbers of ordered lists.
 #### Description
 
 ``` php
-public bool Markdown::keepReversedList = true;
+public bool Markdown::keepReversedList = false;
 ```
 
 Whether to enable ordered lists with descending numbers.
@@ -222,7 +222,7 @@ Whether to enable ordered lists with descending numbers.
 #### Description
 
 ``` php
-public bool Markdown::headlineAnchors = true;
+public bool Markdown::headlineAnchors = false;
 ```
 
 Whether to add GitHub-style anchors when rendering headings.
@@ -232,7 +232,7 @@ Whether to add GitHub-style anchors when rendering headings.
 #### Description
 
 ``` php
-public bool Markdown::renderLazyImages = true;
+public bool Markdown::renderLazyImages = false;
 ```
 
 Whether to render images with a deferred loading attribute.
