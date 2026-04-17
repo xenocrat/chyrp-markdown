@@ -143,11 +143,11 @@ trait TableTrait
 			for ($c = 0; $c < $colCount; $c++) {
 				$align = empty($cols[$c]) ?
 					'' :
-					' align="' . $cols[$c] . '"' ;
+					' align="' . $cols[$c] . '"';
 
 				$content = empty($row[$c]) ?
 					'' :
-					trim($this->renderAbsy($row[$c])) ;
+					trim($this->renderAbsy($row[$c]));
 
 				$cells .= "<$tag$align>$content</$tag>\n";
 			}
