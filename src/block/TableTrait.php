@@ -149,16 +149,16 @@ trait TableTrait
 					'' :
 					trim($this->renderAbsy($row[$c]));
 
-				$cells .= "<$tag$align>$content</$tag>\n";
+				$cells .= "<{$tag}{$align}>{$content}</{$tag}>\n";
 			}
 			if ($r === 0) {
-				$head .= "<tr>\n$cells</tr>\n";
+				$head .= "<tr>\n{$cells}</tr>\n";
 			} else {
-				$body .= "<tr>\n$cells</tr>\n";
+				$body .= "<tr>\n{$cells}</tr>\n";
 			}
 		}
-		return "<table>\n<thead>\n$head</thead>\n"
-			. ($body === '' ? '' : "<tbody>\n$body</tbody>\n")
+		return "<table>\n<thead>\n{$head}</thead>\n"
+			. ($body === '' ? '' : "<tbody>\n{$body}</tbody>\n")
 			. "</table>\n";
 	}
 
