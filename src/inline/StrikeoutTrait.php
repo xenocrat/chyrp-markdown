@@ -46,10 +46,9 @@ trait StrikeoutTrait
 				$matches[2]
 			);
 			$content = $matches[2];
-			$mw = strlen($matches[1]);
 			if (
 				// Inline HTML, link, or image takes precedence.
-				!$this->detectOvershoot(
+				!$this->markerOvershoot(
 					$markdown,
 					strlen($matches[0]),
 					['Lt', 'Link', 'Image']
@@ -74,6 +73,7 @@ trait StrikeoutTrait
 			. '</del>';
 	}
 
+	abstract protected function markerOvershoot($text, $length, $elements);
 	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
