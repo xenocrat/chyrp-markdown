@@ -88,7 +88,7 @@ trait EmphStrongTrait
 				$content = $matches[1];
 				if (
 					// Inline HTML, link, or image takes precedence.
-					!$this->detectOvershoot(
+					!$this->markerOvershoot(
 						$markdown,
 						strlen($matches[0]),
 						['Lt', 'Link', 'Image']
@@ -163,7 +163,7 @@ trait EmphStrongTrait
 				$content = $matches[1];
 				if (
 					// Inline HTML, link, or image takes precedence.
-					!$this->detectOvershoot(
+					!$this->markerOvershoot(
 						$markdown,
 						strlen($matches[0]),
 						['Lt', 'Link', 'Image']
@@ -197,6 +197,7 @@ trait EmphStrongTrait
 			. '</em>';
 	}
 
+	abstract protected function markerOvershoot($text, $length, $elements);
 	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
