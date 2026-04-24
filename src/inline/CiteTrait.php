@@ -26,7 +26,15 @@ trait CiteTrait
 	{
 		if (
 			preg_match(
-				'/^\*_(.*?[^\\\\])_\*/s',
+				'/^\*_
+					# First char cannot be Unicode category Zs, Pe, Pf.
+					(?![\s\p{Zs}\p{Pe}\p{Pf}])
+					# Contents must not end with a backslash:
+					(.*?[^\\\\])
+					# Last char cannot be Unicode category Zs, Ps, Pi.
+					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
+					# End marker:
+					_\*/usx',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
@@ -48,7 +56,7 @@ trait CiteTrait
 			$content = $matches[1];
 			if (
 				// Inline HTML, link, or image takes precedence.
-				!$this->detectOvershoot(
+				!$this->markerOvershoot(
 					$markdown,
 					strlen($matches[0]),
 					['Lt', 'Link', 'Image']
@@ -73,6 +81,7 @@ trait CiteTrait
 			. '</cite>';
 	}
 
+	abstract protected function markerOvershoot($text, $length, $elements);
 	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
