@@ -56,7 +56,7 @@ trait CiteTrait
 			$content = $matches[1];
 			if (
 				// Inline HTML, link, or image takes precedence.
-				!$this->markerOvershoot(
+				!$this->elementOvershoot(
 					$markdown,
 					strlen($matches[0]),
 					['Lt', 'Link', 'Image']
@@ -81,7 +81,7 @@ trait CiteTrait
 			. '</cite>';
 	}
 
-	abstract protected function markerOvershoot($text, $length, $elements);
+	abstract protected function elementOvershoot($text, $length, $elements);
 	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);

@@ -524,7 +524,7 @@ abstract class Parser
 	 * @param array $elements - Inline element names to test.
 	 * @return boolean
 	 */
-	protected function markerOvershoot($text, $length, $elements): bool
+	protected function elementOvershoot($text, $length, $elements): bool
 	{
 		foreach ($elements as $element) {
 			if (method_exists($this, 'parse'.$element.'Markers')) {
