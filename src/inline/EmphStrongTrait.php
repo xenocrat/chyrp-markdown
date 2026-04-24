@@ -22,6 +22,7 @@ trait EmphStrongTrait
 	 *
 	 * @marker _
 	 * @marker *
+	 * @see https://www.unicode.org/reports/tr44/#General_Category_Values
 	 */
 	protected function parseEmphStrong($markdown): array
 	{
@@ -45,13 +46,31 @@ trait EmphStrongTrait
 			if (
 				$marker === '*'
 				&& preg_match(
-					'/^[*]{2}((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)[*]{2}/s',
+					'/^[*]{2}
+						# First char cannot be Unicode category Zs, Pe, Pf.
+						(?![\s\p{Zs}\p{Pe}\p{Pf}])
+						# Escaped marker, other char, matched marker nest:
+						((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)
+						# Last char cannot be Unicode category Zs, Ps, Pi.
+						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
+						# End marker:
+						[*]{2}/usx',
 					$regexable,
 					$matches
 				)
 				|| $marker === '_'
 				&& preg_match(
-					'/^__((?>\\\\_|[^_]|(_+)[^_]*\2)+?)__\b/us',
+					'/^__
+						# First char cannot be Unicode category Zs, Pe, Pf.
+						(?![\s\p{Zs}\p{Pe}\p{Pf}])
+						# Escaped marker, other char, matched marker nest:
+						((?>\\\\_|[^_]|(_+)[^_]*\2)+?)
+						# Last char cannot be Unicode category Zs, Ps, Pi.
+						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
+						# End marker:
+						__
+						# Next char after the end marker must be non-word.
+						\b/usx',
 					$regexable,
 					$matches
 				)
@@ -68,16 +87,8 @@ trait EmphStrongTrait
 				);
 				$content = $matches[1];
 				if (
-					// Strong cannot be empty.
-					$content !== ''
-					// First char cannot be a space separator, close or final punctuation.
-					// Last char cannot be a space separator, open or initial punctuation.
-					&& preg_match(
-						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
-						$content
-					)
 					// Inline HTML takes precedence.
-					&& (
+					(
 						!method_exists($this, 'parseLt')
 						|| ($pos = strpos($content, $this->parseLtMarkers()[0]))
 							=== false
@@ -127,13 +138,35 @@ trait EmphStrongTrait
 			if (
 				$marker === '*'
 				&& preg_match(
-					'/^[*]((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)[*](?![*][^*])/s',
+					'/^[*]
+						# First char cannot be Unicode category Zs, Pe, Pf.
+						(?![\s\p{Zs}\p{Pe}\p{Pf}])
+						# Escaped marker, other char, matched marker nest:
+						((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)
+						# Last char cannot be Unicode category Zs, Ps, Pi.
+						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
+						# End marker:
+						[*]
+						# Emphasis end marker cannot form a strong marker.
+						(?![*][^*])/usx',
 					$regexable,
 					$matches
 				)
 				|| $marker === '_'
 				&& preg_match(
-					'/^_((?>\\\\_|[^_]|(_+)[^_]*\2)+?)_(?!_[^_])\b/us',
+					'/^_
+						# First char cannot be Unicode category Zs, Pe, Pf.
+						(?![\s\p{Zs}\p{Pe}\p{Pf}])
+						# Escaped marker, other char, matched marker nest:
+						((?>\\\\_|[^_]|(_+)[^_]*\2)+?)
+						# Last char cannot be Unicode category Zs, Ps, Pi.
+						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
+						# End marker:
+						_
+						# Emphasis end marker cannot form a strong marker.
+						(?!_[^_])
+						# Next char after the end marker must be non-word.
+						\b/usx',
 					$regexable,
 					$matches
 				)
@@ -150,16 +183,8 @@ trait EmphStrongTrait
 				);
 				$content = $matches[1];
 				if (
-					// Emphasis cannot be empty.
-					$content !== ''
-					// First char cannot be a space separator, close or final punctuation.
-					// Last char cannot be a space separator, open or initial punctuation.
-					&& preg_match(
-						'/^(?![\s\p{Zs}\p{Pe}\p{Pf}]).+(?<![\s\p{Zs}\p{Ps}\p{Pi}])$/us',
-						$content
-					)
 					// Inline HTML takes precedence.
-					&& (
+					(
 						!method_exists($this, 'parseLt')
 						|| ($pos = strpos($content, $this->parseLtMarkers()[0]))
 							=== false
