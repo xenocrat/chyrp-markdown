@@ -48,32 +48,11 @@ trait StrikeoutTrait
 			$content = $matches[2];
 			$mw = strlen($matches[1]);
 			if (
-				// Inline HTML takes precedence.
-				(
-					!method_exists($this, 'parseLt')
-					|| ($pos = strpos($content, $this->parseLtMarkers()[0]))
-						=== false
-					|| ($arr = $this->parseLt(substr($markdown, ($mw + $pos))))[0][0]
-						=== 'text'
-					|| $arr[1] <= (strlen($content) - $pos)
-				)
-				// Inline link takes precedence.
-				&& (
-					!method_exists($this, 'parseLink')
-					|| ($pos = strpos($content, $this->parseLinkMarkers()[0]))
-						=== false
-					|| ($arr = $this->parseLink(substr($markdown, ($mw + $pos))))[0][0]
-						=== 'text'
-					|| $arr[1] <= (strlen($content) - $pos)
-				)
-				// Inline image takes precedence.
-				&& (
-					!method_exists($this, 'parseImage')
-					|| ($pos = strpos($content, $this->parseImageMarkers()[0]))
-						=== false
-					|| ($arr = $this->parseImage(substr($markdown, ($mw + $pos))))[0][0]
-						=== 'text'
-					|| $arr[1] <= (strlen($content) - $pos)
+				// Inline HTML, link, or image takes precedence.
+				!$this->detectOvershoot(
+					$markdown,
+					strlen($matches[0]),
+					['Lt', 'Link', 'Image']
 				)
 			) {
 				return [
