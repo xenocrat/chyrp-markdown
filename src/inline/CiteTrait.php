@@ -55,11 +55,11 @@ trait CiteTrait
 			);
 			$content = $matches[1];
 			if (
-				// Inline HTML, link, or image takes precedence.
+				// Inline HTML, link, image, or code takes precedence.
 				!$this->elementOvershoot(
 					$markdown,
 					strlen($matches[0]),
-					['Lt', 'Link', 'Image']
+					['Lt', 'Link', 'Image', 'inlineCode']
 				)
 			) {
 				return [
