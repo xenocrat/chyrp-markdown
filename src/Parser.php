@@ -517,14 +517,14 @@ abstract class Parser
 	}
 
 	/**
-	 * Tests whether any inline elements overshoot a substring.
+	 * Tests whether any inline elements overrun a substring.
 	 *
 	 * @param string $text - The inline text to search.
 	 * @param integer $length - Length of the substring.
 	 * @param array $elements - Inline element names to test.
 	 * @return boolean
 	 */
-	protected function elementOvershoot($text, $length, $elements): bool
+	protected function detectInlineOverrun($text, $length, $elements): bool
 	{
 		foreach ($elements as $element) {
 			if (method_exists($this, 'parse'.$element.'Markers')) {
