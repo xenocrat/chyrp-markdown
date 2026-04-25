@@ -45,19 +45,18 @@ trait HighlightTrait
 				'\\\\',
 				$matches[1]
 			);
-			$content = $matches[1];
 			if (
 				// Inline HTML, link, image, or code takes precedence.
-				!$this->elementOvershoot(
+				!$this->detectInlineOverrun(
 					$markdown,
 					strlen($matches[0]),
-					['Lt', 'Link', 'Image', 'inlineCode']
+					['Lt', 'Link', 'Image', 'InlineCode']
 				)
 			) {
 				return [
 					[
 						'highlight',
-						$this->parseInline($content)
+						$this->parseInline($matches[1])
 					],
 					strlen($matches[0])
 				];
@@ -73,7 +72,7 @@ trait HighlightTrait
 			. '</mark>';
 	}
 
-	abstract protected function elementOvershoot($text, $length, $elements);
+	abstract protected function detectInlineOverrun($text, $length, $elements);
 	abstract protected function renderText($block);
 	abstract protected function parseInline($text);
 	abstract protected function renderAbsy($blocks);
