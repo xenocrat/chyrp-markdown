@@ -35,8 +35,8 @@ trait CodeTrait
 			if (
 				strlen($code) > 2
 				&& ltrim($code, ' ') !== ''
-				&& substr($code, 0, 1) === ' '
-				&& substr($code, -1) === ' '
+				&& str_starts_with($code, ' ')
+				&& str_ends_with($code, ' ')
 			) {
 				$code = substr($code, 1, -1);
 			}
