@@ -517,7 +517,7 @@ abstract class Parser
 	}
 
 	/**
-	 * Tests whether any inline elements overrun a substring.
+	 * Detects if any inline elements overrun a substring.
 	 *
 	 * @param string $text - The inline text to search.
 	 * @param integer $length - Length of the substring.
