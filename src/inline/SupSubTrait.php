@@ -105,7 +105,6 @@ trait SupSubTrait
 				'\\\\',
 				$matches[1]
 			);
-			$content = $matches[1];
 			if (
 				// Inline HTML, link, or image takes precedence.
 				!$this->detectInlineOverrun(
@@ -117,7 +116,7 @@ trait SupSubTrait
 				return [
 					[
 						'sub',
-						$this->parseInline($content)
+						$this->parseInline($matches[1])
 					],
 					strlen($matches[0])
 				];
