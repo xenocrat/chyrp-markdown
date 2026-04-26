@@ -26,13 +26,10 @@ trait EmphStrongTrait
 	 */
 	protected function parseEmphStrong($markdown): array
 	{
-		$marker = $markdown[0];
-
 		if (!isset($markdown[1])) {
 			return [['text', $markdown[0]], 1];
 		}
-
-		if ($marker == $markdown[1]) {
+		if (($marker = $markdown[0]) == $markdown[1]) {
 		// Strong.
 			// Avoid excessive regex backtracking if there is no closing marker.
 			if (strpos($markdown, $marker . $marker, 2) === false) {
