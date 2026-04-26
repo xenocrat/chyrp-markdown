@@ -26,7 +26,7 @@ trait HighlightTrait
 	{
 		if (
 			preg_match(
-				'/^==(?!=)(.*?([^=\\\\]|(?<=\\\\)=))==(?!=)/s',
+				'/^(={2,})(?!=)(.*?([^=\\\\]|(?<=\\\\)=))\1(?!=)/s',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
@@ -40,10 +40,10 @@ trait HighlightTrait
 				'\\\\',
 				$matches[0]
 			);
-			$matches[1] = str_replace(
+			$matches[2] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
-				$matches[1]
+				$matches[2]
 			);
 			if (
 				// Inline HTML, link, image, or code takes precedence.
@@ -56,7 +56,7 @@ trait HighlightTrait
 				return [
 					[
 						'highlight',
-						$this->parseInline($matches[1])
+						$this->parseInline($matches[2])
 					],
 					strlen($matches[0])
 				];
