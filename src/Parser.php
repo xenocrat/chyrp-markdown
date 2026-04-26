@@ -532,19 +532,24 @@ abstract class Parser
 					array($this, 'parse'.$element.'Markers')
 				);
 				foreach ($markers as $marker) {
-					$pos = strpos($text, $marker);
-					if ($pos !== false && $pos < $length) {
-						$arr = call_user_func(
-							array($this, 'parse'.$element),
-							substr($text, $pos)
-						);
-						if (
-							$arr[0][0] !== 'text'
-							&& $arr[1] > ($length - $pos)
-						) {
-							return true;
+					$pos = 0;
+					do {
+						$pos = strpos($text, $marker, $pos);
+						if ($pos !== false && $pos < $length) {
+							$arr = call_user_func(
+								array($this, 'parse'.$element),
+								substr($text, $pos)
+							);
+							if (
+								$arr[0][0] !== 'text'
+								&& $arr[1] > ($length - $pos)
+							) {
+								return true;
+							} else {
+								$pos += $arr[1];
+							}
 						}
-					}
+					} while($pos !== false && $pos < $length);
 				}
 			}
 		}
