@@ -27,7 +27,7 @@ trait CiteTrait
 	{
 		if (
 			preg_match(
-				'/^\*_
+				'/^\*(_{1,})
 					# First char cannot be Unicode category Zs, Pe, Pf.
 					(?![\s\p{Zs}\p{Pe}\p{Pf}])
 					# Contents must not end with a backslash:
@@ -35,7 +35,7 @@ trait CiteTrait
 					# Last char cannot be Unicode category Zs, Ps, Pi.
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 					# End marker:
-					_\*/usx',
+					\1\*/usx',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
@@ -49,10 +49,10 @@ trait CiteTrait
 				'\\\\',
 				$matches[0]
 			);
-			$matches[1] = str_replace(
+			$matches[2] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
-				$matches[1]
+				$matches[2]
 			);
 			if (
 				// Inline HTML, link, image, or code takes precedence.
@@ -65,7 +65,7 @@ trait CiteTrait
 				return [
 					[
 						'cite',
-						$this->parseInline($matches[1])
+						$this->parseInline($matches[2])
 					],
 					strlen($matches[0])
 				];
