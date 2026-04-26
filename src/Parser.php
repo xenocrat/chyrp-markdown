@@ -549,7 +549,7 @@ abstract class Parser
 								$pos += $arr[1];
 							}
 						}
-					} while($pos !== false && $pos < $length);
+					} while ($pos !== false && $pos < $length);
 				}
 			}
 		}
