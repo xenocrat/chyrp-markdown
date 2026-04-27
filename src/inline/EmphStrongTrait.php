@@ -46,8 +46,9 @@ trait EmphStrongTrait
 					'/^[*]{2}
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
-						# Escaped marker, other char, matched marker nest:
-						((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)
+						# Matched backticks (reject marker inside possible code),
+						# matched nested markers, escaped marker, or other char:
+						((?>(`+)(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# End marker:
@@ -60,8 +61,9 @@ trait EmphStrongTrait
 					'/^__
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
-						# Escaped marker, other char, matched marker nest:
-						((?>\\\\_|[^_]|(_+)[^_]*\2)+?)
+						# Matched backticks (reject marker inside possible code),
+						# matched nested markers, escaped marker, or other char:
+						((?>(`+)(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# End marker:
@@ -116,8 +118,9 @@ trait EmphStrongTrait
 					'/^[*]
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
-						# Escaped marker, other char, matched marker nest:
-						((?>\\\\[*]|[^*]|([*]+)[^*]*\2)+?)
+						# Matched backticks (reject marker inside possible code),
+						# matched nested markers, escaped marker, or other char:
+						((?>(`+)(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# End marker:
@@ -132,8 +135,9 @@ trait EmphStrongTrait
 					'/^_
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
-						# Escaped marker, other char, matched marker nest:
-						((?>\\\\_|[^_]|(_+)[^_]*\2)+?)
+						# Matched backticks (reject marker inside possible code),
+						# matched nested markers, escaped marker, or other char:
+						((?>(`+)(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# End marker:
