@@ -43,7 +43,9 @@ trait EmphStrongTrait
 			if (
 				$marker === '*'
 				&& preg_match(
-					'/^[*]{2}
+					'/^
+						# Opening marker:
+						[*]{2}
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
@@ -51,14 +53,16 @@ trait EmphStrongTrait
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
-						# End marker:
+						# Closing marker:
 						[*]{2}/usx',
 					$regexable,
 					$matches
 				)
 				|| $marker === '_'
 				&& preg_match(
-					'/^__
+					'/^
+						# Opening marker:
+						__
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
@@ -66,7 +70,7 @@ trait EmphStrongTrait
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
-						# End marker:
+						# Closing marker:
 						__
 						# Next char after the end marker must be non-word.
 						\b/usx',
@@ -115,7 +119,9 @@ trait EmphStrongTrait
 			if (
 				$marker === '*'
 				&& preg_match(
-					'/^[*]
+					'/^
+						# Opening marker:
+						[*]
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
@@ -123,7 +129,7 @@ trait EmphStrongTrait
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
-						# End marker:
+						# Closing marker:
 						[*]
 						# Emphasis end marker cannot form a strong marker.
 						(?![*][^*])/usx',
@@ -132,7 +138,9 @@ trait EmphStrongTrait
 				)
 				|| $marker === '_'
 				&& preg_match(
-					'/^_
+					'/^
+						# Opening marker:
+						_
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
@@ -140,7 +148,7 @@ trait EmphStrongTrait
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
-						# End marker:
+						# Closing marker:
 						_
 						# Emphasis end marker cannot form a strong marker.
 						(?!_[^_])
