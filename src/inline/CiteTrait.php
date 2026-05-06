@@ -27,14 +27,16 @@ trait CiteTrait
 	{
 		if (
 			preg_match(
-				'/^\*(_{1,})
+				'/^
+					# Opening marker:
+					\*(_{1,})
 					# First char cannot be Unicode category Zs, Pe, Pf.
 					(?![\s\p{Zs}\p{Pe}\p{Pf}])
 					# Contents must not end with a backslash:
 					(.*?[^\\\\])
 					# Last char cannot be Unicode category Zs, Ps, Pi.
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
-					# End marker:
+					# Closing marker:
 					\1\*/usx',
 				str_replace(
 					'\\\\',
