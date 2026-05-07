@@ -26,7 +26,17 @@ trait CodeTrait
 	{
 		if (
 			preg_match(
-				'/^(`+)(?!`)(.*?[^`])\1(?!`)/s',
+				'/^
+					# Opening marker:
+					(`+)
+					# First char cannot be a delimiter.
+					(?!`)
+					# Final capture char cannot be a delimiter:
+					(.*?[^`])
+					# Closing marker:
+					\1
+					# Next char must not be a delimiter.
+					(?!`)/sx',
 				$text,
 				$matches
 			)
