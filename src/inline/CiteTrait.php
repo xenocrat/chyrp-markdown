@@ -32,8 +32,9 @@ trait CiteTrait
 					\*(_{1,})
 					# First char cannot be Unicode category Zs, Pe, Pf.
 					(?![\s\p{Zs}\p{Pe}\p{Pf}])
-					# Contents must not end with a backslash:
-					(.*?[^\\\\])
+					# Final capture char cannot be backslash or
+					# delimiter but can be an escaped delimiter:
+					(.*?([^_\\\\]|(?<=\\\\)_))
 					# Last char cannot be Unicode category Zs, Ps, Pi.
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 					# Closing marker:
