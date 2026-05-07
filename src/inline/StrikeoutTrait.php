@@ -26,7 +26,18 @@ trait StrikeoutTrait
 	{
 		if (
 			preg_match(
-				'/^(~{1,2})(?!~)(.*?([^~\\\\]|(?<=\\\\)~))\1(?!~)/s',
+				'/^
+					# Opening marker:
+					(~{1,2})
+					# First char cannot be a delimiter.
+					(?!~)
+					# Final capture char cannot be backslash or
+					# delimiter but can be an escaped delimiter:
+					(.*?([^~\\\\]|(?<=\\\\)~))
+					# Closing marker:
+					\1
+					# Next char must not be a delimiter.
+					(?!~)/sx',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
