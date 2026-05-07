@@ -72,7 +72,7 @@ trait EmphStrongTrait
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
 						__
-						# Next char after the end marker must be non-word.
+						# Next char after the closing marker must be non-word.
 						\b/usx',
 					$regexable,
 					$matches
@@ -125,13 +125,13 @@ trait EmphStrongTrait
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
-						# matched nested markers, escaped marker, or other char:
+						# matched nested markers, escaped marker, or other char.
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
 						[*]
-						# Emphasis end marker cannot form a strong marker.
+						# Emphasis closing marker cannot form a strong marker.
 						(?![*][^*])/usx',
 					$regexable,
 					$matches
@@ -144,15 +144,15 @@ trait EmphStrongTrait
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
-						# matched nested markers, escaped marker, or other char:
+						# matched nested markers, escaped marker, or other char.
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
 						_
-						# Emphasis end marker cannot form a strong marker.
+						# Emphasis closing marker cannot form a strong marker.
 						(?!_[^_])
-						# Next char after the end marker must be non-word.
+						# Next char after the closing marker must be non-word.
 						\b/usx',
 					$regexable,
 					$matches
