@@ -30,8 +30,9 @@ trait CiteTrait
 				'/^
 					# Opening marker:
 					\*(_{1,})
+					# First char cannot be a delimiter.
 					# First char cannot be Unicode category Zs, Pe, Pf.
-					(?![\s\p{Zs}\p{Pe}\p{Pf}])
+					(?![_\s\p{Zs}\p{Pe}\p{Pf}])
 					# Final capture char cannot be backslash or
 					# delimiter but can be an escaped delimiter:
 					(.*?([^_\\\\]|(?<=\\\\)_))
