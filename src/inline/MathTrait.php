@@ -26,7 +26,13 @@ trait MathTrait
 	{
 		if (
 			preg_match(
-				'/^\$`(.*?[^\\\\])`\$/s',
+				'/^
+					# Opening marker:
+					\$`
+					# Final capture char cannot be a delimiter:
+					(.*?[^\\\\])
+					# Closing marker:
+					`\$/sx',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
