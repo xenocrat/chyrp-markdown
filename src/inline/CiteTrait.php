@@ -77,7 +77,7 @@ trait CiteTrait
 				];
 			}
 		}
-		return [['text', $markdown[0] . $markdown[1]], 2];
+		return [['text', $markdown[0]], 1];
 	}
 
 	protected function renderCite($block): string
