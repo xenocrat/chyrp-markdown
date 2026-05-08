@@ -73,7 +73,14 @@ trait StrikeoutTrait
 				];
 			}
 		}
-		return [['text', $markdown[0]], 1];
+		$spn = strspn($markdown, '~') ?: 1;
+		return [
+			[
+				'text',
+				str_repeat($markdown[0], $spn)
+			],
+			$spn
+		];
 	}
 
 	protected function renderStrike($block): string
