@@ -22,7 +22,7 @@ trait CodeTrait
 	 *
 	 * @marker `
 	 */
-	protected function parseInlineCode($text): array
+	protected function parseInlineCode($markdown): array
 	{
 		if (
 			preg_match(
@@ -37,7 +37,7 @@ trait CodeTrait
 					\1
 					# Next char must not be a delimiter.
 					(?!`)/sx',
-				$text,
+				$markdown,
 				$matches
 			)
 		) {
@@ -58,7 +58,14 @@ trait CodeTrait
 				strlen($matches[0])
 			];
 		}
-		return [['text', $text[0]], 1];
+		$spn = strspn($markdown, '`') ?: 1;
+		return [
+			[
+				'text',
+				str_repeat($markdown[0], $spn)
+			],
+			$spn
+		];
 	}
 
 	protected function renderInlineCode($block): string
