@@ -246,6 +246,9 @@ trait HtmlTrait
 	 */
 	protected function renderEntity($block): string
 	{
+		if (preg_match('/^&\#x?0+;$/', $block[1])) {
+			return "\u{FFFD}";
+		}
 		return $this->escapeHtmlEntities(
 			$this->unEscapeHtmlEntities(
 				$block[1],
