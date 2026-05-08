@@ -73,7 +73,14 @@ trait SupSubTrait
 				];
 			}
 		}
-		return [['text', $markdown[0] . $markdown[1]], 2];
+		$spn = strspn($markdown, '+') ?: 1;
+		return [
+			[
+				'text',
+				str_repeat($markdown[0], $spn)
+			],
+			$spn
+		];
 	}
 
 	protected function renderSup($block): string
@@ -144,7 +151,14 @@ trait SupSubTrait
 				];
 			}
 		}
-		return [['text', $markdown[0] . $markdown[1]], 2];
+		$spn = strspn($markdown, '-') ?: 1;
+		return [
+			[
+				'text',
+				str_repeat($markdown[0], $spn)
+			],
+			$spn
+		];
 	}
 
 	protected function renderSub($block): string
