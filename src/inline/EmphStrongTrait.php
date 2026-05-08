@@ -46,11 +46,13 @@ trait EmphStrongTrait
 					'/^
 						# Opening marker:
 						[*]{2}
+						# First char cannot be whitespace.
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
 						# matched nested markers, escaped marker, or other char:
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
+						# Last char cannot be whitespace.
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
@@ -63,11 +65,13 @@ trait EmphStrongTrait
 					'/^
 						# Opening marker:
 						__
+						# First char cannot be whitespace.
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
 						# matched nested markers, escaped marker, or other char:
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
+						# Last char cannot be whitespace.
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
@@ -122,11 +126,13 @@ trait EmphStrongTrait
 					'/^
 						# Opening marker:
 						[*]
+						# First char cannot be whitespace.
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
 						# matched nested markers, escaped marker, or other char.
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|([*]+)[^*]*\3|\\\\[*]|[^*])+?)
+						# Last char cannot be whitespace.
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
@@ -141,11 +147,13 @@ trait EmphStrongTrait
 					'/^
 						# Opening marker:
 						_
+						# First char cannot be whitespace.
 						# First char cannot be Unicode category Zs, Pe, Pf.
 						(?![\s\p{Zs}\p{Pe}\p{Pf}])
 						# Capture two or more matched backticks (possible code)
 						# matched nested markers, escaped marker, or other char.
 						((?>(`{2,})(?!`).*?[^`]\2(?!`)|(_+)[^_]*\3|\\\\_|[^_])+?)
+						# Last char cannot be whitespace.
 						# Last char cannot be Unicode category Zs, Ps, Pi.
 						(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 						# Closing marker:
