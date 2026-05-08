@@ -194,7 +194,6 @@ trait EmphStrongTrait
 				}
 			}
 		}
-
 		return [['text', $markdown[0]], 1];
 	}
 
