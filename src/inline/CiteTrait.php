@@ -31,11 +31,13 @@ trait CiteTrait
 					# Opening marker:
 					\*(_{1,})
 					# First char cannot be a delimiter.
+					# First char cannot be whitespace.
 					# First char cannot be Unicode category Zs, Pe, Pf.
 					(?![_\s\p{Zs}\p{Pe}\p{Pf}])
 					# Final capture char cannot be backslash or
 					# delimiter but can be an escaped delimiter:
 					(.*?([^_\\\\]|(?<=\\\\)_))
+					# Last char cannot be whitespace.
 					# Last char cannot be Unicode category Zs, Ps, Pi.
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 					# Closing marker:
