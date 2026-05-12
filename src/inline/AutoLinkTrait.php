@@ -26,6 +26,7 @@ trait AutoLinkTrait
 	protected function parseAutoUrl($markdown): array
 	{
 		if (
+			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
 			&& preg_match(
 				'/(?(R)
@@ -38,7 +39,6 @@ trait AutoLinkTrait
 				$matches
 			)
 		) {
-		// Do not allow links within links.
 			return [
 				['autoUrl', $matches[0]],
 				strlen($matches[0])
