@@ -32,7 +32,7 @@ trait AutoLinkTrait
 					# in case of recursion match parentheses
 					\(((?>[^\s()]+)|(?R))*\)
 					# else match a link with title
-					|^(www\.|https?:\/\/)(([^\s<>()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+					|^(www\.|https?:\/\/)(([^\s<>()]+)|(?R))+(?<![~_\*\.,:\'"!\?])
 					)/x',
 				$markdown,
 				$matches
