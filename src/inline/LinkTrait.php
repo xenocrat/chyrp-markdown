@@ -465,7 +465,7 @@ trait LinkTrait
 			)
 		) {
 			if (preg_match('/(?<!\\\\)[\[\]]/', $matches[1])) {
-			// Unescaped brackets are not allowed.
+			// Unescaped brackets - consume lines as paragraph.
 				return $this->consumeParagraph($lines, $current);
 			}
 			$matches[1] = str_replace(
@@ -488,9 +488,8 @@ trait LinkTrait
 			// URL may be on the next line.
 				if (
 					isset($lines[$current + 1])
-					&& trim($lines[$current + 1]) !== ''
+					&& ($url = trim($lines[$current + 1])) !== ''
 				) {
-					$url = trim($lines[$current + 1]);
 					$current++;
 				} else {
 				// URL not found - consume lines as paragraph.
