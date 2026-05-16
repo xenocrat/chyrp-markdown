@@ -30,13 +30,12 @@ trait EmphStrongTrait
 			return [['text', $markdown[0]], 1];
 		}
 
-		if (($marker = $markdown[0]) == $markdown[1]) {
+		if (
+			($marker = $markdown[0]) == $markdown[1]
+			// Closing marker?
+			&& strpos($markdown, $marker . $marker, 2) !== false
+		) {
 		// Strong.
-			// Avoid excessive regex backtracking if there is no closing marker.
-			if (strpos($markdown, $marker . $marker, 2) === false) {
-				return [['text', $markdown[0]], 1];
-			}
-
 			$regexable = str_replace(
 				'\\\\',
 				'\\\\'.chr(31),
@@ -105,13 +104,11 @@ trait EmphStrongTrait
 					];
 				}
 			}
-		} else {
+		} elseif (
+			// Closing marker?
+			strpos($markdown, $marker, 1) !== false
+		) {
 		// Emphasis
-			// Avoid excessive regex backtracking if there is no closing marker.
-			if (strpos($markdown, $marker, 1) === false) {
-				return [['text', $markdown[0]], 1];
-			}
-
 			$regexable = str_replace(
 				'\\\\',
 				'\\\\'.chr(31),
