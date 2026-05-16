@@ -76,14 +76,16 @@ trait SupSubTrait
 			}
 		}
 
-		$spn = strspn($markdown, '+') ?: 1;
-
 		return [
 			[
 				'text',
-				str_repeat($markdown[0], $spn)
+				$markdown[0] . substr(
+					$markdown,
+					1,
+					($spn = strspn($markdown, '+', 1))
+				)
 			],
-			$spn
+			++$spn
 		];
 	}
 
@@ -158,14 +160,16 @@ trait SupSubTrait
 			}
 		}
 
-		$spn = strspn($markdown, '-') ?: 1;
-
 		return [
 			[
 				'text',
-				str_repeat($markdown[0], $spn)
+				$markdown[0] . substr(
+					$markdown,
+					1,
+					($spn = strspn($markdown, '-', 1))
+				)
 			],
-			$spn
+			++$spn
 		];
 	}
 
