@@ -58,6 +58,7 @@ trait LinkTrait
 			&& ($parts = $this->parseLinkOrImage($markdown)) !== false
 		) {
 			list($text, $url, $title, $offset, $key) = $parts;
+
 			return [
 				[
 					'link',
