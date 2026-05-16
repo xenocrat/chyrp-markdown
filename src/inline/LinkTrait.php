@@ -52,6 +52,7 @@ trait LinkTrait
 	protected function parseLink($markdown): array
 	{
 		if (
+			// Do not allow links within links.
 			!in_array('parseLink', array_slice($this->context, 1))
 			&& (
 				$parts = $this->parseLinkOrImage($markdown)
@@ -70,14 +71,14 @@ trait LinkTrait
 				$offset
 			];
 		} else {
-			// Remove all starting [ markers to avoid next one being parsed as a link.
-			$result = '[';
-			$i = 1;
-			while (isset($markdown[$i]) && $markdown[$i] === '[') {
-				$result .= '[';
-				$i++;
-			}
-			return [['text', $result], $i];
+			// Consume 1+ [ to avoid next one being parsed as a link.
+			return [
+				[
+					'text',
+					str_repeat('[', ($i = strspn($markdown, '[')))
+				],
+				$i
+			];
 		}
 	}
 
@@ -130,31 +131,35 @@ trait LinkTrait
 				$offset + 1
 			];
 		} else {
-			// Remove all starting [ markers to avoid next one being parsed as a link.
-			$result = '!';
-			$i = 1;
-			while (isset($markdown[$i]) && $markdown[$i] === '[') {
-				$result .= '[';
-				$i++;
-			}
-			return [['text', $result], $i];
+			// Consume 1+ [ to avoid next one being parsed as a link.
+			return [
+				[
+					'text',
+					'!' . str_repeat('[', ($i = strspn($markdown, '[', 1)))
+				],
+				++$i
+			];
 		}
 	}
 
 	protected function parseLinkOrImage($markdown): array|false
 	{
+		if (strpos($markdown, ']', 1) === false) {
+			return false;
+		}
+		$regexable = str_replace(
+			'\\\\',
+			'\\\\'.chr(31),
+			$markdown
+		);
 		if (
-			strpos($markdown, ']') !== false
-			&& preg_match(
-				'/\[((?>([^\[\]\\\\]|\\\\\[|\\\\\]|\\\\)+|(?R))*)\]/',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$markdown
-				),
+			preg_match(
+				'/\[((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))*)\]/',
+				$regexable,
 				$textMatches
 			)
 		) {
+			$offset = strlen($textMatches[0]);
 			$textMatches[0] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
@@ -166,24 +171,39 @@ trait LinkTrait
 				$textMatches[1]
 			);
 			$text = $textMatches[1];
-			$offset = strlen($textMatches[0]);
-			$markdown = substr($markdown, $offset);
-
+			$consumed = strlen($textMatches[0]);
+			$regexable = substr($regexable, $offset);
 			if (
 				preg_match(
 					'/(?(R)
-						# in case of recursion match parentheses
-						\(((?>[^\s()]+)|(?R))*\)
-						# else match a link with title
-						|^\(\s*(((?><[^<>\n]+>)|(?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
+						# In case of pattern recursion match parentheses:
+						\(((?>\\\\[()]|\\\\|[^\s\\\\()]+)|(?R))*\)
+						# Otherwise...
+						|^\(\s*
+						# match a bracketed link:
+						(((<(?>\\\\[<>]|\\\\|[^\n\\\\<>])*(?<!\\\\)>)
+						# ... or a parenthesised link:
+						|(?!<)(?>\\\\[()]|\\\\|[^\s\\\\()]+)|(?R))*)
+						# Followed by optional title in double quotes:
+						(\s+"(.*?)")?\s*(?<!\\\\)\)
 						)/xs',
-					$markdown,
+					$regexable,
 					$refMatches
 				)
 			) {
 			// Inline link.
+				$refMatches[0] = str_replace(
+					'\\\\'.chr(31),
+					'\\\\',
+					$refMatches[0]
+				);
+
 				$url = isset($refMatches[2]) ?
-					$refMatches[2] :
+					str_replace(
+						'\\\\'.chr(31),
+						'\\\\',
+						$refMatches[2]
+					) :
 					'';
 
 				$lt = str_starts_with($url, '<');
@@ -195,24 +215,42 @@ trait LinkTrait
 				if ($lt && $gt) {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
-				$title = empty($refMatches[5]) ?
+				$title = empty($refMatches[6]) ?
 					null :
-					$refMatches[5];
-
-				$key = null;
+					str_replace(
+						'\\\\'.chr(31),
+						'\\\\',
+						$refMatches[6]
+					);
 
 				return [
 					$text,
 					$url,
 					$title,
-					$offset + strlen($refMatches[0]),
-					$key,
+					$consumed + strlen($refMatches[0]),
+					null,
 				];
 			} elseif (
-				preg_match('/^(\[(.*?)\])?/s', $markdown, $refMatches)
+				preg_match(
+					'/^(\[(.*?)(?<!\\\\)\])?/s',
+					$regexable,
+					$refMatches
+				)
 			) {
 			// Reference style link.
-				$key = empty($refMatches[2]) ? $text : $refMatches[2];
+				$refMatches[0] = str_replace(
+					'\\\\'.chr(31),
+					'\\\\',
+					$refMatches[0]
+				);
+
+				$key = empty($refMatches[2]) ?
+					$text :
+					str_replace(
+						'\\\\'.chr(31),
+						'\\\\',
+						$refMatches[2]
+					);
 
 				$key = function_exists("mb_convert_case") ?
 					mb_convert_case($key, MB_CASE_FOLD, 'UTF-8') :
@@ -225,7 +263,7 @@ trait LinkTrait
 					$text,
 					$url,
 					$title,
-					$offset + strlen($refMatches[0]),
+					$consumed + strlen($refMatches[0]),
 					$key,
 				];
 			}
@@ -241,8 +279,10 @@ trait LinkTrait
 	protected function parseBracketedLink($markdown): array
 	{
 		if (strpos($markdown, '>') !== false) {
-			if (!in_array('parseLink', $this->context)) {
-			// Do not allow links within links.
+			if (
+				// Do not allow links within links.
+				!in_array('parseLink', $this->context)
+			) {
 				if (
 					preg_match(
 						'/^<([a-z][a-z0-9\+\.\-]{1,31}:[^\s<>]*)>/i',
@@ -473,9 +513,10 @@ trait LinkTrait
 				'\\\\',
 				$matches[1]
 			);
+
 			$key = function_exists("mb_convert_case") ?
 				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
-				strtolower($matches[1]) ;
+				strtolower($matches[1]);
 
 			if (isset($matches[2])) {
 				$matches[2] = str_replace(
