@@ -80,7 +80,17 @@ trait CiteTrait
 			}
 		}
 
-		return [['text', $markdown[0]], 1];
+		return [
+			[
+				'text',
+				$markdown[0] . substr(
+					$markdown,
+					1,
+					($spn = strspn($markdown, '_', 1))
+				)
+			],
+			++$spn
+		];
 	}
 
 	protected function renderCite($block): string
