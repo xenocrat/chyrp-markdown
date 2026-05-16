@@ -51,11 +51,13 @@ trait SupSubTrait
 				'\\\\',
 				$matches[0]
 			);
+
 			$matches[2] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
 				$matches[2]
 			);
+
 			if (
 				// Inline HTML, link, image, or code takes precedence.
 				!$this->detectInlineOverrun(
@@ -73,7 +75,9 @@ trait SupSubTrait
 				];
 			}
 		}
+
 		$spn = strspn($markdown, '+') ?: 1;
+
 		return [
 			[
 				'text',
@@ -129,11 +133,13 @@ trait SupSubTrait
 				'\\\\',
 				$matches[0]
 			);
+
 			$matches[2] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
 				$matches[2]
 			);
+
 			if (
 				// Inline HTML, link, or image takes precedence.
 				!$this->detectInlineOverrun(
@@ -151,7 +157,9 @@ trait SupSubTrait
 				];
 			}
 		}
+
 		$spn = strspn($markdown, '-') ?: 1;
+
 		return [
 			[
 				'text',

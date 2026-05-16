@@ -51,11 +51,13 @@ trait HighlightTrait
 				'\\\\',
 				$matches[0]
 			);
+
 			$matches[2] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
 				$matches[2]
 			);
+
 			if (
 				// Inline HTML, link, image, or code takes precedence.
 				!$this->detectInlineOverrun(
@@ -73,7 +75,9 @@ trait HighlightTrait
 				];
 			}
 		}
+
 		$spn = strspn($markdown, '=') ?: 1;
+
 		return [
 			[
 				'text',

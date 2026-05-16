@@ -50,6 +50,7 @@ trait CodeTrait
 			) {
 				$code = substr($code, 1, -1);
 			}
+
 			return [
 				[
 					'inlineCode',
@@ -58,7 +59,9 @@ trait CodeTrait
 				strlen($matches[0])
 			];
 		}
+
 		$spn = strspn($markdown, '`') ?: 1;
+
 		return [
 			[
 				'text',

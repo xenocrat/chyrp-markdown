@@ -54,9 +54,8 @@ trait LinkTrait
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', array_slice($this->context, 1))
-			&& (
-				$parts = $this->parseLinkOrImage($markdown)
-			) !== false
+			// Link?
+			&& ($parts = $this->parseLinkOrImage($markdown)) !== false
 		) {
 			list($text, $url, $title, $offset, $key) = $parts;
 			return [
@@ -95,11 +94,10 @@ trait LinkTrait
 	protected function parseImage($markdown): array
 	{
 		if (
-			(
-				$parts = $this->parseLinkOrImage(substr($markdown, 1))
-			) !== false
+			($parts = $this->parseLinkOrImage(substr($markdown, 1))) !== false
 		) {
 			list($text, $url, $title, $offset, $key) = $parts;
+
 			if (
 				$this->enableImageDimensions
 				&& str_starts_with(
@@ -117,6 +115,7 @@ trait LinkTrait
 				$height = $dimensionMatches[3] ?? false;
 				$offset += strlen($dimensionMatches[0]);
 			}
+
 			return [
 				[
 					'image',
@@ -147,11 +146,13 @@ trait LinkTrait
 		if (strpos($markdown, ']', 1) === false) {
 			return false;
 		}
+
 		$regexable = str_replace(
 			'\\\\',
 			'\\\\'.chr(31),
 			$markdown
 		);
+
 		if (
 			preg_match(
 				'/\[((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))*)\]/',
@@ -160,19 +161,23 @@ trait LinkTrait
 			)
 		) {
 			$offset = strlen($textMatches[0]);
+
 			$textMatches[0] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
 				$textMatches[0]
 			);
+
 			$textMatches[1] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
 				$textMatches[1]
 			);
+
 			$text = $textMatches[1];
 			$consumed = strlen($textMatches[0]);
 			$regexable = substr($regexable, $offset);
+
 			if (
 				preg_match(
 					'/(?(R)
@@ -208,13 +213,16 @@ trait LinkTrait
 
 				$lt = str_starts_with($url, '<');
 				$gt = str_ends_with($url, '>');
+
 				if (($lt && !$gt) || (!$lt && $gt)) {
 				// Improperly matched brackets.
 					return false;
 				}
+
 				if ($lt && $gt) {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
+
 				$title = empty($refMatches[6]) ?
 					null :
 					str_replace(
@@ -357,7 +365,9 @@ trait LinkTrait
 	protected function renderLink($block): string
 	{
 		if (isset($block['refkey'])) {
-			if (($ref = $this->lookupReference($block['refkey'])) !== false) {
+			if (
+				($ref = $this->lookupReference($block['refkey'])) !== false
+			) {
 				$block = array_merge($block, $ref);
 			} else {
 				if (str_starts_with($block['orig'], '[')) {
@@ -369,6 +379,7 @@ trait LinkTrait
 				return $block['orig'];
 			}
 		}
+
 		return '<a href="'
 			. $this->escapeHtmlEntities(
 				$this->unEscapeHtmlEntities(
@@ -413,6 +424,7 @@ trait LinkTrait
 				return $block['orig'];
 			}
 		}
+
 		return '<img src="'
 			. $this->escapeHtmlEntities(
 				$this->unEscapeHtmlEntities(
@@ -508,6 +520,7 @@ trait LinkTrait
 			// Unescaped brackets - consume lines as paragraph.
 				return $this->consumeParagraph($lines, $current);
 			}
+
 			$matches[1] = str_replace(
 				'\\\\'.chr(31),
 				'\\\\',
@@ -537,12 +550,15 @@ trait LinkTrait
 					return $this->consumeParagraph($lines, $current);
 				}
 			}
+
 			if (str_starts_with($url, '<') && str_ends_with($url, '>')) {
 				$url = str_replace(' ', '%20', substr($url, 1, -1));
 			}
+
 			$ref = [
 				'url' => $url,
 			];
+
 			if (isset($matches[3])) {
 				$matches[3] = str_replace(
 					'\\\\'.chr(31),
@@ -564,9 +580,11 @@ trait LinkTrait
 					$current++;
 				}
 			}
+
 			if (!isset($this->references[$key])) {
 				$this->references[$key] = $ref;
 			}
+
 			$current++;
 		}
 

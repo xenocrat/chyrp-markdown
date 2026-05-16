@@ -28,11 +28,12 @@ trait AutoLinkTrait
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
+			// 
 			&& preg_match(
 				'/(?(R)
-					# in case of recursion match parentheses
+					# In case of recursion match parentheses:
 					\(((?>[^\s()]+)|(?R))*\)
-					# else match a link with title
+					# Else match a link not followed by defined punctuation:
 					|^(www\.|https?:\/\/)(([^\s<>()]+)|(?R))+(?<![~_\*\.,:\'"!\?])
 					)/x',
 				$markdown,
@@ -44,6 +45,7 @@ trait AutoLinkTrait
 				strlen($matches[0])
 			];
 		}
+
 		return [['text', substr($markdown, 0, 4)], 4];
 	}
 
@@ -51,16 +53,20 @@ trait AutoLinkTrait
 	{
 		$href = $block[1];
 		$text = $href;
+
 		if (!str_starts_with($href, 'http')) {
 			$href = 'http://' . $href;
 		}
+
 		$href = $this->escapeHtmlEntities($href, ENT_COMPAT);
 		$decoded = rawurldecode($text);
 		$secured = preg_match('//u', $decoded) ? $decoded : $text;
+
 		$text = $this->escapeHtmlEntities(
 			$secured,
 			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
 		);
+
 		return "<a href=\"$href\">$text</a>";
 	}
 

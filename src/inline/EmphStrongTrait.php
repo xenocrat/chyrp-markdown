@@ -29,17 +29,20 @@ trait EmphStrongTrait
 		if (!isset($markdown[1])) {
 			return [['text', $markdown[0]], 1];
 		}
+
 		if (($marker = $markdown[0]) == $markdown[1]) {
 		// Strong.
 			// Avoid excessive regex backtracking if there is no closing marker.
 			if (strpos($markdown, $marker . $marker, 2) === false) {
 				return [['text', $markdown[0]], 1];
 			}
+
 			$regexable = str_replace(
 				'\\\\',
 				'\\\\'.chr(31),
 				$markdown
 			);
+
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -78,11 +81,13 @@ trait EmphStrongTrait
 					'\\\\',
 					$matches[0]
 				);
+
 				$matches[2] = str_replace(
 					'\\\\'.chr(31),
 					'\\\\',
 					$matches[2]
 				);
+
 				if (
 					// Inline HTML, link, image, or code takes precedence.
 					!$this->detectInlineOverrun(
@@ -106,11 +111,13 @@ trait EmphStrongTrait
 			if (strpos($markdown, $marker, 1) === false) {
 				return [['text', $markdown[0]], 1];
 			}
+
 			$regexable = str_replace(
 				'\\\\',
 				'\\\\'.chr(31),
 				$markdown
 			);
+
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -150,11 +157,13 @@ trait EmphStrongTrait
 					'\\\\',
 					$matches[0]
 				);
+
 				$matches[2] = str_replace(
 					'\\\\'.chr(31),
 					'\\\\',
 					$matches[2]
 				);
+
 				if (
 					// Inline HTML, link, image, or code takes precedence.
 					!$this->detectInlineOverrun(
@@ -173,6 +182,7 @@ trait EmphStrongTrait
 				}
 			}
 		}
+
 		return [['text', $markdown[0]], 1];
 	}
 
