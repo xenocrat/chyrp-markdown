@@ -164,7 +164,7 @@ trait LinkTrait
 
 		if (
 			preg_match(
-				'/\[((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))*)\]/',
+				'/(?(R)|^)\[((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))*)\]/',
 				$regexable,
 				$textMatches
 			)
@@ -191,13 +191,13 @@ trait LinkTrait
 				preg_match(
 					'/(?(R)
 						# In case of pattern recursion match parentheses:
-						\(((?>\\\\[()]|\\\\|[^\s\\\\()]+)|(?R))*\)
+						\(((?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)+|(?R))*\)
 						# Otherwise...
 						|^\(\s*
 						# match a bracketed link:
-						(((<(?>\\\\[<>]|\\\\|[^\n\\\\<>])*(?<!\\\\)>)
+						(((<(?>[^\n\\\\<\[\]>]|\\\\[<\[\]>]|\\\\)*(?<!\\\\)>)
 						# ... or a parenthesised link:
-						|(?!<)(?>\\\\[()]|\\\\|[^\s\\\\()]+)|(?R))*)
+						|(?!<)(?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)+|(?R))*)
 						# Followed by optional title in double quotes:
 						(\s+"(.*?)")?\s*(?<!\\\\)\)
 						)/xs',
@@ -249,7 +249,7 @@ trait LinkTrait
 				];
 			} elseif (
 				preg_match(
-					'/^(\[(.*?)(?<!\\\\)\])?/s',
+					'/^(\[((?>\\\\[\[\]]|\\\\|[^\\\\\[\]]+)*?)(?<!\\\\)\])?/s',
 					$regexable,
 					$refMatches
 				)
@@ -285,6 +285,7 @@ trait LinkTrait
 				];
 			}
 		}
+
 		return false;
 	}
 
