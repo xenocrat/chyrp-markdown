@@ -188,6 +188,17 @@ trait LinkTrait
 			$regexable = substr($regexable, $offset);
 
 			if (
+				// Inline HTML, bracketed link, or code takes precedence.
+				$this->detectInlineOverrun(
+					$markdown,
+					$consumed,
+					['Lt', 'BracketedLink', 'InlineCode']
+				)
+			) {
+				return false;
+			}
+
+			if (
 				preg_match(
 					'/(?(R)
 						# In case of pattern recursion match parentheses:
@@ -249,7 +260,7 @@ trait LinkTrait
 				];
 			} elseif (
 				preg_match(
-					'/^(\[((?>\\\\[\[\]]|\\\\|[^\\\\\[\]]+)*?)(?<!\\\\)\])?/s',
+					'/^(\[((?>\\\\[\[\]]|\\\\|[^\\\\\[\]]+)*?)(?<!\\\\)\])?/',
 					$regexable,
 					$refMatches
 				)
@@ -332,6 +343,7 @@ trait LinkTrait
 				}
 			}
 		}
+
 		return [['text', '&lt;'], 1];
 	}
 
@@ -341,6 +353,7 @@ trait LinkTrait
 			$block[1],
 			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
 		);
+
 		return "<a href=\"mailto:$email\">$email</a>";
 	}
 
@@ -357,18 +370,21 @@ trait LinkTrait
 			$secureUrlText,
 			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
 		);
+
 		return "<a href=\"$url\">$text</a>";
 	}
 
 	protected function lookupReference($key): array|false
 	{
 		$normalizedKey = preg_replace('/\s+/', ' ', $key);
+
 		if (
 			isset($this->references[$key])
 			|| isset($this->references[$key = $normalizedKey])
 		) {
 			return $this->references[$key];
 		}
+
 		return false;
 	}
 
