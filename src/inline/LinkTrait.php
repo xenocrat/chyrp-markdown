@@ -74,9 +74,13 @@ trait LinkTrait
 			return [
 				[
 					'text',
-					str_repeat('[', ($i = strspn($markdown, '[')))
+					$markdown[0] . substr(
+						$markdown,
+						1,
+						($spn = strspn($markdown, '[', 1))
+					)
 				],
-				$i
+				++$spn
 			];
 		}
 	}
@@ -134,9 +138,13 @@ trait LinkTrait
 			return [
 				[
 					'text',
-					'!' . str_repeat('[', ($i = strspn($markdown, '[', 1)))
+					$markdown[0] . substr(
+						$markdown,
+						1,
+						($spn = strspn($markdown, '[', 1))
+					)
 				],
-				++$i
+				++$spn
 			];
 		}
 	}
