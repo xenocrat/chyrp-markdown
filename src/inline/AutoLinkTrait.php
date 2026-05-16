@@ -28,18 +28,31 @@ trait AutoLinkTrait
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
-			// 
+			// Link?
 			&& preg_match(
-				'/(?(R)
-					# In case of recursion match parentheses:
-					\(((?>[^\s()]+)|(?R))*\)
-					# Else match a link not followed by defined punctuation:
-					|^(www\.|https?:\/\/)(([^\s<>()]+)|(?R))+(?<![~_\*\.,:\'"!\?])
-					)/x',
+				'/^(www\.|https?:\/\/)
+					(([a-zA-Z0-9\-_]\.)*[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-]+[^\s<]*)
+					(?<![~_\*\.,:\!\?])/x',
 				$markdown,
 				$matches
 			)
 		) {
+			if (str_ends_with($matches[0], ';')) {
+				$matches[0] = preg_replace(
+					'/(&[a-z0-9]+;)+$/i',
+					'',
+					$matches[0]
+				);
+			} else {
+				while (
+					str_ends_with($matches[0], ')')
+					&& substr_count($matches[0], ')')
+						> substr_count($matches[0], '(')
+				) {
+					$matches[0] = substr($matches[0], 0, -1);
+				}
+			}
+
 			return [
 				['autoUrl', $matches[0]],
 				strlen($matches[0])
