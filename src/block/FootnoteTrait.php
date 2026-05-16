@@ -220,6 +220,7 @@ trait FootnoteTrait
 				'\\\\',
 				$matches[1]
 			);
+
 			$footnoteName = function_exists("mb_convert_case") ?
 				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 				strtolower($matches[1]);
@@ -331,6 +332,7 @@ trait FootnoteTrait
 					'\\\\',
 					$matches[1]
 				);
+
 				$name = function_exists("mb_convert_case") ?
 					mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 					strtolower($matches[1]);
