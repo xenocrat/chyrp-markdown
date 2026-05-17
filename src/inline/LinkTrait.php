@@ -202,16 +202,26 @@ trait LinkTrait
 				preg_match(
 					'/(?(R)
 						# In case of pattern recursion match parentheses:
-						\(((?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)+|(?R))*\)
+						\(((?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)|(?R))*\)
 						# Otherwise...
-						|^\(\s*
-						# match a bracketed link:
-						(((<(?>[^\n\\\\<\[\]>]|\\\\[<\[\]>]|\\\\)*(?<!\\\\)>)
-						# ... or a parenthesised link:
-						|(?!<)(?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)+|(?R))*)
-						# Followed by optional title in double quotes:
-						(\s+"(.*?)")?\s*(?<!\\\\)\)
-						)/xs',
+						|
+						# Match opening parentheses:
+						^\(\s*
+						((
+						# Match a bracketed link:
+						(<(?>[^\n\\\\\<\[\]>]|\\\\[<\[\]>]|\\\\)*(?<!\\\\)>)
+						# Or an unbracketed link:
+						|(?!<)((?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)|(?R))*
+						))
+						# Followed by an optional title...
+						# Delimited by single or double quotes, or parentheses:
+						(
+						\s+([\'"]|(\())((?>[^\\\\\'"\(\)]|\\\\[\'"\(\)]|\\\\)*)
+						(?<!\\\\)(?(8)\)|\7)
+						)?
+						# Match closing parentheses:
+						\s*(?<!\\\\)\))/xs',
+
 					$regexable,
 					$refMatches
 				)
@@ -231,24 +241,19 @@ trait LinkTrait
 					) :
 					'';
 
-				$lt = str_starts_with($url, '<');
-				$gt = str_ends_with($url, '>');
-
-				if (($lt && !$gt) || (!$lt && $gt)) {
-				// Improperly matched brackets.
-					return false;
-				}
-
-				if ($lt && $gt) {
+				if (
+					str_starts_with($url, '<')
+					&& str_ends_with($url, '>')
+				) {
 					$url = str_replace(' ', '%20', substr($url, 1, -1));
 				}
 
-				$title = empty($refMatches[6]) ?
+				$title = empty($refMatches[9]) ?
 					null :
 					str_replace(
 						'\\\\'.chr(31),
 						'\\\\',
-						$refMatches[6]
+						$refMatches[9]
 					);
 
 				return [
