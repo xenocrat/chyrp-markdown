@@ -221,7 +221,6 @@ trait LinkTrait
 						)?
 						# Match closing parentheses:
 						\s*(?<!\\\\)\))/xs',
-
 					$regexable,
 					$refMatches
 				)
