@@ -213,10 +213,9 @@ trait LinkTrait
 						# Or an unbracketed link:
 						|(?!<)((?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)|(?R))*
 						))
-						# Followed by an optional title...
-						# Delimited by single or double quotes, or parentheses:
+						# Optional title:
 						(
-						\s+([\'"]|(\())((?>[^\\\\\'"\(\)]|\\\\[\'"\(\)]|\\\\)*)
+						\s+([\'"]|(\())((?>\\\\.|.(?<!(?(8)\)|\7)))*)
 						(?<!\\\\)(?(8)\)|\7)
 						)?
 						# Match closing parentheses:
