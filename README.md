@@ -15,12 +15,12 @@ Requirements
 
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
-- Multibyte string support is recommended.
+- [Multibyte String] and [IntlChar] are recommended but not required.
 
 Limitations
 -----------
 
-Because it is focused on speed and simplicity, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 90% of CommonMark test cases.
+Because it is focused on speed and simplicity, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
@@ -409,3 +409,5 @@ License
 This software is open source and licensed under the MIT License. See [LICENSE][] for details.
 
 [LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
+[IntlChar]: https://www.php.net/manual/en/class.intlchar.php
+[Multibyte String]: https://www.php.net/manual/en/book.mbstring.php
