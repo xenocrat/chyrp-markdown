@@ -187,14 +187,18 @@ trait LinkTrait
 			$consumed = strlen($textMatches[0]);
 			$regexable = substr($regexable, $offset);
 
-			if (
+			$context = array_shift($this->context);
+
+			$overrun = $this->detectInlineOverrun(
+				$markdown,
+				$consumed,
+				['Lt', 'BracketedLink', 'InlineCode']
+			);
+
+			array_unshift($this->context, $context);
+
+			if ($overrun) {
 				// Inline HTML, bracketed link, or code takes precedence.
-				$this->detectInlineOverrun(
-					$markdown,
-					$consumed,
-					['Lt', 'BracketedLink', 'InlineCode']
-				)
-			) {
 				return false;
 			}
 
