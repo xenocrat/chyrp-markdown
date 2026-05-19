@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser can be extended to recognize new elements by adding new traits to a Markdown flavor, or by defining an entirely new flavor as an extension of the base parser class.
+This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser can be extended to recognize new elements by adding new traits to a Markdown flavor, or by defining an entirely new flavor as an extension of the base parser class.
 
 Currently the following Markdown flavors are supported:
 
@@ -15,7 +15,8 @@ Requirements
 
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
-- [Multibyte String] and [IntlChar] are recommended but not required.
+
+[Multibyte String] and [IntlChar] are recommended but not required.
 
 Limitations
 -----------
@@ -406,8 +407,9 @@ This software was created by the following people:
 License
 -------
 
-This software is open source and licensed under the MIT License. See [LICENSE][] for details.
+This software is open source and licensed under the MIT License. See [LICENSE] for details.
 
-[LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
+[Chyrp Lite]: https://chyrplite.net/
 [IntlChar]: https://www.php.net/manual/en/class.intlchar.php
 [Multibyte String]: https://www.php.net/manual/en/book.mbstring.php
+[LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
