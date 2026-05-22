@@ -21,7 +21,7 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed and simplicity, the parser is limited in some ways that result in it not being completely conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
+Because it is focused on speed and simplicity, the parser is limited in some ways that result in it not being fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
@@ -382,11 +382,11 @@ If you use HeadlineTrait, LinkTrait, or FootnoteTrait it may be useful to implem
 
 #### Define escapeable characters
 
-Depending on the language features you have chosen to implement, a different set of characters must be defined as escapable using a backslash (`\`). The parser defines only backslash as escapable (`\\`) initially.
+Depending on the language features you have chosen to implement, a different set of characters must be defined as escapable using a backslash (`\`) for literal use. The parser defines only backslash as escapable (`\\`) initially.
 
 #### Add custom rendering behavior
 
-Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the flavors for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
+Optionally you can adjust rendering behavior by overriding some methods. Refer to the `consumeParagraph()` method of the various Markdown flavors for inspiration on different rules defining which elements are allowed to interrupt a paragraph.
 
 Acknowledgements
 ----------------
