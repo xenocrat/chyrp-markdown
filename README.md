@@ -21,7 +21,7 @@ Requirements
 Limitations
 -----------
 
-Because it is focused on speed and simplicity, the parser is limited in some ways that result in it not being fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
+The parser is limited in some ways that result in it not being fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
@@ -376,13 +376,13 @@ If you want to extend a flavor and add features you can use one of the existing 
 
 #### Select language feature traits
 
-In general, just adding traits with `use` is enough. During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy by defining the property `blockPriorities` in your Markdown flavor and supplying a predefined call order for block identifier methods. Any methods detected at runtime that are not listed in the predefined call order will be called in alphabetical order after all predefined methods.
+In general, just adding traits with `use` is enough. During parsing, block identifiers added by traits are sorted and called in alphabetical order. This could be a problem if you create a trait to parse a block type that must be identified early. You can bust the alphabetical sort/call strategy by defining the property `blockPriorities` in your Markdown flavor and supplying a predefined call order for block identifier methods. Any methods detected at runtime that are not listed in the predefined call order will be called in alphabetical order after all predefined methods have been called.
 
 If you use HeadlineTrait, LinkTrait, or FootnoteTrait it may be useful to implement `prepare()` to reset variables before parsing to ensure you get a reusable parser object.
 
 #### Define escapeable characters
 
-Depending on the language features you have chosen to implement, a different set of characters must be defined as escapable using a backslash (`\`) for literal use. The parser defines only backslash as escapable (`\\`) initially.
+Depending on the language features you have chosen to implement, a different set of characters must be defined as escapable using a backslash (`\`) for literal use in Markdown text. The parser defines only backslash as escapable (`\\`) initially.
 
 #### Add custom rendering behavior
 
