@@ -21,7 +21,7 @@ Requirements
 Limitations
 -----------
 
-The parser is limited in some ways that result in it not being fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
+The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
