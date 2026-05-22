@@ -64,13 +64,13 @@ trait FootnoteTrait
 		$footnotesSorted = [];
 		$footnoteNum = 0;
 
-		foreach ($this->footnoteLinks as $footnotePos => $footnoteLinkName) {
-			foreach ($this->footnotes as $footnoteName => $footnoteHtml) {
-				if ($footnoteLinkName === (string) $footnoteName) {
+		foreach ($this->footnoteLinks as $footnotePos => $footnoteLinkLabel) {
+			foreach ($this->footnotes as $footnoteLabel => $footnoteHtml) {
+				if ($footnoteLinkLabel === (string) $footnoteLabel) {
 					// First time sorting this footnote.
-					if (!isset($footnotesSorted[$footnoteName])) {
+					if (!isset($footnotesSorted[$footnoteLabel])) {
 						$footnoteNum++;
-						$footnotesSorted[$footnoteName] = [
+						$footnotesSorted[$footnoteLabel] = [
 							'html' => $footnoteHtml,
 							'num' => $footnoteNum,
 							'refs' => [1 => $footnotePos],
@@ -78,7 +78,7 @@ trait FootnoteTrait
 					} else {
 						// Subsequent times sorting this footnote
 						// (i.e. every time it's referenced).
-						$footnotesSorted[$footnoteName]['refs'][] = $footnotePos;
+						$footnotesSorted[$footnoteLabel]['refs'][] = $footnotePos;
 					}
 				}
 			}
@@ -160,9 +160,9 @@ trait FootnoteTrait
 		return preg_replace_callback(
 			"/\u{FFFC}footnote-(refnum|num)(.*?)\u{FFFC}/",
 			function ($match) use ($footnotesSorted, $uncertaintyChr) {
-				$footnoteName = $this->footnoteLinks[$match[2]];
+				$footnoteLabel = $this->footnoteLinks[$match[2]];
 
-				if (!isset($footnotesSorted[$footnoteName])) {
+				if (!isset($footnotesSorted[$footnoteLabel])) {
 				// This is a link to a missing footnote.
 					// Return the uncertainty sign.
 					return $uncertaintyChr
@@ -171,24 +171,24 @@ trait FootnoteTrait
 
 				if ($match[1] === 'num') {
 				// Replace only the footnote number.
-					return $footnotesSorted[$footnoteName]['num'];
+					return $footnotesSorted[$footnoteLabel]['num'];
 				}
 
-				if (count($footnotesSorted[$footnoteName]['refs']) > 1) {
+				if (count($footnotesSorted[$footnoteLabel]['refs']) > 1) {
 				// For backlinks:
 				// some have a footnote number and an additional link number.
 				// If footnote is referenced more than once, add `-n` suffix.
 					$linkNum = array_search(
 						$match[2],
-						$footnotesSorted[$footnoteName]['refs']
+						$footnotesSorted[$footnoteLabel]['refs']
 					);
 
-					return $footnotesSorted[$footnoteName]['num']
+					return $footnotesSorted[$footnoteLabel]['num']
 						. '-'
 						. $linkNum;
 				} else {
 				// Otherwise, just the number.
-					return $footnotesSorted[$footnoteName]['num'];
+					return $footnotesSorted[$footnoteLabel]['num'];
 				}
 			},
 			$html
@@ -233,14 +233,14 @@ trait FootnoteTrait
 				$matches[1]
 			);
 
-			$footnoteName = function_exists("mb_convert_case") ?
+			$footnoteLabel = function_exists("mb_convert_case") ?
 				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 				strtolower($matches[1]);
 
 			// We will later sort the footnotes
 			// according to the order that the footnote links appear in.
 			$this->footnoteLinkNum++;
-			$this->footnoteLinks[$this->footnoteLinkNum] = $footnoteName;
+			$this->footnoteLinks[$this->footnoteLinkNum] = $footnoteLabel;
 
 			// To render a footnote link, we only need to know its link-number,
 			// which will later be turned into its footnote-number (after sorting).
@@ -353,7 +353,7 @@ trait FootnoteTrait
 					$matches[1]
 				);
 
-				$name = function_exists("mb_convert_case") ?
+				$label = function_exists("mb_convert_case") ?
 					mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 					strtolower($matches[1]);
 
@@ -363,15 +363,15 @@ trait FootnoteTrait
 					"\t",
 					substr($line, strlen($matches[0]))
 				);
-				$footnotes[$name] = [$str];
+				$footnotes[$label] = [$str];
 			} elseif (
 				!$startsFootnote
-				&& isset($name)
-				&& isset($footnotes[$name])
+				&& isset($label)
+				&& isset($footnotes[$label])
 			) {
 				if (
 					ltrim($line) === ''
-					&& ltrim(end($footnotes[$name])) === ''
+					&& ltrim(end($footnotes[$label])) === ''
 				) {
 				// Two blank lines end this list of footnotes.
 					break;
@@ -383,7 +383,7 @@ trait FootnoteTrait
 						"\t",
 						substr($line, ($indent < $mw ? $indent : $mw))
 					);
-					$footnotes[$name][] = $line;	
+					$footnotes[$label][] = $line;	
 				}
 			} else {
 				break;
@@ -391,8 +391,8 @@ trait FootnoteTrait
 		}
 
 		// Parse all collected footnotes.
-		foreach ($footnotes as $footnoteName => $footnoteLines) {
-			$parsedFootnotes[$footnoteName] = $this->parseBlocks($footnoteLines);
+		foreach ($footnotes as $footnoteLabel => $footnoteLines) {
+			$parsedFootnotes[$footnoteLabel] = $this->parseBlocks($footnoteLines);
 		}
 
 		return [['footnoteList', 'content' => $parsedFootnotes], $i];
@@ -406,8 +406,8 @@ trait FootnoteTrait
 	 */
 	protected function renderFootnoteList($block): string
 	{
-		foreach ($block['content'] as $footnoteName => $footnote) {
-			$this->footnotes[$footnoteName] = $this->renderAbsy($footnote);
+		foreach ($block['content'] as $footnoteLabel => $footnote) {
+			$this->footnotes[$footnoteLabel] = $this->renderAbsy($footnote);
 		}
 		// Render nothing, because all footnote lists will be concatenated
 		// at the end of the text using the flavor's `postprocess` method.
