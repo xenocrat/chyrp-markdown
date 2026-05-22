@@ -145,9 +145,8 @@ trait ListTrait
 				// Next line is also blank.
 					$block['items'][$item][] = $line;
 				} elseif (strspn($next, ' ' . $pad) >= $mw) {
-				// Next line is indented: loose list.
+				// Next line is indented.
 					$block['items'][$item][] = $line;
-					$block['loose'] = true;
 				} elseif (preg_match($pattern, $next)) {
 				// Next line is a marker: loose list.
 					$block['items'][$item][] = $line;
