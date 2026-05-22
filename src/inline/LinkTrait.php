@@ -211,16 +211,18 @@ trait LinkTrait
 						|
 						# Match opening parentheses:
 						^\(\s*
+						(?:
 						(
 						# Match a bracketed link:
 						<(?>[^\n\\\\\<\[\]>]|\\\\[<\[\]>]|\\\\)*(?<!\\\\)>
 						# Or an unbracketed link:
-						|(?!<)(?:(?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)|(?R))*
+						|(?!<)(?:(?>[^\s\\\\(\[\])]|\\\\[(\[\])]|\\\\)|(?R))+
 						)
 						# Match an optional title:
 						(?:
 						\s+([\'"]|(\())((?>\\\\.|.(?<!(?(4)\)|\3)))*)
 						(?<!\\\\)(?(4)\)|\3)
+						)?
 						)?
 						# Match closing parentheses:
 						\s*(?<!\\\\)\))/xs',
