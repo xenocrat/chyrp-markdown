@@ -19,7 +19,7 @@ use RuntimeException;
 abstract class Parser
 {
 	const VERSION_MAJOR = 4;
-	const VERSION_MINOR = 11;
+	const VERSION_MINOR = 12;
 	const VERSION_PATCH = 0;
 
 	/**
