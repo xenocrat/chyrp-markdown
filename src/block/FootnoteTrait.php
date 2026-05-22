@@ -66,7 +66,7 @@ trait FootnoteTrait
 
 		foreach ($this->footnoteLinks as $footnotePos => $footnoteLinkName) {
 			foreach ($this->footnotes as $footnoteName => $footnoteHtml) {
-				if ($footnoteLinkName === (string)$footnoteName) {
+				if ($footnoteLinkName === (string) $footnoteName) {
 					// First time sorting this footnote.
 					if (!isset($footnotesSorted[$footnoteName])) {
 						$footnoteNum++;
@@ -211,7 +211,8 @@ trait FootnoteTrait
 	{
 		if (
 			preg_match(
-				'/^\[\^(.+?)(?<!\\\\)\]/',
+				'/(?(R)\[|^\[\^)
+					((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)\]/x',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
@@ -219,8 +220,6 @@ trait FootnoteTrait
 				),
 				$matches
 			)
-			// Unescaped brackets are not allowed.
-			&& !preg_match('/(?<!\\\\)[\[\]]/', $matches[1])
 		) {
 			$matches[0] = str_replace(
 				'\\\\'.chr(31),
@@ -305,7 +304,9 @@ trait FootnoteTrait
 	protected function identifyFootnoteList($line): bool
 	{
 		return preg_match(
-			'/^ {0,3}\[\^(.+?)(?<!\\\\)\]:/',
+			'/(?(R)\[|^[ ]{0,3}\[\^)
+				((?>(?:[^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)
+				(?(R)\]|\]:)/x',
 			str_replace(
 				'\\\\',
 				'\\\\'.chr(31),
@@ -327,7 +328,9 @@ trait FootnoteTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i], $pad);
 			$startsFootnote = preg_match(
-				'/^ {0,3}\[\^(.+?)(?<!\\\\)\]:[ \x1D]*/',
+				'/(?(R)\[|^[ ]{0,3}\[\^)
+					((?>(?:[^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)
+					(?(R)\]|\]:[ \x1D]*)/x',
 				str_replace(
 					'\\\\',
 					'\\\\'.chr(31),
