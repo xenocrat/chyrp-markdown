@@ -210,7 +210,10 @@ trait FootnoteTrait
 	protected function parseFootnoteLink($text): array
 	{
 		if (
-			preg_match(
+			// Do not allow links within links.
+			!in_array('parseLink', $this->context)
+			// Link?
+			&& preg_match(
 				'/(?(R)\[|^\[\^)
 					((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)\]/x',
 				str_replace(
