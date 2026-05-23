@@ -361,12 +361,11 @@ trait FootnoteTrait
 					strtolower($matches[1]);
 
 				$mw = strlen($matches[0]);
-				$str = preg_replace(
-					'/\x1D{1,4}/',
-					"\t",
-					substr($line, strlen($matches[0]))
+				$line = $this->collapseTabs(
+					substr($line, strlen($matches[0])),
+					$pad
 				);
-				$footnotes[$label] = [$str];
+				$footnotes[$label] = [$line];
 			} elseif (
 				!$startsFootnote
 				&& isset($label)
@@ -381,10 +380,9 @@ trait FootnoteTrait
 				} else {
 				// Current line continues the current footnote.
 					$indent = strspn($line, ' ' . $pad);
-					$line = preg_replace(
-						'/\x1D{1,4}/',
-						"\t",
-						substr($line, ($indent < $mw ? $indent : $mw))
+					$line = $this->collapseTabs(
+						substr($line, ($indent < $mw ? $indent : $mw)),
+						$pad
 					);
 					$footnotes[$label][] = $line;	
 				}
