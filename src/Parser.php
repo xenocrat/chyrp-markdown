@@ -717,6 +717,7 @@ abstract class Parser
 	 * Expand tabs into 1-4 occurrences of a replacement character.
 	 *
 	 * @param string $text
+	 * @param string $chr
 	 * @return string
 	 */
 	protected function expandTabs($text, $chr = ' '): string
@@ -755,5 +756,51 @@ abstract class Parser
 		}
 
 		return $expanded;
+	}
+
+	/**
+	 * Collapse replacement characters into tabs.
+	 *
+	 * @param string $text
+	 * @param string $chr
+	 * @return string
+	 */
+	protected function collapseTabs($text, $chr = ' '): string
+	{
+		if ($text === '') {
+			return '';
+		}
+
+		$collapsed = '';
+		$lines = preg_split(
+			"/(\n)/",
+			$text,
+			-1,
+			PREG_SPLIT_DELIM_CAPTURE
+		);
+
+		foreach ($lines as $line) {
+			$span = strspn($line, ' ' . $chr);
+			$indent = substr($line, 0, $span);
+			$output = substr($line, $span);
+
+			$indent = strtr(
+				$indent,
+				[
+					str_repeat($chr, 4) => "\t",
+					$chr => ' '
+				]
+			);
+
+			$output = preg_replace(
+				"/$chr{1,4}/u",
+				"\t",
+				$output
+			);
+
+			$collapsed .= $indent . $output;
+		}
+
+		return $collapsed;
 	}
 }
