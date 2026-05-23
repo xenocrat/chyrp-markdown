@@ -173,22 +173,15 @@ trait ListTrait
 				--$i;
 				break;
 			}
-			// If next line is <hr> and not a setext <h2>, end the list.
+			// If next line is <hr>, end the list.
 			if (
 				!empty($lines[$i + 1])
-				&& (
-					method_exists($this, 'identifyHr')
-					&& $this->identifyHr($lines[$i + 1])
-				)
-				&& (
-					!method_exists($this, 'identifySetextHeadline')
-					|| !$this->identifySetextHeadline($lines[$i], $lines, $i)
-				)
+				&& method_exists($this, 'identifyHr')
+				&& $this->identifyHr($lines[$i + 1])
 			) {
 				break;
 			}
 		}
-
 		// Set the ol attributes.
 		if ($type === 'ol') {
 			$start = $nums[0];
