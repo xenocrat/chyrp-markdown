@@ -780,10 +780,15 @@ abstract class Parser
 		);
 
 		foreach ($lines as $line) {
-			$span = strspn($line, ' ' . $chr);
-			$indent = substr($line, 0, $span);
-			$output = substr($line, $span);
-
+			$c = preg_quote($chr, '/');
+			$length = strlen(
+				preg_replace(
+					"/^([$c ]*).*$/u", '$1',
+					$line
+				)
+			);
+			$indent = substr($line, 0, $length);
+			$output = substr($line, $length);
 			$indent = strtr(
 				$indent,
 				[
@@ -791,13 +796,11 @@ abstract class Parser
 					$chr => ' '
 				]
 			);
-
 			$output = preg_replace(
-				"/$chr{1,4}/u",
+				"/$c{1,4}/u",
 				"\t",
 				$output
 			);
-
 			$collapsed .= $indent . $output;
 		}
 
