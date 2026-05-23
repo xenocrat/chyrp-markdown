@@ -83,7 +83,6 @@ trait ListTrait
 		// Consume until end condition...
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i], $pad);
-
 			$pattern = ($type === 'ol') ?
 				'/^( {0,3})(\d{1,9})([\.\)])([ \x1D]+|$)/' :
 				'/^( {0,3})([\-\+\*])([ \x1D]+|$)/' ;
@@ -121,10 +120,9 @@ trait ListTrait
 				}
 
 				$mw = strlen($matches[0]);
-				$line = preg_replace(
-					'/\x1D{1,4}/',
-					"\t",
-					substr($line, $mw)
+				$line = $this->collapseTabs(
+					substr($line, $mw),
+					$pad
 				);
 				$block['items'][$item][] = $line;
 			} elseif ($line === '' || ltrim($line) === '') {
@@ -135,11 +133,7 @@ trait ListTrait
 				}
 
 				$next = $this->expandTabs($lines[$i + 1], $pad);
-				$line = preg_replace(
-					'/\x1D{1,4}/',
-					"\t",
-					substr($line, $mw)
-				);
+				$line = substr($line, $mw);
 
 				if ($next === '' || ltrim($next) === '') {
 				// Next line is also blank.
@@ -157,10 +151,9 @@ trait ListTrait
 				}
 			} elseif (strspn($line, ' ' . $pad) >= $mw) {
 			// Line continues the current item.
-				$line = preg_replace(
-					'/\x1D{1,4}/',
-					"\t",
-					substr($line, $mw)
+				$line = $this->collapseTabs(
+					substr($line, $mw),
+					$pad
 				);
 				$block['items'][$item][] = $line;
 			} elseif (
