@@ -254,10 +254,16 @@ abstract class Parser
 	protected function detectLineType($lines, $current): string
 	{
 		$line = $lines[$current];
+		$found = false;
 		$blockTypes = $this->blockTypes();
 
 		foreach($blockTypes as $blockType) {
+			array_unshift($this->context, 'identify' . $blockType);
 			if ($this->{'identify' . $blockType}($line, $lines, $current)) {
+				$found = true;
+			}
+			array_shift($this->context);
+			if ($found === true) {
 				return $blockType;
 			}
 		}
@@ -323,11 +329,14 @@ abstract class Parser
 	protected function parseBlock($lines, $current): array
 	{
 		// Identify block type for this line.
-		$blockType = $this->detectLineType($lines, $current);
+		$blockType = ucfirst($this->detectLineType($lines, $current));
 
 		// Call consume method for the detected block type
 		// to consume further lines.
-		return $this->{'consume' . $blockType}($lines, $current);
+		array_unshift($this->context, 'consume' . $blockType);
+		$consumed = $this->{'consume' . $blockType}($lines, $current);
+		array_shift($this->context);
+		return $consumed;
 	}
 
 	/**
@@ -340,8 +349,9 @@ abstract class Parser
 	{
 		$output = '';
 		foreach ($blocks as $block) {
-			array_unshift($this->context, $block[0]);
-			$output .= $this->{'render' . $block[0]}($block);
+			$blockType = ucfirst($block[0]);
+			array_unshift($this->context, 'render' . $blockType);
+			$output .= $this->{'render' . $blockType}($block);
 			array_shift($this->context);
 		}
 		return $output;
