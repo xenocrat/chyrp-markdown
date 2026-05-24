@@ -21,12 +21,11 @@ Requirements
 Limitations
 -----------
 
-The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 91% of CommonMark test cases.
+The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 93% of CommonMark test cases.
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
 2. It does not fully implement lazy continuation rules for blockquotes and lists;
-3. It implements a modified loose list rule that renders loose lists in more cases.
 
 Usage
 -----
