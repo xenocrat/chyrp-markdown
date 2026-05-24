@@ -32,7 +32,13 @@ trait ListTrait
 	 */
 	protected function identifyOl($line): bool
 	{
-		return preg_match('/^ {0,3}\d{1,9}[\.\)]([ \t]|$)/', $line);
+		return (
+			preg_match('/^ {0,3}(\d{1,9})[\.\)]([ \t]|$)/', $line, $matches)
+			&& (
+				$matches[1] === '1'
+				|| reset($this->context) !== 'consumeParagraph'
+			)
+		);
 	}
 
 	/**
