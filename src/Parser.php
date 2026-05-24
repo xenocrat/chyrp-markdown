@@ -271,9 +271,10 @@ abstract class Parser
 	 * and call consume function afterwards.
 	 *
 	 * @param array $lines
+	 * @param int $blanks
 	 * @return array
 	 */
-	protected function parseBlocks($lines): array
+	protected function parseBlocks($lines, &$blanks = 0): array
 	{
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Maximum depth is reached; do not parse input.
@@ -300,6 +301,8 @@ abstract class Parser
 				if ($block !== false) {
 					$blocks[] = $block;
 				}
+			} else {
+				$blanks++;
 			}
 		}
 
