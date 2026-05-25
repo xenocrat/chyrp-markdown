@@ -25,7 +25,7 @@ The parser is not fully conformant with the CommonMark, GFM, and GLFM specificat
 
 The most notable limitations of the parser are:
 1. It does not fully implement nesting and flanking rules for emphasis and strong;
-2. It does not fully implement lazy continuation rules for blockquotes and lists;
+2. It does not fully implement lazy continuation rules for blockquotes and lists.
 
 Usage
 -----
