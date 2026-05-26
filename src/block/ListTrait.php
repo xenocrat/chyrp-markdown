@@ -176,8 +176,7 @@ trait ListTrait
 			// If next line is <hr>, end the list.
 			if (
 				!empty($lines[$i + 1])
-				&& method_exists($this, 'identifyHr')
-				&& $this->identifyHr($lines[$i + 1])
+				&& $this->detectLineType($lines, $i + 1) === 'hr'
 			) {
 				break;
 			}
