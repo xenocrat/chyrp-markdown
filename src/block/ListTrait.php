@@ -126,6 +126,12 @@ trait ListTrait
 				}
 
 				$mw = strlen($matches[0]);
+				$sp = $type === 'ol' ? $matches[4] : $matches[3];
+
+				if (strlen($sp) === 0) {
+					$mw++;
+				}
+
 				$line = $this->collapseTabs(
 					substr($line, $mw),
 					$pad
