@@ -90,33 +90,33 @@ trait ListTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i], $pad);
 			$pattern = ($type === 'ol') ?
-				'/^( {0,3})(\d{1,9})([\.\)])([ \x1D]{1,4}|$)/' :
-				'/^( {0,3})([\-\+\*])([ \x1D]{1,4}|$)/' ;
+				'/^(( {0,3})(\d{1,9})([\.\)]))([ \x1D]{1,4}|$)/' :
+				'/^(( {0,3})([\-\+\*]))([ \x1D]{1,4}|$)/';
 
 			// If not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
 			// of the current item containing a marker for a sub-list item.
 			if (
 				preg_match($pattern, $line, $matches)
-				&& ($i === $current || strlen($matches[1]) < $mw)
+				&& ($i === $current || strlen($matches[2]) < $mw)
 			) {
 				// Capture the ol item number.
 				if ($type === 'ol') {
-					$nums[] = intval($matches[2]);
+					$nums[] = intval($matches[3]);
 				}
 
 				if ($i === $current) {
 				// First item.
 					// Store the marker for comparison.
 					$marker = $type === 'ol' ?
-						$matches[3] :
-						$matches[2] ;
+						$matches[4] :
+						$matches[3];
 				} else {
 					$item++;
 
 					$newMarker = $type === 'ol' ?
-						$matches[3] :
-						$matches[2] ;
+						$matches[4] :
+						$matches[3];
 
 					// Marker has changed: end of list.
 					if (strcmp($marker, $newMarker) !== 0) {
@@ -125,12 +125,9 @@ trait ListTrait
 					}
 				}
 
-				$mw = strlen($matches[0]);
-				$sp = $type === 'ol' ? $matches[4] : $matches[3];
-
-				if (strlen($sp) === 0) {
-					$mw++;
-				}
+				$mw = strlen($line) === strlen($matches[0]) ?
+					strlen($matches[1]) + 1 :
+					strlen($matches[0]);
 
 				$line = $this->collapseTabs(
 					substr($line, $mw),
