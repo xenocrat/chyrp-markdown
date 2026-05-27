@@ -143,19 +143,25 @@ trait ListTrait
 
 				$next = $this->expandTabs($lines[$i + 1], $pad);
 				$line = substr($line, $mw);
+				$text = ltrim(implode('', $block['items'][$item]));
 
-				if ($next === '' || ltrim($next) === '') {
+				if (preg_match($pattern, $next)) {
+				// Next line is a marker: loose list.
+					$block['items'][$item][] = $line;
+					$block['loose'] = true;
+				} elseif ($text === '') {
+				// 2 blank lines not followed by a marker.
+					$block['items'][$item][] = $line;
+					--$i;
+					break;
+				} elseif ($next === '' || ltrim($next) === '') {
 				// Next line is also blank.
 					$block['items'][$item][] = $line;
 				} elseif (strspn($next, ' ' . $pad) >= $mw) {
 				// Next line is indented.
 					$block['items'][$item][] = $line;
-				} elseif (preg_match($pattern, $next)) {
-				// Next line is a marker: loose list.
-					$block['items'][$item][] = $line;
-					$block['loose'] = true;
 				} else {
-				// next line is not list content.
+				// Next line is not list content.
 					--$i;
 					break;
 				}
