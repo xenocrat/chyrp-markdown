@@ -90,8 +90,14 @@ trait ListTrait
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i], $pad);
 			$pattern = ($type === 'ol') ?
-				'/^(( {0,3})(\d{1,9})([\.\)]))([ \x1D]{1,4}|$)/' :
-				'/^(( {0,3})([\-\+\*]))([ \x1D]{1,4}|$)/';
+				'/^(([ ]{0,3})(\d{1,9})([\.\)]))
+					# Match 1 spacing char if there are 5+ (code block?),
+					# otherwise match 1-4 spacing chars or end of line.
+					([ \x1D](?=[ \x1D]{4})|[ \x1D]{1,4}|$)/x' :
+				'/^(([ ]{0,3})([\-\+\*]))
+					# Match 1 spacing char if there are 5+ (code block?),
+					# otherwise match 1-4 spacing chars or end of line.
+					([ \x1D](?=[ \x1D]{4})|[ \x1D]{1,4}|$)/x';
 
 			// If not the first item, marker indentation must be less than
 			// width of preceeding marker - otherwise it is a continuation
