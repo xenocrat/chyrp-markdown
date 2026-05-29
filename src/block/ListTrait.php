@@ -131,6 +131,7 @@ trait ListTrait
 					}
 				}
 
+				// +1 spacing char if the marker ended the line.
 				$mw = strlen($line) === strlen($matches[0]) ?
 					strlen($matches[1]) + 1 :
 					strlen($matches[0]);
