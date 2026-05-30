@@ -189,9 +189,11 @@ trait ListTrait
 				--$i;
 				break;
 			}
-			// If next line is <hr>, end the list.
+			// If the next line is <hr> and not indented enough
+			// to be contained in the current item, end the list.
 			if (
 				!empty($lines[$i + 1])
+				&& strspn($lines[$i + 1], ' ') < $mw
 				&& $this->detectLineType($lines, $i + 1) === 'hr'
 			) {
 				break;
