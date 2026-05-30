@@ -105,7 +105,7 @@ trait HtmlTrait
 				$line,
 				$matches
 			)
-			&& (reset($this->context) !== 'consumeParagraph')
+			&& reset($this->context) !== 'consumeParagraph'
 		) {
 		// Type 7.
 			return true;
