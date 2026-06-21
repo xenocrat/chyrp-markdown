@@ -338,8 +338,11 @@ trait LinkTrait
 						strlen($matches[0])
 					];
 				} elseif (
-					preg_match('/^<([^\\\\\s>]*?@[^\s]*?\.\w+?)>/',
-						$markdown, $matches
+					preg_match(
+						'/^<([\w\d\.!\#$%&\'*+\/=?^_`{|}~\-]+@
+							(?:[a-z0-9\-_]+\.)+[a-z0-9]+)>/iux',
+						$markdown,
+						$matches
 					)
 				) {
 					// Email address.
