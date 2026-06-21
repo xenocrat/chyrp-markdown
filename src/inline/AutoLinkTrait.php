@@ -31,7 +31,7 @@ trait AutoLinkTrait
 			// Link?
 			&& preg_match(
 				'/^(www\.|https?:\/\/)
-					(([a-zA-Z0-9\-_]\.)*[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-]+[^\s<]*)
+					((?:[a-zA-Z0-9\-_]\.)*[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-]+[^\s<]*)
 					(?<![~_\*\.,:\!\?])/x',
 				$markdown,
 				$matches
@@ -81,6 +81,49 @@ trait AutoLinkTrait
 		);
 
 		return "<a href=\"$href\">$text</a>";
+	}
+
+	protected function parseAutoEmailMarkers(): array
+	{
+		return array('mailto:');
+	}
+
+	/**
+	 * Parses email addresses and adds auto linking feature.
+	 *
+	 * @marker mailto:
+	 */
+	protected function parseAutoEmail($markdown): array
+	{
+		if (
+			// Do not allow links within links.
+			!in_array('parseLink', $this->context)
+			// Email?
+			&& preg_match(
+				'/^mailto:
+					([\.\w\d\-_+]+@(?:[a-zA-Z0-9\-_]+\.)+[a-zA-Z0-9]+)
+					(?![\w\d\-_])/ux',
+				$markdown,
+				$matches
+			)
+		) {
+			return [
+				['autoEmail', $matches[0]],
+				strlen($matches[0])
+			];
+		}
+
+		return [['text', substr($markdown, 0, 7)], 7];
+	}
+
+	protected function renderAutoEmail($block): string
+	{
+		$email = $this->escapeHtmlEntities(
+			$block[1],
+			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
+		);
+
+		return "<a href=\"$email\">$email</a>";
 	}
 
 	abstract protected function escapeHtmlEntities($text, $flags = 0);
