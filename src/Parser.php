@@ -282,7 +282,7 @@ abstract class Parser
 	 * and call consume function afterwards.
 	 *
 	 * @param array $lines
-	 * @param int $blanks
+	 * @param int &$blanks - Increments for every blank line outside a block.
 	 * @return array
 	 */
 	protected function parseBlocks($lines, &$blanks = 0): array
@@ -747,7 +747,7 @@ abstract class Parser
 	 * Expand tabs into 1-4 occurrences of a replacement character.
 	 *
 	 * @param string $text
-	 * @param string $chr
+	 * @param string $chr - The replacement char to use for expansion.
 	 * @return string
 	 */
 	protected function expandTabs($text, $chr = ' '): string
@@ -795,7 +795,7 @@ abstract class Parser
 	 * Collapse replacement characters into tabs, maintain initial indent.
 	 *
 	 * @param string $text
-	 * @param string $chr
+	 * @param string $chr - The replacement char used to expand the tabs.
 	 * @return string
 	 */
 	protected function collapseTabs($text, $chr = ' '): string
