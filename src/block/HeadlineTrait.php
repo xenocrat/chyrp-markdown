@@ -34,7 +34,7 @@ trait HeadlineTrait
 	/**
 	 * Identify a line as ATX headline.
 	 */
-	protected function identifyAtxHeadline($line, $lines, $current): bool
+	protected function identifyAtxHeadline($line): bool
 	{
 		return (preg_match('/^( {0,3}(\#{1,6}))([ \t]|$)/', $line));
 	}
