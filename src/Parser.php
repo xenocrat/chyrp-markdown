@@ -493,9 +493,10 @@ abstract class Parser
 	 * Parses inline elements of the language.
 	 *
 	 * @param string $text - The inline text to parse.
+	 * @param string $preceding - Preceding inline text.
 	 * @return array
 	 */
-	protected function parseInline($text): array
+	protected function parseInline($text, $preceding = ''): array
 	{
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Maximum depth is reached; do not parse input.
@@ -517,7 +518,9 @@ abstract class Parser
 
 				// Add the text up to next marker to the paragraph.
 				if ($pos !== 0) {
-					$paragraph[] = ['text', substr($text, 0, $pos)];
+					$substr = substr($text, 0, $pos);
+					$preceding .= $substr;
+					$paragraph[] = ['text', $substr];
 				}
 
 				$text = $found;
@@ -529,18 +532,21 @@ abstract class Parser
 					if (str_starts_with($text, $marker)) {
 						// Parse the marker.
 						array_unshift($this->context, $method);
-						list($output, $offset) = $this->$method($text);
+						list($output, $offset) = $this->$method($text, $preceding);
 						array_shift($this->context);
 
-						$paragraph[] = $output;
+						$preceding .= substr($text, 0, $offset);
 						$text = substr($text, $offset);
+						$paragraph[] = $output;
 						$parsed = true;
 						break;
 					}
 				}
 
 				if (!$parsed) {
-					$paragraph[] = ['text', substr($text, 0, 1)];
+					$substr = substr($text, 0, 1);
+					$preceding .= $substr;
+					$paragraph[] = ['text', $substr];
 					$text = substr($text, 1);
 				}
 			}
