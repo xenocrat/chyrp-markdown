@@ -24,7 +24,7 @@ trait EmphStrongTrait
 	 * @marker *
 	 * @see https://www.unicode.org/reports/tr44/#General_Category_Values
 	 */
-	protected function parseEmphStrong($markdown): array
+	protected function parseEmphStrong($markdown, $preceding): array
 	{
 		if (!isset($markdown[1])) {
 			return [['text', $markdown[0]], 1];
@@ -59,6 +59,7 @@ trait EmphStrongTrait
 					$matches
 				)
 				|| $marker === '_'
+				&& preg_match('/(^|\W|\b_+)$/u', $preceding)
 				&& preg_match(
 					'/
 						# Opening marker: cannot be followed by whitespace.
@@ -133,6 +134,7 @@ trait EmphStrongTrait
 					$matches
 				)
 				|| $marker === '_'
+				&& preg_match('/(^|\W|\b_+)$/u', $preceding)
 				&& preg_match(
 					'/
 						# Opening marker: cannot be followed by whitespace.
