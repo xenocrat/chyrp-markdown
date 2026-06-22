@@ -511,36 +511,38 @@ abstract class Parser
 		$markers = implode('', array_keys($this->_inlineMarkers));
 		$paragraph = [];
 
-		while (
-			!empty($markers)
-			&& ($found = strpbrk($text, $markers)) !== false
-		) {
-			$pos = strpos($text, $found);
-			// Add the text up to next marker to the paragraph.
-			if ($pos !== 0) {
-				$paragraph[] = ['text', substr($text, 0, $pos)];
-			}
+		if (!empty($markers)) {
+			while (($found = strpbrk($text, $markers)) !== false) {
+				$pos = strpos($text, $found);
 
-			$text = $found;
-			$parsed = false;
-
-			foreach ($this->_inlineMarkers[$text[0]] as $marker => $method) {
-				if (str_starts_with($text, $marker)) {
-					// Parse the marker.
-					array_unshift($this->context, $method);
-					list($output, $offset) = $this->$method($text);
-					array_shift($this->context);
-
-					$paragraph[] = $output;
-					$text = substr($text, $offset);
-					$parsed = true;
-					break;
+				// Add the text up to next marker to the paragraph.
+				if ($pos !== 0) {
+					$paragraph[] = ['text', substr($text, 0, $pos)];
 				}
-			}
 
-			if (!$parsed) {
-				$paragraph[] = ['text', substr($text, 0, 1)];
-				$text = substr($text, 1);
+				$text = $found;
+				$parsed = false;
+
+				foreach (
+					$this->_inlineMarkers[$text[0]] as $marker => $method
+				) {
+					if (str_starts_with($text, $marker)) {
+						// Parse the marker.
+						array_unshift($this->context, $method);
+						list($output, $offset) = $this->$method($text);
+						array_shift($this->context);
+
+						$paragraph[] = $output;
+						$text = substr($text, $offset);
+						$parsed = true;
+						break;
+					}
+				}
+
+				if (!$parsed) {
+					$paragraph[] = ['text', substr($text, 0, 1)];
+					$text = substr($text, 1);
+				}
 			}
 		}
 
