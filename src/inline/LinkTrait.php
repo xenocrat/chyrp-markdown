@@ -340,7 +340,7 @@ trait LinkTrait
 				} elseif (
 					preg_match(
 						'/^<([\w\d\.!\#$%&\'*+\/=?^_`{|}~\-]+@
-							(?:[a-z0-9\-_]+\.)+[a-z0-9]+)>/iux',
+							(?:[a-z0-9\-_]+\.)+[a-z0-9\-_]*[a-z0-9]+)>/iux',
 						$markdown,
 						$matches
 					)
