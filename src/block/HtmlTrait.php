@@ -15,7 +15,7 @@ trait HtmlTrait
 	/**
 	 * Identify a line as the beginning of a HTML block.
 	 */
-	protected function identifyHtml($line, $lines, $current): bool
+	protected function identifyHtml($line): bool
 	{
 		if (
 			$line[0] === ' '
