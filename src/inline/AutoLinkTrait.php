@@ -101,7 +101,8 @@ trait AutoLinkTrait
 			// Email?
 			&& preg_match(
 				'/^mailto:
-					([\.\w\d\-_+]+@(?:[a-zA-Z0-9\-_]+\.)+[a-zA-Z0-9]+)
+					([\.\w\d\-_+]+@
+					(?:[a-zA-Z0-9\-_]+\.)+[a-zA-Z0-9\-_]*[a-zA-Z0-9]+)
 					(?![\w\d\-_])/ux',
 				$markdown,
 				$matches
