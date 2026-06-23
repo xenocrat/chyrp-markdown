@@ -204,8 +204,6 @@ trait FootnoteTrait
 	 * Parses a footnote link indicated by `[^`.
 	 *
 	 * @marker [^
-	 * @param $text
-	 * @return array
 	 */
 	protected function parseFootnoteLink($text): array
 	{
@@ -259,10 +257,6 @@ trait FootnoteTrait
 		return [['text', $text[0]], 1];
 	}
 
-	/**
-	 * @param string[] $block - Array with 'num' key.
-	 * @return string
-	 */
 	protected function renderFootnoteLink($block): string
 	{
 		$prefix = $this->getContextId();
@@ -299,10 +293,7 @@ trait FootnoteTrait
 	}
 
 	/**
-	 * Identify a line as the beginning of a footnote block.
-	 *
-	 * @param $line
-	 * @return false|int
+	 * Identify a line as the beginning of a footnote list.
 	 */
 	protected function identifyFootnoteList($line): bool
 	{
@@ -319,7 +310,7 @@ trait FootnoteTrait
 	}
 
 	/**
-	 * Consume lines for a footnote.
+	 * Consume lines for a footnote list.
 	 */
 	protected function consumeFootnoteList($lines, $current): array
 	{
@@ -400,10 +391,7 @@ trait FootnoteTrait
 	}
 
 	/**
-	 * Renders a footnote.
-	 *
-	 * @param array $block
-	 * @return string
+	 * Renders a footnote list.
 	 */
 	protected function renderFootnoteList($block): string
 	{
