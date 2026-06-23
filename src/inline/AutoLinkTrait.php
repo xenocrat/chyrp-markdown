@@ -127,6 +127,51 @@ trait AutoLinkTrait
 		return "<a href=\"$email\">$email</a>";
 	}
 
+	protected function parseAutoXMPPMarkers(): array
+	{
+		return array('xmpp:');
+	}
+
+	/**
+	 * Parses XMPP entity addresses and adds auto linking feature.
+	 *
+	 * @marker xmpp:
+	 */
+	protected function parseAutoXMPP($markdown): array
+	{
+		if (
+			// Do not allow links within links.
+			!in_array('parseLink', $this->context)
+			// XMPP entity?
+			&& preg_match(
+				'/^xmpp:
+					([\.\w\d\-_+]+@
+					(?:[a-zA-Z0-9\-_]+\.)+[a-zA-Z0-9\-_]*[a-zA-Z0-9]+)
+					(?:\/[@\.\w\d]+)?
+					(?![\w\d\-_])/ux',
+				$markdown,
+				$matches
+			)
+		) {
+			return [
+				['autoXMPP', $matches[0]],
+				strlen($matches[0])
+			];
+		}
+
+		return [['text', substr($markdown, 0, 5)], 5];
+	}
+
+	protected function renderAutoXMPP($block): string
+	{
+		$xmpp = $this->escapeHtmlEntities(
+			$block[1],
+			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
+		);
+
+		return "<a href=\"$xmpp\">$xmpp</a>";
+	}
+
 	abstract protected function escapeHtmlEntities($text, $flags = 0);
 	abstract protected function renderText($block);
 }
