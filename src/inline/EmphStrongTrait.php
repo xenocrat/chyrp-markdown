@@ -59,7 +59,10 @@ trait EmphStrongTrait
 					$matches
 				)
 				|| $marker === '_'
-				&& preg_match('/(^|\W|\b_+)$/u', $preceding)
+				&& preg_match(
+					# Marker must be preceded by a non-word then 0+ delimeters.
+					'/(^|\W|\b_+)$/u', $preceding
+				)
 				&& preg_match(
 					'/
 						# Opening marker: cannot be followed by whitespace.
@@ -134,7 +137,10 @@ trait EmphStrongTrait
 					$matches
 				)
 				|| $marker === '_'
-				&& preg_match('/(^|\W|\b_+)$/u', $preceding)
+				&& preg_match(
+					# Marker must be preceded by a non-word then 0+ delimeters.
+					'/(^|\W|\b_+)$/u', $preceding
+				)
 				&& preg_match(
 					'/
 						# Opening marker: cannot be followed by whitespace.
