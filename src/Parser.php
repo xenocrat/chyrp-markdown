@@ -176,7 +176,7 @@ abstract class Parser
 	 * Set the identifier for this rendering context.
 	 *
 	 * @param string $string - Identifier to set.
-	 * @return string - The identifier.
+	 * @return string - The newly set identifier.
 	 */
 	public function setContextId($string): string
 	{
@@ -251,8 +251,8 @@ abstract class Parser
 	 * Given a set of lines and an index of a current line it uses
 	 * the registered block types to detect the type of this line.
 	 *
-	 * @param array $lines
-	 * @param integer $current
+	 * @param array $lines - Array of text separated into lines.
+	 * @param integer $current - The current line.
 	 * @return string - Name of the block type in lower case.
 	 */
 	protected function detectLineType($lines, $current): string
@@ -281,7 +281,7 @@ abstract class Parser
 	 * Parse block elements by calling `detectLineType()` to identify them
 	 * and call consume function afterwards.
 	 *
-	 * @param array $lines
+	 * @param array $lines - Array of text separated into lines.
 	 * @param int &$blanks - Increments for every blank line outside a block.
 	 * @return array
 	 */
@@ -325,11 +325,11 @@ abstract class Parser
 	 * Parses the block at current line by identifying the block type
 	 * and parsing the content.
 	 *
-	 * @param $lines
-	 * @param $current
+	 * @param $lines - Array of text separated into lines.
+	 * @param $current - The current line.
 	 * @return array - Array of two elements:
-	 * 	(array) The parsed block;
-	 * 	(int) The the next line index to be parsed.
+	 * 					(array) The parsed block;
+	 * 					(int) The the next line index to be parsed.
 	 */
 	protected function parseBlock($lines, $current): array
 	{
@@ -349,7 +349,7 @@ abstract class Parser
 	/**
 	 * Renders a Markdown abstract syntax tree as HTML.
 	 *
-	 * @param array $blocks
+	 * @param array $blocks - Array of blocks to render.
 	 * @return string
 	 */
 	protected function renderAbsy($blocks): string
@@ -367,8 +367,8 @@ abstract class Parser
 	/**
 	 * Consume lines for a paragraph.
 	 *
-	 * @param array $lines
-	 * @param integer $current
+	 * @param array $lines - Array of text separated into lines.
+	 * @param integer $current - The current line.
 	 * @return array
 	 */
 	protected function consumeParagraph($lines, $current): array
@@ -394,7 +394,7 @@ abstract class Parser
 	/**
 	 * Render a paragraph block.
 	 *
-	 * @param array $block
+	 * @param array $block - The block to render.
 	 * @return string
 	 */
 	protected function renderParagraph($block): string
@@ -460,7 +460,7 @@ abstract class Parser
 	/**
 	 * Prepare markers that are used in the text to parse.
 	 *
-	 * @param string $text
+	 * @param string $text - The inline text to parse.
 	 */
 	protected function prepareMarkers($text): void
 	{
@@ -641,7 +641,7 @@ abstract class Parser
 	/**
 	 * Add backslash to escapeable characters in text.
 	 *
-	 * @param string $text
+	 * @param string $text - The string to be processed.
 	 * @return string
 	 */
 	protected function escapeBackslash($text): string
@@ -658,7 +658,7 @@ abstract class Parser
 	/**
 	 * Remove backslash from escaped characters in text.
 	 *
-	 * @param string $text
+	 * @param string $text - The string to be processed.
 	 * @return string
 	 */
 	protected function unEscapeBackslash($text): string
@@ -675,8 +675,8 @@ abstract class Parser
 	/**
 	 * Encode HTML special characters as HTML entities.
 	 *
-	 * @param string $text
-	 * @param integer $flags
+	 * @param string $text - The string to be encoded.
+	 * @param integer $flags - Flags for <htmlspecialchars>.
 	 * @return string
 	 * @see https://www.php.net/manual/en/function.htmlspecialchars
 	 */
@@ -690,8 +690,8 @@ abstract class Parser
 	/**
 	 * Decode HTML entities to corresponding characters.
 	 *
-	 * @param string $text
-	 * @param integer $flags
+	 * @param string $text - The string to be decoded.
+	 * @param integer $flags - Flags for <html_entity_decode>.
 	 * @return string
 	 * @see https://www.php.net/manual/en/function.html-entity-decode
 	 */
@@ -705,7 +705,7 @@ abstract class Parser
 	/**
 	 * Count the length of a UTF-8 encoded string.
 	 *
-	 * @param string $text
+	 * @param string $text - The string to be counted.
 	 * @return int
 	 * @see https://datatracker.ietf.org/doc/html/rfc3629
 	 */
@@ -746,7 +746,7 @@ abstract class Parser
 	/**
 	 * Expand tabs into 1-4 occurrences of a replacement character.
 	 *
-	 * @param string $text
+	 * @param string $text - The string to be processed.
 	 * @param string $chr - The replacement char to use for expansion.
 	 * @return string
 	 */
@@ -794,7 +794,7 @@ abstract class Parser
 	/**
 	 * Collapse replacement characters into tabs, maintain initial indent.
 	 *
-	 * @param string $text
+	 * @param string $text - The string to be processed.
 	 * @param string $chr - The replacement char used to expand the tabs.
 	 * @return string
 	 */
