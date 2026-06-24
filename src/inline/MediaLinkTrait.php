@@ -25,8 +25,7 @@ trait MediaLinkTrait
 				$block = array_merge($block, $ref);
 			} else {
 				if (str_starts_with($block['orig'], '![')) {
-					return '!['
-					. $this->renderAbsy(
+					return '![' . $this->renderAbsy(
 						$this->parseInline(substr($block['orig'], 2))
 					);
 				}
