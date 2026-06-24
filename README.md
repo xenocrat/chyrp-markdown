@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser is modular and extensible; a new flavor of Markdown can be defined by extending the base parser class and adding the desired traits, or an existing flavor can be extended to recognize additional elements by adding new traits.
+This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser combines a one-shot parsing strategy with use of fast string functions to increase performance. The parser is modular and extensible; a new flavor of Markdown can be defined by extending the base class and adding the desired traits, or an existing flavor can be extended to recognize additional elements by adding traits.
 
 Currently the following Markdown flavors are supported:
 
