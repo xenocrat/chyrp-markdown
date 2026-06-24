@@ -35,7 +35,10 @@ trait MediaLinkTrait
 		}
 
 		if (
-			preg_match('/\.(mpe?g|mp4|m4v|mov|webm|ogv)$/i', $block['url'])
+			preg_match(
+				'/\.(avi|m2ts|m4v|mkv|mov|mp4|mpe?g|ogv|webm)$/i',
+				$block['url']
+			)
 		) {
 			return '<video controls="" src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
@@ -73,7 +76,10 @@ trait MediaLinkTrait
 				. $this->renderAbsy($this->parseInline($block['text']))
 				. '</video>';
 		} elseif (
-			preg_match('/\.(mp3|m4a|oga|ogg|spx|wav|aiff?)$/i', $block['url'])
+			preg_match(
+				'/\.(aifc|aiff?|flac|m4a|mka|mp[2-3]|oga|ogg|wav)$/i',
+				$block['url']
+			)
 		) {
 			return '<audio controls="" src="'
 				. $this->escapeHtmlEntities($block['url'], ENT_COMPAT) . '"'
