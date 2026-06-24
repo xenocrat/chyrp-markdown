@@ -4,7 +4,9 @@
 	error_reporting(E_ALL | E_STRICT);
 	ini_set("display_errors", true);
 
-	function autoload($class): void {
+	function autoload(
+		$class
+	): void {
 		$filepath = str_replace(
 			array("_", "\\", "\0"),
 			array(DIR, DIR, ""),
@@ -25,7 +27,8 @@
 	ob_start();
 	header("Content-Type: text/html; charset=UTF-8");
 
-	function scan_data(): array {
+	function scan_data(
+	): array {
 		$dirs = new DirectoryIterator(dirname(__FILE__) . DIR . 'data');
 		$data = array();
 
@@ -62,7 +65,9 @@
 		return $data;
 	}
 
-	function run_tests($data): array {
+	function run_tests(
+		$data
+	): array {
 		foreach ($data as $parser => $tests) {
 			$instance = new ('\xenocrat\markdown\\' . $parser)();
 
@@ -105,7 +110,9 @@
 		return $data;
 	}
 
-	function display_results($data): void {
+	function display_results(
+		$data
+	): void {
 		foreach ($data as $parser => $tests) {
 			echo '<table>' . "\n";
 			echo '<colgroup>' . "\n";

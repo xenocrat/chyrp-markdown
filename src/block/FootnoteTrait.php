@@ -55,8 +55,9 @@ trait FootnoteTrait
 	 * @param string $html - The HTML output of Markdown::parse().
 	 * @return string
 	 */
-	public function addParsedFootnotes($html): string
-	{
+	public function addParsedFootnotes(
+		$html
+	): string {
 		// Unicode "uncertainty sign" will be used for missing references.
 		$uncertaintyChr = "\u{2BD1}";
 
@@ -97,8 +98,9 @@ trait FootnoteTrait
 	 * @param mixed[] $footnotesSorted - Array with 'html', 'num', and 'refs' keys.
 	 * @return string
 	 */
-	protected function getFootnotesHtml($footnotesSorted): string
-	{
+	protected function getFootnotesHtml(
+		$footnotesSorted
+	): string {
 		if (empty($footnotesSorted)) {
 			return '';
 		}
@@ -151,8 +153,10 @@ trait FootnoteTrait
 	 * @param mixed[] $footnotesSorted - Array with 'num' and 'refs' keys.
 	 * @return string
 	 */
-	protected function numberFootnotes($html, $footnotesSorted): string
-	{
+	protected function numberFootnotes(
+		$html,
+		$footnotesSorted
+	): string {
 		// Unicode "uncertainty sign" will be used for missing references.
 		$uncertaintyChr = "\u{2BD1}";
 
@@ -195,8 +199,8 @@ trait FootnoteTrait
 		);
 	}
 
-	protected function parseFootnoteLinkMarkers()
-	{
+	protected function parseFootnoteLinkMarkers(
+	) {
 		return array('[^');
 	}
 
@@ -205,8 +209,9 @@ trait FootnoteTrait
 	 *
 	 * @marker [^
 	 */
-	protected function parseFootnoteLink($text): array
-	{
+	protected function parseFootnoteLink(
+		$text
+	): array {
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
@@ -257,8 +262,9 @@ trait FootnoteTrait
 		return [['text', $text[0]], 1];
 	}
 
-	protected function renderFootnoteLink($block): string
-	{
+	protected function renderFootnoteLink(
+		$block
+	): string {
 		$prefix = $this->getContextId();
 
 		if ($prefix !== '') {
@@ -295,8 +301,9 @@ trait FootnoteTrait
 	/**
 	 * Identify a line as the beginning of a footnote list.
 	 */
-	protected function identifyFootnoteList($line): bool
-	{
+	protected function identifyFootnoteList(
+		$line
+	): bool {
 		return preg_match(
 			'/(?(R)\[|^[ ]{0,3}\[\^)
 				((?>(?:[^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)
@@ -312,8 +319,10 @@ trait FootnoteTrait
 	/**
 	 * Consume lines for a footnote list.
 	 */
-	protected function consumeFootnoteList($lines, $current): array
-	{
+	protected function consumeFootnoteList(
+		$lines,
+		$current
+	): array {
 		$footnotes = [];
 		$parsedFootnotes = [];
 		$mw = 0;
@@ -393,8 +402,9 @@ trait FootnoteTrait
 	/**
 	 * Renders a footnote list.
 	 */
-	protected function renderFootnoteList($block): string
-	{
+	protected function renderFootnoteList(
+		$block
+	): string {
 		foreach ($block['content'] as $footnoteLabel => $footnote) {
 			$this->footnotes[$footnoteLabel] = $this->renderAbsy($footnote);
 		}
@@ -403,10 +413,28 @@ trait FootnoteTrait
 		return '';
 	}
 
-	abstract protected function collapseTabs($text, $chr = ' ');
-	abstract protected function expandTabs($text, $chr = ' ');
-	abstract protected function parseBlocks($lines);
-	abstract protected function renderAbsy($absy);
-	abstract protected function renderText($block);
-	abstract public function getContextId();
+	abstract protected function collapseTabs(
+		$text,
+		$chr = ' '
+	);
+
+	abstract protected function expandTabs(
+		$text,
+		$chr = ' '
+	);
+
+	abstract protected function parseBlocks(
+		$lines
+	);
+
+	abstract protected function renderAbsy(
+		$absy
+	);
+
+	abstract protected function renderText(
+		$block
+	);
+
+	abstract public function getContextId(
+	);
 }

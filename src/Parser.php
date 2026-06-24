@@ -84,8 +84,9 @@ abstract class Parser
 	 * @param string $text - The text to parse.
 	 * @return string - Parsed markup.
 	 */
-	public function parse($text): string
-	{
+	public function parse(
+		$text
+	): string {
 		$this->prepare();
 
 		if (ltrim($text) === '') {
@@ -110,8 +111,9 @@ abstract class Parser
 	 * @param string $text - The text to parse.
 	 * @return string - Parsed markup.
 	 */
-	public function parseParagraph($text): string
-	{
+	public function parseParagraph(
+		$text
+	): string {
 		$this->prepare();
 
 		if (ltrim($text) === '') {
@@ -136,8 +138,9 @@ abstract class Parser
 	 * @param string $text - The text to parse.
 	 * @return string - The pre-processed text.
 	 */
-	protected function preprocess($text): string
-	{
+	protected function preprocess(
+		$text
+	): string {
 		$text = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
 
 		if ($this->convertTabsToSpaces) {
@@ -153,8 +156,9 @@ abstract class Parser
 	 * @param string $markup - Parsed markup.
 	 * @return string - Post-processed markup.
 	 */
-	protected function postprocess($markup): string
-	{
+	protected function postprocess(
+		$markup
+	): string {
 		$safeChr = "\u{FFFD}";
 		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safeChr, $markup);
@@ -167,8 +171,8 @@ abstract class Parser
 	 *
 	 * @return string - The identifier.
 	 */
-	public function getContextId(): string
-	{
+	public function getContextId(
+	): string {
 		return $this->_contextId;
 	}
 
@@ -178,8 +182,9 @@ abstract class Parser
 	 * @param string $string - Identifier to set.
 	 * @return string - The newly set identifier.
 	 */
-	public function setContextId($string): string
-	{
+	public function setContextId(
+		$string
+	): string {
 		$id = str_replace(
 			['&', '<', '>', '"', ' '],
 			'',
@@ -193,16 +198,16 @@ abstract class Parser
 	 * This method will be called before `parse()` and `parseParagraph()`.
 	 * You can override it to do some initialization work.
 	 */
-	protected function prepare(): void
-	{
+	protected function prepare(
+	): void {
 	}
 
 	/**
 	 * This method will be called after `parse()` and `parseParagraph()`.
 	 * You can override it to do cleanup.
 	 */
-	protected function cleanup(): void
-	{
+	protected function cleanup(
+	): void {
 	}
 
 	#---------------------------------------------
@@ -216,8 +221,8 @@ abstract class Parser
 	 *
 	 * @return array - A list of block element types available.
 	 */
-	protected function blockTypes(): array
-	{
+	protected function blockTypes(
+	): array {
 		if ($this->_blockTypes === null) {
 			// Detect block types via "identify" methods.
 			$reflection = new ReflectionClass($this);
@@ -255,8 +260,10 @@ abstract class Parser
 	 * @param integer $current - Index of the current line.
 	 * @return string - Name of the block type in lower case.
 	 */
-	protected function detectLineType($lines, $current): string
-	{
+	protected function detectLineType(
+		$lines,
+		$current
+	): string {
 		$line = $lines[$current];
 		$found = false;
 		$blockTypes = $this->blockTypes();
@@ -285,8 +292,10 @@ abstract class Parser
 	 * @param int &$blanks - Increments for every blank line outside a block.
 	 * @return array
 	 */
-	protected function parseBlocks($lines, &$blanks = 0): array
-	{
+	protected function parseBlocks(
+		$lines,
+		&$blanks = 0
+	): array {
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Maximum depth is reached; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
@@ -331,8 +340,10 @@ abstract class Parser
 	 * 					(array) The parsed block;
 	 * 					(int) The the next line index to be parsed.
 	 */
-	protected function parseBlock($lines, $current): array
-	{
+	protected function parseBlock(
+		$lines,
+		$current
+	): array {
 		// Identify block type for this line.
 		$blockType = ucfirst(
 			$this->detectLineType($lines, $current)
@@ -352,8 +363,9 @@ abstract class Parser
 	 * @param array $blocks - Array of blocks to render.
 	 * @return string
 	 */
-	protected function renderAbsy($blocks): string
-	{
+	protected function renderAbsy(
+		$blocks
+	): string {
 		$output = '';
 		foreach ($blocks as $block) {
 			$blockType = ucfirst($block[0]);
@@ -371,8 +383,10 @@ abstract class Parser
 	 * @param integer $current - Index of the current line.
 	 * @return array
 	 */
-	protected function consumeParagraph($lines, $current): array
-	{
+	protected function consumeParagraph(
+		$lines,
+		$current
+	): array {
 		$content = [];
 		// Consume until blank line...
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
@@ -397,8 +411,9 @@ abstract class Parser
 	 * @param array $block - The block to render.
 	 * @return string
 	 */
-	protected function renderParagraph($block): string
-	{
+	protected function renderParagraph(
+		$block
+	): string {
 		return '<p>' . $this->renderAbsy($block['content']) . "</p>\n";
 	}
 
@@ -424,8 +439,8 @@ abstract class Parser
 	 *
 	 * @return array - A map of markers to parser methods.
 	 */
-	protected function inlineMarkers(): array
-	{
+	protected function inlineMarkers(
+	): array {
 		$markers = [];
 		// Detect "parse" functions.
 		$reflection = new ReflectionClass($this);
@@ -462,8 +477,9 @@ abstract class Parser
 	 *
 	 * @param string $text - The inline text to parse.
 	 */
-	protected function prepareMarkers($text): void
-	{
+	protected function prepareMarkers(
+		$text
+	): void {
 		$this->_inlineMarkers = [];
 
 		foreach ($this->inlineMarkers() as $marker => $method) {
@@ -496,8 +512,10 @@ abstract class Parser
 	 * @param string $preceding - Preceding inline text.
 	 * @return array
 	 */
-	protected function parseInline($text, $preceding = ''): array
-	{
+	protected function parseInline(
+		$text,
+		$preceding = ''
+	): array {
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Maximum depth is reached; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
@@ -565,8 +583,11 @@ abstract class Parser
 	 * @param array $elements - Inline element names to test.
 	 * @return boolean
 	 */
-	protected function detectInlineOverrun($text, $length, $elements): bool
-	{
+	protected function detectInlineOverrun(
+		$text,
+		$length,
+		$elements
+	): bool {
 		foreach ($elements as $element) {
 			if (method_exists($this, 'parse'.$element.'Markers')) {
 				$markers = call_user_func(
@@ -605,8 +626,8 @@ abstract class Parser
 	 *
 	 * @return array
 	 */
-	protected function parseEscapeMarkers(): array
-	{
+	protected function parseEscapeMarkers(
+	): array {
 		return array('\\');
 	}
 
@@ -615,8 +636,9 @@ abstract class Parser
 	 *
 	 * @marker \
 	 */
-	protected function parseEscape($text): array
-	{
+	protected function parseEscape(
+		$text
+	): array {
 		if (
 			isset($text[1])
 			&& in_array($text[1], $this->escapeCharacters)
@@ -633,8 +655,9 @@ abstract class Parser
 	 * It can be used to work on normal text sections.
 	 * E.g. to highlight keywords or do special escaping.
 	 */
-	protected function renderText($block): string
-	{
+	protected function renderText(
+		$block
+	): string {
 		return $block[1];
 	}
 
@@ -644,8 +667,9 @@ abstract class Parser
 	 * @param string $text - The string to be processed.
 	 * @return string
 	 */
-	protected function escapeBackslash($text): string
-	{
+	protected function escapeBackslash(
+		$text
+	): string {
 		$strtr = [];
 
 		foreach($this->escapeCharacters as $chr) {
@@ -661,8 +685,9 @@ abstract class Parser
 	 * @param string $text - The string to be processed.
 	 * @return string
 	 */
-	protected function unEscapeBackslash($text): string
-	{
+	protected function unEscapeBackslash(
+		$text
+	): string {
 		$strtr = [];
 
 		foreach($this->escapeCharacters as $chr) {
@@ -680,8 +705,10 @@ abstract class Parser
 	 * @return string
 	 * @see https://www.php.net/manual/en/function.htmlspecialchars
 	 */
-	protected function escapeHtmlEntities($text, $flags = 0): string
-	{
+	protected function escapeHtmlEntities(
+		$text,
+		$flags = 0
+	): string {
 		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
 		$text = htmlspecialchars($text, $flags | $ent, 'UTF-8');
 		return $text;
@@ -695,8 +722,10 @@ abstract class Parser
 	 * @return string
 	 * @see https://www.php.net/manual/en/function.html-entity-decode
 	 */
-	protected function unEscapeHtmlEntities($text, $flags = 0): string
-	{
+	protected function unEscapeHtmlEntities(
+		$text,
+		$flags = 0
+	): string {
 		$ent = $this->html5 ? ENT_HTML5 : ENT_HTML401;
 		$text = html_entity_decode($text, $flags | $ent, 'UTF-8');
 		return $text;
@@ -709,8 +738,9 @@ abstract class Parser
 	 * @return int
 	 * @see https://datatracker.ietf.org/doc/html/rfc3629
 	 */
-	protected function utf8Strlen($text): int
-	{
+	protected function utf8Strlen(
+		$text
+	): int {
 		if (function_exists('mb_strlen')) {
 			return mb_strlen($text, 'UTF-8');
 		}
@@ -750,8 +780,10 @@ abstract class Parser
 	 * @param string $chr - The replacement char to use for expansion.
 	 * @return string
 	 */
-	protected function expandTabs($text, $chr = ' '): string
-	{
+	protected function expandTabs(
+		$text,
+		$chr = ' '
+	): string {
 		if ($text === '') {
 			return '';
 		}
@@ -798,8 +830,10 @@ abstract class Parser
 	 * @param string $chr - The replacement char used to expand the tabs.
 	 * @return string
 	 */
-	protected function collapseTabs($text, $chr = ' '): string
-	{
+	protected function collapseTabs(
+		$text,
+		$chr = ' '
+	): string {
 		if ($text === '') {
 			return '';
 		}

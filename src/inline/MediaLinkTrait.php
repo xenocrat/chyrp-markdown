@@ -18,8 +18,9 @@ trait MediaLinkTrait
 	 */
 	public $renderLazyMedia = false;
 
-	protected function renderImage($block): string
-	{
+	protected function renderImage(
+		$block
+	): string {
 		if (isset($block['label'])) {
 			if (($ref = $this->lookupReference($block['label'])) !== false) {
 				$block = array_merge($block, $ref);
@@ -171,10 +172,29 @@ trait MediaLinkTrait
 		}
 	}
 
-	abstract protected function escapeHtmlEntities($text, $flags = 0);
-	abstract protected function lookupReference($key);
-	abstract protected function parseInline($text);
-	abstract protected function renderAbsy($blocks);
-	abstract protected function unEscapeBackslash($text);
-	abstract protected function unescapeHtmlEntities($text, $flags = 0);
+	abstract protected function escapeHtmlEntities(
+		$text,
+		$flags = 0
+	);
+
+	abstract protected function lookupReference(
+		$key
+	);
+
+	abstract protected function parseInline(
+		$text
+	);
+
+	abstract protected function renderAbsy(
+		$blocks
+	);
+
+	abstract protected function unEscapeBackslash(
+		$text
+	);
+
+	abstract protected function unescapeHtmlEntities(
+		$text,
+		$flags = 0
+	);
 }

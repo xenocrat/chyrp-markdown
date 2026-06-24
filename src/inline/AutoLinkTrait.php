@@ -12,8 +12,8 @@ namespace xenocrat\markdown\inline;
  */
 trait AutoLinkTrait
 {
-	protected function parseAutoUrlMarkers(): array
-	{
+	protected function parseAutoUrlMarkers(
+	): array {
 		return array('www.', 'http');
 	}
 
@@ -23,8 +23,9 @@ trait AutoLinkTrait
 	 * @marker www.
 	 * @marker http
 	 */
-	protected function parseAutoUrl($markdown): array
-	{
+	protected function parseAutoUrl(
+		$markdown
+	): array {
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
@@ -62,8 +63,9 @@ trait AutoLinkTrait
 		return [['text', substr($markdown, 0, 4)], 4];
 	}
 
-	protected function renderAutoUrl($block): string
-	{
+	protected function renderAutoUrl(
+		$block
+	): string {
 		$href = $block[1];
 		$text = $href;
 
@@ -83,8 +85,8 @@ trait AutoLinkTrait
 		return "<a href=\"$href\">$text</a>";
 	}
 
-	protected function parseAutoEmailMarkers(): array
-	{
+	protected function parseAutoEmailMarkers(
+	): array {
 		return array('mailto:');
 	}
 
@@ -93,8 +95,9 @@ trait AutoLinkTrait
 	 *
 	 * @marker mailto:
 	 */
-	protected function parseAutoEmail($markdown): array
-	{
+	protected function parseAutoEmail(
+		$markdown
+	): array {
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
@@ -117,8 +120,9 @@ trait AutoLinkTrait
 		return [['text', substr($markdown, 0, 7)], 7];
 	}
 
-	protected function renderAutoEmail($block): string
-	{
+	protected function renderAutoEmail(
+		$block
+	): string {
 		$email = $this->escapeHtmlEntities(
 			$block[1],
 			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
@@ -127,8 +131,8 @@ trait AutoLinkTrait
 		return "<a href=\"$email\">$email</a>";
 	}
 
-	protected function parseAutoXMPPMarkers(): array
-	{
+	protected function parseAutoXMPPMarkers(
+	): array {
 		return array('xmpp:');
 	}
 
@@ -137,8 +141,9 @@ trait AutoLinkTrait
 	 *
 	 * @marker xmpp:
 	 */
-	protected function parseAutoXMPP($markdown): array
-	{
+	protected function parseAutoXMPP(
+		$markdown
+	): array {
 		if (
 			// Do not allow links within links.
 			!in_array('parseLink', $this->context)
@@ -162,8 +167,9 @@ trait AutoLinkTrait
 		return [['text', substr($markdown, 0, 5)], 5];
 	}
 
-	protected function renderAutoXMPP($block): string
-	{
+	protected function renderAutoXMPP(
+		$block
+	): string {
 		$xmpp = $this->escapeHtmlEntities(
 			$block[1],
 			ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED
@@ -172,6 +178,12 @@ trait AutoLinkTrait
 		return "<a href=\"$xmpp\">$xmpp</a>";
 	}
 
-	abstract protected function escapeHtmlEntities($text, $flags = 0);
-	abstract protected function renderText($block);
+	abstract protected function escapeHtmlEntities(
+		$text,
+		$flags = 0
+	);
+
+	abstract protected function renderText(
+		$block
+	);
 }
