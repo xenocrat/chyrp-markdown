@@ -252,7 +252,7 @@ abstract class Parser
 	 * the registered block types to detect the type of this line.
 	 *
 	 * @param array $lines - Array of text separated into lines.
-	 * @param integer $current - The current line.
+	 * @param integer $current - Index of the current line.
 	 * @return string - Name of the block type in lower case.
 	 */
 	protected function detectLineType($lines, $current): string
@@ -326,7 +326,7 @@ abstract class Parser
 	 * and parsing the content.
 	 *
 	 * @param $lines - Array of text separated into lines.
-	 * @param $current - The current line.
+	 * @param $current - Index of the current line.
 	 * @return array - Array of two elements:
 	 * 					(array) The parsed block;
 	 * 					(int) The the next line index to be parsed.
@@ -368,7 +368,7 @@ abstract class Parser
 	 * Consume lines for a paragraph.
 	 *
 	 * @param array $lines - Array of text separated into lines.
-	 * @param integer $current - The current line.
+	 * @param integer $current - Index of the current line.
 	 * @return array
 	 */
 	protected function consumeParagraph($lines, $current): array
