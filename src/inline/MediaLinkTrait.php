@@ -77,7 +77,7 @@ trait MediaLinkTrait
 				. '</video>';
 		} elseif (
 			preg_match(
-				'/\.(aifc|aiff?|flac|m4a|mka|mp[2-3]|oga|ogg|wav)$/i',
+				'/\.(aif[cf]?|flac|m4a|mka|mp[2-3]|oga|ogg|wav)$/i',
 				$block['url']
 			)
 		) {
