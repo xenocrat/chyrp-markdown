@@ -16,7 +16,7 @@ Requirements
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
 
-[Multibyte String] and [IntlChar] are recommended but not required for CommonMark.
+[Multibyte String] and [IntlChar] are recommended for full functionality but not required.
 
 Performance
 -----------
