@@ -182,16 +182,6 @@ public bool Parser::html5 = false;
 
 Whether to enable HTML5 output instead of HTML4.
 
-### `convertTabsToSpaces`
-
-#### Description
-
-``` php
-public bool Parser::convertTabsToSpaces = false;
-```
-
-Whether to convert all tabs into 1-4 spaces before parsing.
-
 ### `maximumNestingLevel`
 
 #### Description
@@ -211,6 +201,36 @@ public bool Parser::maximumNestingLevelThrow = false;
 ```
 
 Whether to throw an exception if the maximum nesting level is exceeded.
+
+### `maximumExecutionTime`
+
+#### Description
+
+``` php
+public int Parser::maximumExecutionTime = 10.0;
+```
+
+The maximum execution time for parsing in seconds.
+
+### `maximumExecutionTimeThrow`
+
+#### Description
+
+``` php
+public bool Parser::maximumExecutionTimeThrow = false;
+```
+
+Whether to throw an exception if the maximum execution time is exceeded.
+
+### `convertTabsToSpaces`
+
+#### Description
+
+``` php
+public bool Parser::convertTabsToSpaces = false;
+```
+
+Whether to convert all tabs into 1-4 spaces before parsing.
 
 ### `keepListStartNumber`
 
