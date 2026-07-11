@@ -5,10 +5,10 @@ This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for con
 
 Currently the following Markdown flavors are supported:
 
-- [CommonMark](https://spec.commonmark.org/)
-- [GFM: GitHub-Flavored Markdown](https://github.github.com/gfm/)
-- [GLFM: GitLab-Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html)
-- [CFM: Chyrp-Flavoured Markdown](https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html)
+- [CommonMark]
+- [GFM: GitHub-Flavored Markdown][GFM]
+- [GLFM: GitLab-Flavored Markdown][GLFM]
+- [CFM: Chyrp-Flavoured Markdown][CFM]
 
 Requirements
 -----------
@@ -17,6 +17,21 @@ Requirements
 - UTF-8 is the only supported text encoding.
 
 [Multibyte String] and [IntlChar] are recommended but not required for CommonMark.
+
+Performance
+-----------
+
+The parsing performance is comparable to [Parsedown], though Parsedown is faster – see below. The results are the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
+
+| Parser                                    | Time to parse    |
+| ----------------------------------------- | ---------------- |
+| Parsedown                                 | 4.0 milliseconds |
+| chyrp-markdown (CommonMark)               | 5.9 milliseconds |
+| chyrp-markdown (GitHub-Flavored Markdown) | 8.1 milliseconds |
+| chyrp-markdown (GitLab-Flavored Markdown) | 8.9 milliseconds |
+| chyrp-markdown (Chyrp-Flavoured Markdown) | 9.5 milliseconds |
+
+Test environment: PHP 8.1.0, Windows 11, AMD Ryzen 7 2700X, 32 GB RAM.
 
 Limitations
 -----------
@@ -390,10 +405,7 @@ Optionally you can adjust rendering behavior by overriding some methods. Refer t
 Acknowledgements
 ----------------
 
-Carsten Brandt would like to thank [@erusev][] for creating [Parsedown][] which heavily influenced this work and provided the idea of the line based parsing approach.
-
-[@erusev]: https://github.com/erusev "Emanuil Rusev"
-[Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
+Carsten Brandt would like to thank [@erusev] for creating [Parsedown] which heavily influenced this work and provided the idea of the line based parsing approach.
 
 Authors
 -------
@@ -411,4 +423,11 @@ This software is open source and licensed under the MIT License. See [LICENSE] f
 [Chyrp Lite]: https://chyrplite.net/
 [IntlChar]: https://www.php.net/manual/en/class.intlchar.php
 [Multibyte String]: https://www.php.net/manual/en/book.mbstring.php
+[CommonMark]: https://spec.commonmark.org/
+[GFM]: https://github.github.com/gfm/
+[GLFM]: https://docs.gitlab.com/ee/user/markdown.html
+[CFM]: https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html
+[Markdown]: https://daringfireball.net/projects/markdown/syntax.text
+[@erusev]: https://github.com/erusev "Emanuil Rusev"
+[Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
 [LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
