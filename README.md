@@ -207,7 +207,7 @@ Whether to throw an exception if the maximum nesting level is exceeded.
 #### Description
 
 ``` php
-public int Parser::maximumExecutionTime = 10.0;
+public float Parser::maximumExecutionTime = 10.0;
 ```
 
 The maximum execution time for parsing in seconds.
