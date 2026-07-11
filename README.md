@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser combines a one-shot parsing strategy with use of fast string functions to increase performance. The parser is modular and extensible; a new flavor of Markdown can be defined by extending the base class and adding the desired traits, or an existing flavor can be extended to recognize additional elements by adding traits.
+This is the Markdown parser for [Chyrp Lite]. It is a set of PHP classes for converting Markdown to HTML, with a focus on speed and simplicity. The parser combines a one-shot parsing strategy with use of fast string functions wherever possible to increase performance. The parser is modular and extensible; a new flavor of Markdown can be defined by extending the base class and adding the desired traits, or an existing flavor can be extended to recognize additional elements by adding traits.
 
 Currently the following Markdown flavors are supported:
 
@@ -440,7 +440,7 @@ License
 
 This software is open source and licensed under the MIT License. See [LICENSE] for details.
 
-[Chyrp Lite]: https://chyrplite.net/
+[Chyrp Lite]: https://chyrplite.net/ "An ultra-lightweight blogging engine, written in PHP."
 [IntlChar]: https://www.php.net/manual/en/class.intlchar.php
 [Multibyte String]: https://www.php.net/manual/en/book.mbstring.php
 [CommonMark]: https://spec.commonmark.org/
@@ -449,5 +449,5 @@ This software is open source and licensed under the MIT License. See [LICENSE] f
 [CFM]: https://chyrplite.net/wiki/Chyrp-Flavoured-Markdown.html
 [Markdown]: https://daringfireball.net/projects/markdown/syntax.text
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
-[Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
+[Parsedown]: http://parsedown.org/ "Better Markdown Parser in PHP"
 [LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
