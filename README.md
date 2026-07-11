@@ -25,7 +25,7 @@ The parsing performance is comparable to [Parsedown], though Parsedown is faster
 
 | Parser                                    | Time to parse    |
 | ----------------------------------------- | ---------------- |
-| Parsedown                                 | 4.0 milliseconds |
+| Parsedown 1.8.0                           | 4.0 milliseconds |
 | chyrp-markdown (CommonMark)               | 5.9 milliseconds |
 | chyrp-markdown (GitHub-Flavored Markdown) | 8.1 milliseconds |
 | chyrp-markdown (GitLab-Flavored Markdown) | 8.9 milliseconds |
@@ -163,7 +163,7 @@ Set the identifier for this rendering context.
 
 * _text_
 
-  A UTF-8 encoded string of text to use as the identifier. Any occurrences of the characters '&', '<', '>', '"', and ' ' (space) will be removed from the string.
+  A UTF-8 encoded string of text to use as the identifier. Any occurrences of the characters `&`, `<`, `>`, `"`, and ` ` (space) will be removed from the string.
 
 #### Return Values
 
