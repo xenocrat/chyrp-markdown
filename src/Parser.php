@@ -120,6 +120,7 @@ abstract class Parser
 
 		$text = $this->preprocess($text);
 
+		$this->_depth = 0;
 		$this->resetTimer();
 		$this->prepareMarkers($text);
 
@@ -148,6 +149,7 @@ abstract class Parser
 
 		$text = $this->preprocess($text);
 
+		$this->_depth = 0;
 		$this->resetTimer();
 		$this->prepareMarkers($text);
 
