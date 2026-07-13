@@ -345,7 +345,7 @@ abstract class Parser
 		// Exceeded maximum depth; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
                 throw new RuntimeException(
-                    'Parser exceeded maximum nesting level'
+                    'Parser exceeded maximum nesting level.'
                 );
 			}
 			return [['text', implode("\n", $lines)]];
@@ -355,7 +355,7 @@ abstract class Parser
 		// Exceeded maximum execution time; do not parse input.
 			if ($this->maximumExecutionTimeThrow) {
                 throw new RuntimeException(
-                    'Parser exceeded maximum execution time'
+                    'Parser exceeded maximum execution time.'
                 );
 			}
 			return [['text', implode("\n", $lines)]];
@@ -573,7 +573,7 @@ abstract class Parser
 		// Exceeded maximum depth; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
                 throw new RuntimeException(
-                    'Parser exceeded maximum nesting level'
+                    'Parser exceeded maximum nesting level.'
                 );
 			}
 			return [['text', $text]];
@@ -583,7 +583,7 @@ abstract class Parser
 		// Exceeded maximum execution time; do not parse input.
 			if ($this->maximumExecutionTimeThrow) {
                 throw new RuntimeException(
-                    'Parser exceeded maximum execution time'
+                    'Parser exceeded maximum execution time.'
                 );
 			}
 			return [['text', $text]];
