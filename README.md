@@ -36,11 +36,7 @@ Test environment: PHP 8.1.0, Windows 11, AMD Ryzen 7 2700X, 32 GB RAM.
 Limitations
 -----------
 
-The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 95% of CommonMark test cases.
-
-The most notable limitations of the parser are:
-1. It does not fully implement nesting and flanking rules for emphasis and strong;
-2. It does not fully implement lazy continuation rules for blockquotes and lists.
+The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 95% of CommonMark, GFM, and GLFM test cases.
 
 Usage
 -----
