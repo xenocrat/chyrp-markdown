@@ -11,7 +11,7 @@ Currently the following Markdown flavors are supported:
 - [CFM: Chyrp-Flavoured Markdown][CFM]
 
 Requirements
------------
+------------
 
 - PHP 8.0+ is required.
 - UTF-8 is the only supported text encoding.
@@ -25,12 +25,13 @@ The parsing performance is comparable to [Parsedown], though Parsedown is faster
 
 | Parser                             | Time to parse     |
 | ---------------------------------- | ----------------- |
-| [Parsedown 1.8.0][Parsedown]       | 4.0 milliseconds  |
+| [Parsedown] 1.8.0                  | 4.0 milliseconds  |
 | \xenocrat\markdown\Markdown        | 5.9 milliseconds  |
 | \xenocrat\markdown\GithubMarkdown  | 8.1 milliseconds  |
 | \xenocrat\markdown\GitlabMarkdown  | 8.9 milliseconds  |
 | \xenocrat\markdown\ChyrpMarkdown   | 9.5 milliseconds  |
-| [\Michelf\Markdown 2.0.0][Michelf] | 15.5 milliseconds |
+| [\Michelf\Markdown][Michelf] 2.0.0 | 15.5 milliseconds |
+| \Michelf\MarkdownExtra             | 24.0 milliseconds |
 
 Test environment: PHP 8.1.0, Windows 11, AMD Ryzen 7 2700X, 32 GB RAM.
 
