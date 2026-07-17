@@ -69,7 +69,7 @@ trait HeadlineTrait
 		);
 
 		$line = substr($lines[$current], strlen($matches[1]));
-		$line = preg_replace('/[ \t]+(\#+[ \t]*)?$/', '', $line);
+		$line = preg_replace('/[ \t]+(\#+[ \t]*)?$/', '', $line) ?? $line;
 
 		$block = [
 			'headline',

@@ -196,7 +196,7 @@ trait FootnoteTrait
 				}
 			},
 			$html
-		);
+		) ?? $html;
 	}
 
 	protected function parseFootnoteLinkMarkers(

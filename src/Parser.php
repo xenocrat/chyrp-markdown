@@ -219,7 +219,13 @@ abstract class Parser
 		$safeChr = "\u{FFFD}";
 		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safeChr, $markup);
-		$markup = preg_replace('/&\#[Xx]?0+;/', $safeChr, $markup);
+
+		$markup = preg_replace(
+			'/&\#[Xx]?0+;/',
+			$safeChr,
+			$markup
+		) ?? $markup;
+
 		return $markup;
 	}
 
@@ -857,7 +863,7 @@ abstract class Parser
 			$text,
 			-1,
 			PREG_SPLIT_DELIM_CAPTURE
-		);
+		) ?: [$lines];
 
 		foreach ($lines as $line) {
 			$output = '';
@@ -866,7 +872,7 @@ abstract class Parser
 				$line,
 				-1,
 				PREG_SPLIT_DELIM_CAPTURE
-			);
+			) ?: [$chunks];
 
 			foreach ($chunks as $chunk) {
 				if ($chunk === "\t") {
@@ -908,14 +914,14 @@ abstract class Parser
 			$text,
 			-1,
 			PREG_SPLIT_DELIM_CAPTURE
-		);
+		) ?: [$lines];
 
 		foreach ($lines as $line) {
 			$length = strlen(
 				preg_replace(
 					"/^([$c ]*).*$/u", '$1',
 					$line
-				)
+				) ?? $line
 			);
 			$indent = substr($line, 0, $length);
 			$output = substr($line, $length);
@@ -930,7 +936,7 @@ abstract class Parser
 				"/$c{1,4}/u",
 				"\t",
 				$output
-			);
+			) ?? $output;
 			$collapsed .= $indent . $output;
 		}
 

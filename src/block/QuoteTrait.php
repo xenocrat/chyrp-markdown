@@ -61,7 +61,7 @@ trait QuoteTrait
 						'/^\t([\t ]*)/',
 						'$1  ',
 						substr($line, 1)
-					);
+					) ?? $line;
 				} elseif (
 					end($content) !== ''
 					&& $this->detectLineType($lines, $i) === 'paragraph'

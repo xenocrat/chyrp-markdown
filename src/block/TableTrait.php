@@ -119,7 +119,7 @@ trait TableTrait
 				$line = substr($line, 0, -1);
 			}
 
-			$row = preg_split('/(?<!\\\\)\|/', $line);
+			$row = preg_split('/(?<!\\\\)\|/', $line) ?: [$line];
 			$r = count($block['rows']);
 
 			foreach ($row as $c => $content) {

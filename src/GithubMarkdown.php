@@ -129,7 +129,7 @@ class GithubMarkdown extends Markdown
 	): string {
 		if ($this->enableNewlines) {
 			$br = $this->html5 ? "<br>\n" : "<br />\n";
-			$text[1] = preg_replace("/ *\n/", $br, $text[1]);
+			$text[1] = preg_replace("/ *\n/", $br, $text[1]) ?? $text[1];
 		}
 
 		return parent::renderText($text);
@@ -149,7 +149,7 @@ class GithubMarkdown extends Markdown
 				"/<($patterns)(\s|>|\/>)/i",
 				"&lt;$1$2",
 				$markup
-			);
+			) ?? $markup;
 		}
 
 		return parent::postprocess($markup);
