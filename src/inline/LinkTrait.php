@@ -396,7 +396,9 @@ trait LinkTrait
 	protected function lookupReference(
 		$label
 	): array|false {
-		$normalizedKey = preg_replace('/\s+/', ' ', $label) ?? $label;
+		$normalizedKey =
+			preg_replace('/\s+/', ' ', $label)
+			?? $label;
 
 		if (
 			isset($this->references[$label])

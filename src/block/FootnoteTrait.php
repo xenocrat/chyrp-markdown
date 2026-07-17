@@ -161,42 +161,44 @@ trait FootnoteTrait
 		$uncertaintyChr = "\u{2BD1}";
 
 		// Replace all footnote placeholder links with their sorted numbers.
-		return preg_replace_callback(
-			"/\u{FFFC}footnote-(refnum|num)((?:(?!\u{FFFC}).)*)\u{FFFC}/",
-			function ($match) use ($footnotesSorted, $uncertaintyChr) {
-				$footnoteLabel = $this->footnoteLinks[$match[2]];
+		return
+			preg_replace_callback(
+				"/\u{FFFC}footnote-(refnum|num)((?:(?!\u{FFFC}).)*)\u{FFFC}/",
+				function ($match) use ($footnotesSorted, $uncertaintyChr) {
+					$footnoteLabel = $this->footnoteLinks[$match[2]];
 
-				if (!isset($footnotesSorted[$footnoteLabel])) {
-				// This is a link to a missing footnote.
-					// Return the uncertainty sign.
-					return $uncertaintyChr
-						. ($match[1] === 'refnum' ? '-' . $match[2] : '');
-				}
+					if (!isset($footnotesSorted[$footnoteLabel])) {
+					// This is a link to a missing footnote.
+						// Return the uncertainty sign.
+						return $uncertaintyChr
+							. ($match[1] === 'refnum' ? '-' . $match[2] : '');
+					}
 
-				if ($match[1] === 'num') {
-				// Replace only the footnote number.
-					return $footnotesSorted[$footnoteLabel]['num'];
-				}
+					if ($match[1] === 'num') {
+					// Replace only the footnote number.
+						return $footnotesSorted[$footnoteLabel]['num'];
+					}
 
-				if (count($footnotesSorted[$footnoteLabel]['refs']) > 1) {
-				// For backlinks:
-				// some have a footnote number and an additional link number.
-				// If footnote is referenced more than once, add `-n` suffix.
-					$linkNum = array_search(
-						$match[2],
-						$footnotesSorted[$footnoteLabel]['refs']
-					);
+					if (count($footnotesSorted[$footnoteLabel]['refs']) > 1) {
+					// For backlinks:
+					// some have a footnote number and an additional link number.
+					// If footnote is referenced more than once, add `-n` suffix.
+						$linkNum = array_search(
+							$match[2],
+							$footnotesSorted[$footnoteLabel]['refs']
+						);
 
-					return $footnotesSorted[$footnoteLabel]['num']
-						. '-'
-						. $linkNum;
-				} else {
-				// Otherwise, just the number.
-					return $footnotesSorted[$footnoteLabel]['num'];
-				}
-			},
-			$html
-		) ?? $html;
+						return $footnotesSorted[$footnoteLabel]['num']
+							. '-'
+							. $linkNum;
+					} else {
+					// Otherwise, just the number.
+						return $footnotesSorted[$footnoteLabel]['num'];
+					}
+				},
+				$html
+			)
+			?? $html;
 	}
 
 	protected function parseFootnoteLinkMarkers(
