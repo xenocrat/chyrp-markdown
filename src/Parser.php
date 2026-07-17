@@ -219,13 +219,11 @@ abstract class Parser
 		$safeChr = "\u{FFFD}";
 		$markup = rtrim($markup, "\n");
 		$markup = str_replace("\0", $safeChr, $markup);
-
 		$markup = preg_replace(
 			'/&\#[Xx]?0+;/',
 			$safeChr,
 			$markup
 		) ?? $markup;
-
 		return $markup;
 	}
 
@@ -350,9 +348,9 @@ abstract class Parser
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Exceeded maximum depth; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
-                throw new RuntimeException(
-                    'Parser exceeded maximum nesting level.'
-                );
+				throw new RuntimeException(
+					'Parser exceeded maximum nesting level.'
+				);
 			}
 			return [['text', implode("\n", $lines)]];
 		}
@@ -360,9 +358,9 @@ abstract class Parser
 		if ($this->checkTimer() > $this->maximumExecutionTime) {
 		// Exceeded maximum execution time; do not parse input.
 			if ($this->maximumExecutionTimeThrow) {
-                throw new RuntimeException(
-                    'Parser exceeded maximum execution time.'
-                );
+				throw new RuntimeException(
+					'Parser exceeded maximum execution time.'
+				);
 			}
 			return [['text', implode("\n", $lines)]];
 		}
@@ -578,9 +576,9 @@ abstract class Parser
 		if ($this->_depth >= $this->maximumNestingLevel) {
 		// Exceeded maximum depth; do not parse input.
 			if ($this->maximumNestingLevelThrow) {
-                throw new RuntimeException(
-                    'Parser exceeded maximum nesting level.'
-                );
+				throw new RuntimeException(
+					'Parser exceeded maximum nesting level.'
+				);
 			}
 			return [['text', $text]];
 		}
@@ -588,9 +586,9 @@ abstract class Parser
 		if ($this->checkTimer() > $this->maximumExecutionTime) {
 		// Exceeded maximum execution time; do not parse input.
 			if ($this->maximumExecutionTimeThrow) {
-                throw new RuntimeException(
-                    'Parser exceeded maximum execution time.'
-                );
+				throw new RuntimeException(
+					'Parser exceeded maximum execution time.'
+				);
 			}
 			return [['text', $text]];
 		}
