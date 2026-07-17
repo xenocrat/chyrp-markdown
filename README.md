@@ -23,13 +23,14 @@ Performance
 
 The parsing performance is comparable to [Parsedown], though Parsedown is faster – see below. The results are the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
 
-| Parser                                    | Time to parse    |
-| ----------------------------------------- | ---------------- |
-| Parsedown 1.8.0                           | 4.0 milliseconds |
-| chyrp-markdown (CommonMark)               | 5.9 milliseconds |
-| chyrp-markdown (GitHub-Flavored Markdown) | 8.1 milliseconds |
-| chyrp-markdown (GitLab-Flavored Markdown) | 8.9 milliseconds |
-| chyrp-markdown (Chyrp-Flavoured Markdown) | 9.5 milliseconds |
+| Parser                             | Time to parse     |
+| ---------------------------------- | ----------------- |
+| [Parsedown 1.8.0][Parsdown]        | 4.0 milliseconds  |
+| \xenocrat\markdown\Markdown        | 5.9 milliseconds  |
+| \xenocrat\markdown\GithubMarkdown  | 8.1 milliseconds  |
+| \xenocrat\markdown\GitlabMarkdown  | 8.9 milliseconds  |
+| \xenocrat\markdown\ChyrpMarkdown   | 9.5 milliseconds  |
+| [\Michelf\Markdown 2.0.0][Michelf] | 15.5 milliseconds |
 
 Test environment: PHP 8.1.0, Windows 11, AMD Ryzen 7 2700X, 32 GB RAM.
 
@@ -446,4 +447,5 @@ This software is open source and licensed under the MIT License. See [LICENSE] f
 [Markdown]: https://daringfireball.net/projects/markdown/syntax.text
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "Better Markdown Parser in PHP"
+[Michelf]: https://michelf.ca/projects/php-markdown/ "PHP Markdown"
 [LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
