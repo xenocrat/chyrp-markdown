@@ -25,7 +25,7 @@ The parsing performance is comparable to [Parsedown], though Parsedown is faster
 
 | Parser                             | Time to parse     |
 | ---------------------------------- | ----------------- |
-| [Parsedown 1.8.0][Parsdown]        | 4.0 milliseconds  |
+| [Parsedown 1.8.0][Parsedown]       | 4.0 milliseconds  |
 | \xenocrat\markdown\Markdown        | 5.9 milliseconds  |
 | \xenocrat\markdown\GithubMarkdown  | 8.1 milliseconds  |
 | \xenocrat\markdown\GitlabMarkdown  | 8.9 milliseconds  |
