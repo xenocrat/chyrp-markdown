@@ -162,7 +162,7 @@ trait FootnoteTrait
 
 		// Replace all footnote placeholder links with their sorted numbers.
 		return preg_replace_callback(
-			"/\u{FFFC}footnote-(refnum|num)(.*?)\u{FFFC}/",
+			"/\u{FFFC}footnote-(refnum|num)((?:(?!\u{FFFC}).)*)\u{FFFC}/",
 			function ($match) use ($footnotesSorted, $uncertaintyChr) {
 				$footnoteLabel = $this->footnoteLinks[$match[2]];
 

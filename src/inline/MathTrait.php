@@ -30,8 +30,10 @@ trait MathTrait
 				'/^
 					# Opening marker:
 					\$`
-					# Final capture char cannot be a delimiter:
-					(.*?[^\\\\])
+					# Capture...
+					# any char except delimiter;
+					# or delimeter run that is not closing marker:
+					((?>(?:[^`]|(?!`\$)`+)+))
 					# Closing marker:
 					`\$/sx',
 				str_replace(

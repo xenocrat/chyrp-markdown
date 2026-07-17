@@ -32,9 +32,12 @@ trait StrikeoutTrait
 					(~{1,2})
 					# First char cannot be a delimiter.
 					(?!~)
-					# Final capture char cannot be backslash or
-					# delimiter but can be an escaped delimiter:
-					(.*?(?:[^~\\\\]|(?<=\\\\)~))
+					# Capture...
+					# any backslash escaped char;
+					# or any char except backslash and delimiter;
+					# or delimeter run longer than opening marker;
+					# or delimiter run shorter than opening marker:
+					((?>(?:\\\\.|[^\\\\~]|~+\1|(?!\1)~+)+))
 					# Closing marker:
 					\1
 					# Next char must not be a delimiter.
