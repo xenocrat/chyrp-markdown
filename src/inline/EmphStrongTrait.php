@@ -38,12 +38,6 @@ trait EmphStrongTrait
 			&& strpos($markdown, $marker . $marker, 2) !== false
 		) {
 		// Strong.
-			$regexable = str_replace(
-				'\\\\',
-				'\\\\'.chr(31),
-				$markdown
-			);
-
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -54,12 +48,12 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\.|[^*])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])[*]{2})/usx',
-					$regexable,
+					$markdown,
 					$matches
 				)
 				|| $marker === '_'
@@ -75,28 +69,16 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\.|[^_])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						# Must be followed by 0+ delimeters then a non-word.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])__(?=_*\b))/usx',
-					$regexable,
+					$markdown,
 					$matches
 				)
 			) {
-				$matches[0] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[0]
-				);
-
-				$matches[2] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[2]
-				);
-
 				if (
 					// Inline HTML, link, image, or code takes precedence.
 					!$this->detectInlineOverrun(
@@ -119,12 +101,6 @@ trait EmphStrongTrait
 			strpos($markdown, $marker, 1) !== false
 		) {
 		// Emphasis
-			$regexable = str_replace(
-				'\\\\',
-				'\\\\'.chr(31),
-				$markdown
-			);
-
 			if (
 				$marker === '*'
 				&& preg_match(
@@ -135,13 +111,13 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\.|[^*])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						# Emphasis closing marker cannot form a strong marker.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])[*](?![*][^*]))/usx',
-					$regexable,
+					$markdown,
 					$matches
 				)
 				|| $marker === '_'
@@ -157,28 +133,16 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\.|[^_])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						# Must be followed by 0+ delimeters then a non-word.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])_(?=_*\b))/usx',
-					$regexable,
+					$markdown,
 					$matches
 				)
 			) {
-				$matches[0] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[0]
-				);
-
-				$matches[2] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[2]
-				);
-
 				if (
 					// Inline HTML, link, image, or code takes precedence.
 					!$this->detectInlineOverrun(

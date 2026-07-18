@@ -220,27 +220,11 @@ trait FootnoteTrait
 			// Link?
 			&& preg_match(
 				'/(?(R)\[|^\[\^)
-					((?>([^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)\]/x',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$text
-				),
+					((?>(?:\\\\.|[^\[\]\\\\])+|(?R))+)\]/x',
+				$text,
 				$matches
 			)
 		) {
-			$matches[0] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[0]
-			);
-
-			$matches[1] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[1]
-			);
-
 			$footnoteLabel = function_exists("mb_convert_case") ?
 				mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 				strtolower($matches[1]);
@@ -308,13 +292,9 @@ trait FootnoteTrait
 	): bool {
 		return preg_match(
 			'/(?(R)\[|^[ ]{0,3}\[\^)
-				((?>(?:[^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)
+				((?>(?:\\\\.|[^\[\]\\\\])+|(?R))+)
 				(?(R)\]|\]:)/x',
-			str_replace(
-				'\\\\',
-				'\\\\'.chr(31),
-				$line
-			)
+			$line
 		);
 	}
 
@@ -328,36 +308,20 @@ trait FootnoteTrait
 		$footnotes = [];
 		$parsedFootnotes = [];
 		$mw = 0;
-		$pad = chr(29);
+		$pad = chr(26);
 
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
 			$line = $this->expandTabs($lines[$i], $pad);
 			$startsFootnote = preg_match(
 				'/(?(R)\[|^[ ]{0,3}\[\^)
-					((?>(?:[^\[\]\\\\]|\\\\[\[\]]|\\\\)+|(?R))+)
-					(?(R)\]|\]:[ \x1D]*)/x',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$line
-				),
+					((?>(?:\\\\.|[^\[\]\\\\])+|(?R))+)
+					(?(R)\]|\]:[ \x1A]*)/x',
+				$line,
 				$matches
 			);
 
 			if ($startsFootnote) {
 			// The start of a footnote.
-				$matches[0] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[0]
-				);
-
-				$matches[1] = str_replace(
-					'\\\\'.chr(31),
-					'\\\\',
-					$matches[1]
-				);
-
 				$label = function_exists("mb_convert_case") ?
 					mb_convert_case($matches[1], MB_CASE_FOLD, 'UTF-8') :
 					strtolower($matches[1]);

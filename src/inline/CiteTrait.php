@@ -46,26 +46,10 @@ trait CiteTrait
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])
 					# Closing marker:
 					\1\*/usx',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$markdown
-				),
+				$markdown,
 				$matches
 			)
 		) {
-			$matches[0] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[0]
-			);
-
-			$matches[2] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[2]
-			);
-
 			if (
 				// Inline HTML, link, image, or code takes precedence.
 				!$this->detectInlineOverrun(

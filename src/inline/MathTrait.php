@@ -38,26 +38,10 @@ trait MathTrait
 					((?>(?:[^`]|(?!`\$)`+)+))
 					# Closing marker:
 					`\$/sx',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$markdown
-				),
+				$markdown,
 				$matches
 			)
 		) {
-			$matches[0] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[0]
-			);
-
-			$matches[1] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[1]
-			);
-
 			$math = str_replace("\n", ' ', $matches[1]);
 
 			if (

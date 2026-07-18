@@ -42,26 +42,10 @@ trait HighlightTrait
 					\1
 					# Next char must not be a delimiter.
 					(?!=)/sx',
-				str_replace(
-					'\\\\',
-					'\\\\'.chr(31),
-					$markdown
-				),
+				$markdown,
 				$matches
 			)
 		) {
-			$matches[0] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[0]
-			);
-
-			$matches[2] = str_replace(
-				'\\\\'.chr(31),
-				'\\\\',
-				$matches[2]
-			);
-
 			if (
 				// Inline HTML, link, image, or code takes precedence.
 				!$this->detectInlineOverrun(
