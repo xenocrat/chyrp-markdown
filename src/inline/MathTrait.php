@@ -30,6 +30,8 @@ trait MathTrait
 				'/^
 					# Opening marker:
 					\$`
+					# First char cannot be a delimiter.
+					(?!`)
 					# Capture...
 					# any char except delimiter;
 					# or delimeter run that is not closing marker:

@@ -37,7 +37,7 @@ trait HighlightTrait
 					# or any char except backslash and delimiter;
 					# or delimeter run longer than opening marker;
 					# or delimiter run shorter than opening marker:
-					((?>(?:\\\\.|[^\\\\=]|=+\1|(?!\1)=+)+))
+					((?>(?:\\\\.|[^\\\\=]|\1=+|(?!\1)=+)+))
 					# Closing marker:
 					\1
 					# Next char must not be a delimiter.

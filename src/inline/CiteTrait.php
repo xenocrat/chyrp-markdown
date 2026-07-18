@@ -40,7 +40,7 @@ trait CiteTrait
 					# or any char except backslash and delimiter;
 					# or delimeter run longer than opening marker;
 					# or delimiter run shorter than opening marker:
-					((?>(?:\\\\.|[^\\\\_]|_+\1|(?!\1\*)_+)+))
+					((?>(?:\\\\.|[^\\\\_]|\1_+|(?!\1\*)_+)+))
 					# Last char cannot be whitespace.
 					# Last char cannot be Unicode category Zs, Ps, Pi.
 					(?<![\s\p{Zs}\p{Ps}\p{Pi}])

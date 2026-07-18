@@ -54,7 +54,7 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|`+\4|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
@@ -75,7 +75,7 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|`+\4|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
@@ -135,7 +135,7 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|`+\4|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\[*]|[^*])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
@@ -157,7 +157,7 @@ trait EmphStrongTrait
 						# Capture two or more matched backticks (code span?),
 						# escaped marker, other char, or recurse the pattern:
 						((
-						(?>(`{2,})(?!`)(?:[^`]|`+\4|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
+						(?>(`{2,})(?!`)(?:[^`]|\4`+|(?!\4)`+)+\4(?!`)|\\\\_|[^_])+|(?R)
 						)+?)
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
