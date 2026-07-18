@@ -21,7 +21,7 @@ Requirements
 Performance
 -----------
 
-The parsing performance is somewhat slower than [Parsedown] and [cebe\Markdown][cebe] but with much greater [CommonMark] conformance. The table below benchmarks the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
+The parsing performance is somewhat slower than [Parsedown] and [cebe\Markdown][cebe] but with significantly greater [CommonMark] conformance. The table below benchmarks the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
 
 | Parser                                | Time to parse     | CommonMark conformance |
 | ------------------------------------- | ----------------- | ---------------------- |
