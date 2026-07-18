@@ -21,24 +21,21 @@ Requirements
 Performance
 -----------
 
-The parsing performance is comparable to [Parsedown], though Parsedown is faster – see below. The results are the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
+The parsing performance is slower than [Parsedown] and [cebe\Markdown][cebe] with much greater [CommonMark] conformance. The table below benchmarks the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
 
-| Parser                             | Time to parse     |
-| ---------------------------------- | ----------------- |
-| [Parsedown] 1.8.0                  | 4.0 milliseconds  |
-| \xenocrat\markdown\Markdown        | 5.9 milliseconds  |
-| \xenocrat\markdown\GithubMarkdown  | 8.1 milliseconds  |
-| \xenocrat\markdown\GitlabMarkdown  | 8.9 milliseconds  |
-| \xenocrat\markdown\ChyrpMarkdown   | 9.5 milliseconds  |
-| [\Michelf\Markdown][Michelf] 2.0.0 | 15.5 milliseconds |
-| \Michelf\MarkdownExtra             | 24.0 milliseconds |
+| Parser                                | Time to parse     | CommonMark |
+| ------------------------------------- | ----------------- | ---------- |
+| [\cebe\markdown\Markdown][cebe] 1.2.1 | 2.7 milliseconds  | 41%        |
+| \cebe\markdown\GithubMarkdown         | 3.9 milliseconds  | -          |
+| [Parsedown] 1.8.0                     | 4.0 milliseconds  | 48%        |
+| \xenocrat\markdown\Markdown           | 5.9 milliseconds  | 95%        |
+| \xenocrat\markdown\GithubMarkdown     | 8.1 milliseconds  | -          |
+| \xenocrat\markdown\GitlabMarkdown     | 8.9 milliseconds  | -          |
+| \xenocrat\markdown\ChyrpMarkdown      | 9.5 milliseconds  | -          |
+| [\Michelf\Markdown][Michelf] 2.0.0    | 15.5 milliseconds | 36%        |
+| \Michelf\MarkdownExtra                | 24.0 milliseconds | 39%        |
 
 Test environment: PHP 8.1.0, Windows 11, AMD Ryzen 7 2700X, 32 GB RAM.
-
-Limitations
------------
-
-The parser is not fully conformant with the CommonMark, GFM, and GLFM specifications. Currently it is able to pass 95% of CommonMark, GFM, and GLFM test cases.
 
 Usage
 -----
@@ -448,5 +445,6 @@ This software is open source and licensed under the MIT License. See [LICENSE] f
 [Markdown]: https://daringfireball.net/projects/markdown/syntax.text
 [@erusev]: https://github.com/erusev "Emanuil Rusev"
 [Parsedown]: http://parsedown.org/ "Better Markdown Parser in PHP"
+[cebe]: http://markdown.cebe.cc/ "A super fast, highly extensible markdown parser for PHP."
 [Michelf]: https://michelf.ca/projects/php-markdown/ "PHP Markdown"
 [LICENSE]: https://github.com/xenocrat/chyrp-markdown/blob/master/LICENSE
