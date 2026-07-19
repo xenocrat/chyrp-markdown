@@ -21,7 +21,7 @@ Requirements
 Performance
 -----------
 
-The parsing performance is somewhat slower than [Parsedown] and [cebe\Markdown][cebe] but with significantly greater [CommonMark] conformance. The table below benchmarks the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
+The parsing performance is slower than [Parsedown] and [cebe\Markdown][cebe] but with significantly greater conformance to the [CommonMark] standard, proven by a comprehensive test suite. The table below benchmarks the average of 30,000 iterations parsing the 27 KB source for [John Gruber's Markdown syntax documentation][Markdown].
 
 | Parser                                | Time to parse     | CommonMark conformance |
 | ------------------------------------- | ----------------- | ---------------------- |
@@ -29,9 +29,9 @@ The parsing performance is somewhat slower than [Parsedown] and [cebe\Markdown][
 | \cebe\markdown\GithubMarkdown         | 3.9 milliseconds  | -                      |
 | [Parsedown] 1.8.0                     | 4.0 milliseconds  | 48%                    |
 | \xenocrat\markdown\Markdown           | 5.9 milliseconds  | 95%                    |
-| \xenocrat\markdown\GithubMarkdown     | 8.1 milliseconds  | -                      |
-| \xenocrat\markdown\GitlabMarkdown     | 8.9 milliseconds  | -                      |
-| \xenocrat\markdown\ChyrpMarkdown      | 9.5 milliseconds  | -                      |
+| \xenocrat\markdown\GithubMarkdown     | 8.2 milliseconds  | -                      |
+| \xenocrat\markdown\GitlabMarkdown     | 8.2 milliseconds  | -                      |
+| \xenocrat\markdown\ChyrpMarkdown      | 9.6 milliseconds  | -                      |
 | [\Michelf\Markdown][Michelf] 2.0.0    | 15.5 milliseconds | 36%                    |
 | \Michelf\MarkdownExtra                | 24.0 milliseconds | 39%                    |
 
@@ -357,7 +357,7 @@ By default, LinkTrait enables an extension to the Markdown syntax for specifying
 Use of special characters
 -------------------------
 
-The parser inserts some special characters into text during processing. The characters inserted are the substitute character (Unicode codepoint `U+001A`) and the object replacement character (Unicode codepoint `U+FFFC`). These characters are extremely unlikely to appear in Markdown input text and are therefore deemed safe for internal use. The characters are removed from output text.
+The parser inserts some special characters into text during processing: the substitute character (Unicode codepoint `U+001A`) and the object replacement character (Unicode codepoint `U+FFFC`). These characters are extremely unlikely to appear in Markdown input text and are therefore deemed safe for internal use. The characters are removed from output text.
 
 Extending the language
 ----------------------
