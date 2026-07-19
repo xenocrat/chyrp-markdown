@@ -169,14 +169,12 @@ trait LinkTrait
 		) {
 			$offset = strlen($textMatches[0]);
 			$text = $textMatches[1];
-			$consumed = strlen($textMatches[0]);
 			$substr = substr($markdown, $offset);
-
 			$context = array_shift($this->context);
 
 			$overrun = $this->detectInlineOverrun(
 				$markdown,
-				$consumed,
+				$offset,
 				['Lt', 'BracketedLink', 'InlineCode']
 			);
 
@@ -235,7 +233,7 @@ trait LinkTrait
 					$text,
 					$url,
 					$title,
-					$consumed + strlen($refMatches[0]),
+					$offset + strlen($refMatches[0]),
 					null,
 				];
 			} elseif (
@@ -261,7 +259,7 @@ trait LinkTrait
 					$text,
 					$url,
 					$title,
-					$consumed + strlen($refMatches[0]),
+					$offset + strlen($refMatches[0]),
 					$label,
 				];
 			}
