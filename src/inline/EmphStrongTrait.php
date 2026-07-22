@@ -34,8 +34,8 @@ trait EmphStrongTrait
 
 		if (
 			($marker = $markdown[0]) == $markdown[1]
-			// Closing marker?
 			&& strspn($markdown, $marker) % 2 === 0
+			// Closing marker?
 			&& strpos($markdown, $marker . $marker, 2) !== false
 		) {
 		// Strong.
