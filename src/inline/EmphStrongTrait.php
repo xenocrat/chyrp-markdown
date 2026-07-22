@@ -35,6 +35,7 @@ trait EmphStrongTrait
 		if (
 			($marker = $markdown[0]) == $markdown[1]
 			// Closing marker?
+			&& strspn($markdown, $marker) % 2 === 0
 			&& strpos($markdown, $marker . $marker, 2) !== false
 		) {
 		// Strong.
@@ -118,8 +119,8 @@ trait EmphStrongTrait
 						# Closing marker: cannot be preceded by whitespace.
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])[*]
-						# Emphasis closing marker cannot form a strong opening marker.
-						(?![*][^*\s\p{Zs}\p{Pe}\p{Pf}]))/usx',
+						# Closing marker cannot resemble a strong opening marker.
+						(?![*][^*\s]))/usx',
 					$markdown,
 					$matches
 				)
