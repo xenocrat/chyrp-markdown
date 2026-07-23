@@ -120,7 +120,7 @@ trait EmphStrongTrait
 						# Cannot be preceded by Unicode category Zs, Ps, Pi.
 						(?(R)\1|(?<![\s\p{Zs}\p{Ps}\p{Pi}])[*]
 						# Closing marker cannot resemble a strong opening marker.
-						(?![*][^*\s\p{Zs}]))/usx',
+						(?![*][^*\s\p{Zs}\p{Pe}\p{Pf}][^*]*[*]{2}))/usx',
 					$markdown,
 					$matches
 				)
