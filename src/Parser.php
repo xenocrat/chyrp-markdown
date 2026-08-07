@@ -315,17 +315,15 @@ abstract class Parser
 		$found = false;
 		$blockTypes = $this->blockTypes();
 
-		if ($line !== '' && rtrim($line) !== '') {
-			foreach($blockTypes as $blockType) {
-				$blockType = ucfirst($blockType);
-				array_unshift($this->context, 'identify' . $blockType);
-				if ($this->{'identify' . $blockType}($line, $lines, $current)) {
-					$found = true;
-				}
-				array_shift($this->context);
-				if ($found === true) {
-					return lcfirst($blockType);
-				}
+		foreach($blockTypes as $blockType) {
+			$blockType = ucfirst($blockType);
+			array_unshift($this->context, 'identify' . $blockType);
+			if ($this->{'identify' . $blockType}($line, $lines, $current)) {
+				$found = true;
+			}
+			array_shift($this->context);
+			if ($found === true) {
+				return lcfirst($blockType);
 			}
 		}
 
