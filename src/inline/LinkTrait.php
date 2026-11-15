@@ -58,7 +58,7 @@ trait LinkTrait
 			// Link?
 			&& ($parts = $this->parseLinkOrImage($markdown)) !== false
 		) {
-			list($text, $url, $title, $offset, $label) = $parts;
+			[$text, $url, $title, $offset, $label] = $parts;
 
 			return [
 				[
@@ -103,7 +103,7 @@ trait LinkTrait
 		if (
 			($parts = $this->parseLinkOrImage(substr($markdown, 1))) !== false
 		) {
-			list($text, $url, $title, $offset, $label) = $parts;
+			[$text, $url, $title, $offset, $label] = $parts;
 
 			if (
 				$this->enableImageDimensions

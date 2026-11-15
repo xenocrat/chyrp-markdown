@@ -373,7 +373,7 @@ abstract class Parser
 			if ($line !== '' && rtrim($line) !== '') {
 			// Skip empty lines.
 				// Identify beginning of a block and parse the content.
-				list($block, $i) = $this->parseBlock($lines, $i);
+				[$block, $i] = $this->parseBlock($lines, $i);
 
 				if ($block !== false) {
 					$blocks[] = $block;
@@ -615,7 +615,7 @@ abstract class Parser
 					if (str_starts_with($text, $marker)) {
 						// Parse the marker.
 						array_unshift($this->context, $method);
-						list($output, $offset) = $this->$method($text, $preceding);
+						[$output, $offset] = $this->$method($text, $preceding);
 						array_shift($this->context);
 
 						$preceding .= substr($text, 0, $offset);
