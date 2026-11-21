@@ -861,7 +861,7 @@ abstract class Parser
 				-1,
 				PREG_SPLIT_DELIM_CAPTURE
 			)
-			?: [$lines];
+			?: [$text];
 
 		foreach ($lines as $line) {
 			$output = '';
@@ -872,7 +872,7 @@ abstract class Parser
 					-1,
 					PREG_SPLIT_DELIM_CAPTURE
 				)
-				?: [$chunks];
+				?: [$line];
 
 			foreach ($chunks as $chunk) {
 				if ($chunk === "\t") {
@@ -916,7 +916,7 @@ abstract class Parser
 				-1,
 				PREG_SPLIT_DELIM_CAPTURE
 			)
-			?: [$lines];
+			?: [$text];
 
 		foreach ($lines as $line) {
 			$length = strlen(
